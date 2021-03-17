@@ -16,9 +16,10 @@
     <explicitExcludes>
       <Path>.git</Path>
       <Path>.idea</Path>
+      <Path>IFT3113H21_TP3_Equipe04</Path>
       <Path>Library</Path>
       <Path>Logs</Path>
-      <Path>Prototypes</Path>
+      <Path>Prototype Environnement</Path>
       <Path>Temp</Path>
       <Path>obj</Path>
     </explicitExcludes>

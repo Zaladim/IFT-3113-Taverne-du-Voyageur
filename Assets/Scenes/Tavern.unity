@@ -437,6 +437,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5236015648182342425, guid: bbfb71babb3e3a64e9734305e7c1f797,
         type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5236015648182342425, guid: bbfb71babb3e3a64e9734305e7c1f797,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -491,8 +496,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d92404cd5e68f6c4d8f15ee4869ef210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tavernLimit: -10
   room: {fileID: 8027011741896512226, guid: 7aeb49c56dc957b4aa2dc06d0d74dce7, type: 3}
+  table: {fileID: 2471926772088360913, guid: ef1a8f6d35aa8c645b1b8df81362d41b, type: 3}
   walls: []
+  placeRoom: 0
 --- !u!1 &1182533131
 GameObject:
   m_ObjectHideFlags: 0
