@@ -54,14 +54,16 @@ namespace Prototypes.Pathfinding.Scripts
 
         private bool canReachOtherNode(Component node)
         {
-            var direction = node.transform.position - getPosition();
-            var hits = new RaycastHit[] { };
-            Physics.RaycastNonAlloc(getPosition(), direction, hits);
-            var canGoToObject =
-                (from t in hits
-                    where t.collider.GetComponent<ObjectAIBehavior>() != null
-                    select t.collider.GetComponent<ObjectAIBehavior>()).All(behavior => behavior.canActorsPassThrough);
-            return canGoToObject;
+            var position = node.transform.position;
+            var direction = position - getPosition();
+            var distance = Vector3.Distance(position, getPosition());
+            var hits = Physics.RaycastAll(getPosition(), direction, distance);
+
+            return (
+                from t in hits
+                where t.collider.GetComponent<ObjectAIBehavior>() != null
+                select t.collider.GetComponent<ObjectAIBehavior>()
+            ).All(behavior => behavior.canActorsPassThrough);
         }
 
         // Update is called once per frame
