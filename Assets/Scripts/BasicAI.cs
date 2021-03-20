@@ -118,9 +118,19 @@ namespace Prototypes.Pathfinding.Scripts
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, speed * Time.deltaTime / 2);
         }
 
+        public Vector3 getLocation()
+        {
+            return centerOfMass.position;
+        }
+
         public bool isAtLocation(Vector3 position)
         {
             return centerOfMass.position == position;
+        }
+
+        public bool isCloseToLocation(Vector3 position, float minimalDistance)
+        {
+            return Vector3.Distance(centerOfMass.position, position) <= minimalDistance;
         }
 
         public Seat GoToRandomSeat()
@@ -162,6 +172,72 @@ namespace Prototypes.Pathfinding.Scripts
             currentDestination = currentPath[currentNode].getPosition();
             hasDestination = true;
             return randomExit;
+        }
+
+        public GameObject GoToPay()
+        {
+            var allCounters = FindObjectsOfType<Counter>();
+            if (allCounters.Length <= 0) return null;
+            var randomCounter = allCounters[Random.Range(0, allCounters.Length)];
+            GameObject paylocation = randomCounter.payLocations[Random.Range(0, randomCounter.payLocations.Count)];
+            target = paylocation.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, target);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
+            return paylocation;
+        }
+
+        public Client GoToRandomClient()
+        {
+            var allClients = FindObjectsOfType<Client>();
+            List<Client> allAvailableClients = new List<Client>();
+            for (int i = 0; i < allClients.Length; i++)
+            {
+                if (allClients[i].getState() == Client.ClientState.WaitingToOrder && !allClients[i].hasAWaiter)
+                {
+                    allAvailableClients.Add(allClients[i]);
+                }
+            }
+            if (allAvailableClients.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                var randomClient = allAvailableClients[Random.Range(0, allAvailableClients.Count)];
+                randomClient.hasAWaiter = true;
+                target = randomClient.getPosition();
+                currentPath = pathFinding.A_Star(transform.position, target);
+                currentNode = 0;
+                currentDestination = currentPath[currentNode].getPosition();
+                hasDestination = true;
+                return randomClient;
+            }
+        }
+
+        public GameObject GoToCounter()
+        {
+            var allCounters = FindObjectsOfType<Counter>();
+            if (allCounters.Length <= 0) return null;
+            var randomCounter = allCounters[Random.Range(0, allCounters.Length)];
+            GameObject foodlocation = randomCounter.foodLocations[Random.Range(0, randomCounter.foodLocations.Count)];
+            target = foodlocation.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, target);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
+            return foodlocation;
+        }
+
+
+        public void GoToSpecificClient(Client person)
+        {
+            target = person.getPosition();
+            currentPath = pathFinding.A_Star(transform.position, target);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
         }
     }
 }
