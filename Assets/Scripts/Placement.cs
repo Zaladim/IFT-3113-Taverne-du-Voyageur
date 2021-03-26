@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class Placement : MonoBehaviour
 {
     [SerializeField] private float tavernLimit = -10;
-    
+
     [SerializeField]private GameObject room;
-    [SerializeField] private GameObject table;
+    [SerializeField]private GameObject table;
 
     [SerializeField]private List<GameObject> walls = new List<GameObject>();
 
-
-    public bool placeRoom;
+    [SerializeField] private GameObject roomUI;
     
+    public bool placeRoom;
+
+    public GameObject Room
+    {
+        get => room;
+        set => room = value;
+    }
+
     private void Awake()
     {
         foreach (var wall in GameObject.FindGameObjectsWithTag("BorderWall"))
@@ -102,6 +110,18 @@ public class Placement : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (roomUI.gameObject.activeSelf)
+            {
+                roomUI.gameObject.SetActive(false);
+            } else
+            {
+                roomUI.gameObject.SetActive(true);
+            }
+        }
+        
     }
 
     private void DestroyObjectAtLocation(float minDist, GameObject item)
