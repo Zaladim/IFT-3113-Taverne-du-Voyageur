@@ -30,6 +30,8 @@ namespace Prototypes.Pathfinding.Scripts
 
         private GameObject payLocation;
 
+        private GameObject lookDirection;
+
         private ClientState etat;
 
         private float timeLeftToEat;
@@ -45,6 +47,9 @@ namespace Prototypes.Pathfinding.Scripts
 
         public float timeToMakeOrderMin = 30f;
         public float timeToMakeOrderMax = 100f;
+
+        public int orderPriceMin = 10;
+        public int orderPriceMax = 40;
 
 
         // Start is called before the first frame update
@@ -69,6 +74,7 @@ namespace Prototypes.Pathfinding.Scripts
                 {
                     subText.text = "Seat Not Found";
                     seat = mouvement.GoToRandomSeat();
+                    lookDirection = seat.lookDirection;
                 }
                 else
                 {
@@ -76,7 +82,10 @@ namespace Prototypes.Pathfinding.Scripts
                     if (mouvement.isAtLocation(seat.transform.position))
                     {
                         seat.isOccupied = true;
-                        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                        if (lookDirection == null)
+                        {
+                            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                        }
                         etat = ClientState.WaitingToOrder;
                     }
                 }
@@ -91,6 +100,10 @@ namespace Prototypes.Pathfinding.Scripts
                     orderTimer = Random.Range(timeToMakeOrderMin, timeToMakeOrderMax);
                     hasBeenInteractedWith = false;
                 }
+                if (lookDirection != null)
+                {
+                    mouvement.FaceLocation(lookDirection.transform.position);
+                }
             }
             else if (etat == ClientState.WaitingToReciveOrder)
             {
@@ -103,6 +116,10 @@ namespace Prototypes.Pathfinding.Scripts
                     timeLeftToEat = Random.Range(timeToEatMin, timeToEatMax);
                     hasBeenInteractedWith = false;
                 }
+                if (lookDirection != null)
+                {
+                    mouvement.FaceLocation(lookDirection.transform.position);
+                }
             }
             else if (etat == ClientState.Eating)
             {
@@ -112,6 +129,10 @@ namespace Prototypes.Pathfinding.Scripts
                 if (timeLeftToEat <= 0)
                 {
                     etat = ClientState.GoingToPay;
+                }
+                if (lookDirection != null)
+                {
+                    mouvement.FaceLocation(lookDirection.transform.position);
                 }
             }
             else if (etat == ClientState.GoingToPay)
@@ -123,22 +144,30 @@ namespace Prototypes.Pathfinding.Scripts
                     seat.isAIGoingForIt = false;
                     seat.isOccupied = false;
                     seat = null;
-                    payLocation = mouvement.GoToPay();
+                    payLocation = mouvement.GoToPay(out lookDirection);
                 }
                 else
                 {
                     if (payLocation == null)
                     {
                         subText.text = "Counter Not Found";
-                        payLocation = mouvement.GoToPay();
+                        payLocation = mouvement.GoToPay(out lookDirection);
                     }
                     else
                     {
                         subText.text = "Counter Found";
                         if (mouvement.isAtLocation(payLocation.transform.position))
                         {
-                            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                            if (lookDirection == null)
+                            {
+                                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                            }
                             etat = ClientState.Leaving;
+                            RessourcesManager[] resources = FindObjectsOfType<RessourcesManager>();
+                            for (int i = 0; i < resources.Length; i++)
+                            {
+                                resources[i].Gold += Random.Range(orderPriceMin, orderPriceMax);
+                            }
                         }
                     }
                 }

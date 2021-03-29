@@ -40,20 +40,6 @@ namespace Prototypes.Pathfinding.Scripts
         // Update is called once per frame
         private void Update()
         {
-            //for demo 
-            /*if (currentSeat != null)
-        {
-            if (centerOfMass.position == currentSeat.transform.position)
-            {
-                currentSeat.isAIGoingForIt = false;
-            }
-        }
-
-        if (!hasDestination)
-        {
-            currentSeat = GoToRandomSeat();
-        }*/
-            //end of demo only code
 
             //move
             if (hasDestination)
@@ -174,11 +160,16 @@ namespace Prototypes.Pathfinding.Scripts
             return randomExit;
         }
 
-        public GameObject GoToPay()
+        public GameObject GoToPay(out GameObject lookdirection)
         {
             var allCounters = FindObjectsOfType<Counter>();
-            if (allCounters.Length <= 0) return null;
+            if (allCounters.Length <= 0)
+            {
+                lookdirection = null;
+                return null;
+            }
             var randomCounter = allCounters[Random.Range(0, allCounters.Length)];
+            lookdirection = randomCounter.lookDirection;
             GameObject paylocation = randomCounter.payLocations[Random.Range(0, randomCounter.payLocations.Count)];
             target = paylocation.transform.position;
             currentPath = pathFinding.A_Star(transform.position, target);
@@ -216,11 +207,16 @@ namespace Prototypes.Pathfinding.Scripts
             }
         }
 
-        public GameObject GoToCounter()
+        public GameObject GoToCounter(out GameObject lookdirection)
         {
             var allCounters = FindObjectsOfType<Counter>();
-            if (allCounters.Length <= 0) return null;
+            if (allCounters.Length <= 0)
+            {
+                lookdirection = null;
+                return null;
+            }
             var randomCounter = allCounters[Random.Range(0, allCounters.Length)];
+            lookdirection = randomCounter.lookDirection;
             GameObject foodlocation = randomCounter.foodLocations[Random.Range(0, randomCounter.foodLocations.Count)];
             target = foodlocation.transform.position;
             currentPath = pathFinding.A_Star(transform.position, target);
@@ -238,6 +234,35 @@ namespace Prototypes.Pathfinding.Scripts
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
             hasDestination = true;
+        }
+
+        public void StopMoving()
+        {
+            hasDestination = false;
+        }
+
+        public void StartMovingAgain()
+        {
+            if (currentPath != null)
+            {
+                hasDestination = true;
+            }
+        }
+
+        public void FaceLocation(Vector3 location)
+        {
+            Vector3 dirFromAtoB = (location - transform.position).normalized;
+            float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
+
+            if (dotProd != 1)
+            {
+                Turn(location);
+            }
+            /*Debug.Log(Vector3.Angle(location.forward, transform.position - location.position));
+            if (Vector3.Angle(location.forward, transform.position - location.position) > 0)
+            {
+                Turn(location.position);
+            }*/
         }
     }
 }

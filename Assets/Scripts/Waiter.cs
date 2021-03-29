@@ -11,7 +11,8 @@ namespace Prototypes.Pathfinding.Scripts
             Neutral,
             TakingClientOrder,
             GoToCounter,
-            GivingOrder
+            GivingOrder,
+            Idle//wait a little bit before leaving client to go back to counter
         }
 
         private BasicAI mouvement;
@@ -26,7 +27,16 @@ namespace Prototypes.Pathfinding.Scripts
 
         private GameObject foodLocation;
 
+        private GameObject lookDirection;
+
         private WaiterState etat;
+
+        public float DistanceFromClientToInterct = 2;
+
+        private float idleTimer;
+
+        public float timeToStayIdleMin = 1f;
+        public float timeToStayIdleMax = 10f;
 
         // Start is called before the first frame update
         void Start()
@@ -37,6 +47,7 @@ namespace Prototypes.Pathfinding.Scripts
             temp = GetComponent<Transform>().Find("SubText");
             subText = temp.GetComponent<TextMesh>();
             etat = WaiterState.Neutral;
+            idleTimer = 0;
             clients = new List<Client>();
         }
 
@@ -45,6 +56,10 @@ namespace Prototypes.Pathfinding.Scripts
         {
             if (etat == WaiterState.Neutral)
             {
+                if (lookDirection != null)
+                {
+                    mouvement.FaceLocation(lookDirection.transform.position);
+                }
                 //check if any of its own orders are ready
                 for (int i = 0; i < clients.Count; i++)
                 {
@@ -77,10 +92,11 @@ namespace Prototypes.Pathfinding.Scripts
             {
                 text.text = "Taking Client's Order";
                 subText.text = "";
-                if (mouvement.isCloseToLocation(currentClient.getPosition(),5))
+                if (mouvement.isCloseToLocation(currentClient.getPosition(), DistanceFromClientToInterct))
                 {
                     currentClient.InteractWIthClient();
-                    etat = WaiterState.GoToCounter;
+                    etat = WaiterState.Idle;
+                    idleTimer = Random.Range(timeToStayIdleMin, timeToStayIdleMax);
                 }
             }
             else if (etat == WaiterState.GoToCounter)
@@ -90,21 +106,24 @@ namespace Prototypes.Pathfinding.Scripts
                 {
                     subText.text = "Counter Not Found";
                     currentClient = null;
-                    foodLocation = mouvement.GoToCounter();
+                    foodLocation = mouvement.GoToCounter(out lookDirection);
                 }
                 else
                 {
                     if (foodLocation == null)
                     {
                         subText.text = "Counter Not Found";
-                        foodLocation = mouvement.GoToCounter();
+                        foodLocation = mouvement.GoToCounter(out lookDirection);
                     }
                     else
                     {
                         subText.text = "Counter Found";
                         if (mouvement.isAtLocation(foodLocation.transform.position))
                         {
-                            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                            if (lookDirection == null)
+                            {
+                                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                            }
                             etat = WaiterState.Neutral;
                             foodLocation = null;
                         }
@@ -115,12 +134,23 @@ namespace Prototypes.Pathfinding.Scripts
             {
                 text.text = "Giving Client's Order";
                 subText.text = "";
-                if (mouvement.isCloseToLocation(currentClient.getPosition(), 5))
+                if (mouvement.isCloseToLocation(currentClient.getPosition(), DistanceFromClientToInterct))
                 {
                     currentClient.InteractWIthClient();
-                    etat = WaiterState.GoToCounter;
+                    etat = WaiterState.Idle;
+                    idleTimer = Random.Range(timeToStayIdleMin, timeToStayIdleMax);
                     clients.Remove(currentClient);
-                    currentClient = null;
+                }
+            }
+            else if (etat == WaiterState.Idle)
+            {
+                mouvement.StopMoving();
+                mouvement.FaceLocation(currentClient.gameObject.transform.position);
+                subText.text = "Time Left: " + Mathf.Ceil(idleTimer).ToString() + "s";
+                idleTimer -= Time.deltaTime;
+                if (idleTimer <= 0)
+                {
+                    etat = WaiterState.GoToCounter;
                 }
             }
         }

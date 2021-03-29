@@ -8,6 +8,8 @@ namespace Prototypes.Pathfinding.Scripts
 
         public bool isOccupied;
 
+        public GameObject lookDirection;
+
         // Start is called before the first frame update
         void Start()
         {
