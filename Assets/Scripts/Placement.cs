@@ -11,10 +11,13 @@ public class Placement : MonoBehaviour
     [SerializeField]private GameObject room;
     [SerializeField]private GameObject table;
 
+    [SerializeField] private int price;
+
     [SerializeField]private List<GameObject> walls = new List<GameObject>();
 
     [SerializeField] private GameObject roomUI;
-    
+    [SerializeField] private RessourcesManager ressources;
+
     public bool placeRoom;
 
     public GameObject Room
@@ -23,8 +26,15 @@ public class Placement : MonoBehaviour
         set => room = value;
     }
 
+    public int Price
+    {
+        get => price;
+        set => price = value;
+    }
+
     private void Awake()
     {
+        ressources = GameObject.FindGameObjectWithTag("RessourcesManager").GetComponent<RessourcesManager>();
         foreach (var wall in GameObject.FindGameObjectsWithTag("BorderWall"))
         {
             if (wall.transform.position.x < tavernLimit)
@@ -42,70 +52,77 @@ public class Placement : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0)) //Raycast Collision. If clicked item is Borderwall, replace with Door
         {
-            if (placeRoom)
+            if (ressources.Gold >= price)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
+                if (placeRoom)
                 {
-                    if (hit.collider.gameObject.CompareTag("BorderWall"))
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit))
                     {
-                        walls.Remove(hit.collider.gameObject);
-                        Transform tmp = hit.collider.gameObject.transform;
-                        GameObject r = Instantiate(room);
-                        r.transform.position = tmp.position;
-                        r.transform.rotation = tmp.rotation;
-                        foreach (var item in r.GetComponentsInChildren<Transform>())
+                        if (hit.collider.gameObject.CompareTag("BorderWall"))
                         {
-                            if (item.CompareTag("BorderWall"))
+                            walls.Remove(hit.collider.gameObject);
+                            Transform tmp = hit.collider.gameObject.transform;
+                            GameObject r = Instantiate(room);
+                            r.transform.position = tmp.position;
+                            r.transform.rotation = tmp.rotation;
+                            foreach (var item in r.GetComponentsInChildren<Transform>())
                             {
-                                if (CheckForOtherRoom(1f, item.gameObject))
+                                if (item.CompareTag("BorderWall"))
                                 {
-                                    Destroy(r);
+                                    if (CheckForOtherRoom(1f, item.gameObject))
+                                    {
+                                        Destroy(r);
+                                        return;
+                                    }
+                                }
+                            }
+
+                            foreach (var item in r.GetComponentsInChildren<Transform>())
+                            {
+                                if (item.CompareTag("BorderWall"))
+                                {
+                                    if (item.position.x < tavernLimit)
+                                    {
+                                        item.gameObject.tag = "Wall";
+                                    }
+
+                                    DestroyObjectAtLocation(1f, item.gameObject);
+                                }
+
+                            }
+
+                            //Instantiate(room, tmp.position, tmp.rotation);
+                            //DeleteExisting(r);
+                            Destroy(hit.collider.gameObject);
+                            //Destroy(r);
+
+                            ressources.Gold -= price;
+                        }
+                    }
+                }
+                else
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        if (hit.collider.gameObject.CompareTag("Ground"))
+                        {
+                            Collider[] hitColliders = Physics.OverlapSphere(hit.point, 2f);
+                            foreach (var hitCollider in hitColliders)
+                            {
+                                //print(hitCollider);
+                                if (!hitCollider.gameObject.CompareTag("Ground"))
+                                {
                                     return;
                                 }
                             }
+
+                            Instantiate(table, hit.point, Quaternion.identity);
+                            ressources.Gold -= price;
                         }
-
-                        foreach (var item in r.GetComponentsInChildren<Transform>())
-                        {
-                            if (item.CompareTag("BorderWall"))
-                            {
-                                if (item.position.x < tavernLimit)
-                                {
-                                    item.gameObject.tag = "Wall";
-                                }
-
-                                DestroyObjectAtLocation(1f, item.gameObject);
-                            }
-
-                        }
-
-                        //Instantiate(room, tmp.position, tmp.rotation);
-                        //DeleteExisting(r);
-                        Destroy(hit.collider.gameObject);
-                        //Destroy(r);
-                    }
-                }
-            }
-            else
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
-                {
-                    if (hit.collider.gameObject.CompareTag("Ground"))
-                    {
-                        Collider[] hitColliders = Physics.OverlapSphere(hit.point, 2f);
-                        foreach (var hitCollider in hitColliders)
-                        {
-                            //print(hitCollider);
-                            if (!hitCollider.gameObject.CompareTag("Ground"))
-                            {
-                                return;
-                            }
-                        }
-                        Instantiate(table, hit.point, Quaternion.identity);
                     }
                 }
             }
