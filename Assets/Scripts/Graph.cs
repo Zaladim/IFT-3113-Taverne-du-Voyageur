@@ -23,6 +23,15 @@ namespace Prototypes.Pathfinding.Scripts
         {
         }
 
+        public void UpdateGraph()
+        {
+            nodes = FindObjectsOfType<Node>();
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                nodes[i].initialize();
+            }
+        }
+
         public Node[] getNodes()
         {
             return nodes;
