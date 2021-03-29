@@ -11,7 +11,8 @@ namespace Prototypes.Pathfinding.Scripts
             Neutral,
             TakingClientOrder,
             GoToCounter,
-            GivingOrder
+            GivingOrder,
+            Idle//wait a little bit before leaving client to go back to counter
         }
 
         private BasicAI mouvement;
@@ -30,6 +31,11 @@ namespace Prototypes.Pathfinding.Scripts
 
         public float DistanceFromClientToInterct = 2;
 
+        private float idleTimer;
+
+        public float timeToStayIdleMin = 1f;
+        public float timeToStayIdleMax = 10f;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -39,6 +45,7 @@ namespace Prototypes.Pathfinding.Scripts
             temp = GetComponent<Transform>().Find("SubText");
             subText = temp.GetComponent<TextMesh>();
             etat = WaiterState.Neutral;
+            idleTimer = 0;
             clients = new List<Client>();
         }
 
@@ -82,7 +89,8 @@ namespace Prototypes.Pathfinding.Scripts
                 if (mouvement.isCloseToLocation(currentClient.getPosition(), DistanceFromClientToInterct))
                 {
                     currentClient.InteractWIthClient();
-                    etat = WaiterState.GoToCounter;
+                    etat = WaiterState.Idle;
+                    idleTimer = Random.Range(timeToStayIdleMin, timeToStayIdleMax);
                 }
             }
             else if (etat == WaiterState.GoToCounter)
@@ -120,9 +128,19 @@ namespace Prototypes.Pathfinding.Scripts
                 if (mouvement.isCloseToLocation(currentClient.getPosition(), DistanceFromClientToInterct))
                 {
                     currentClient.InteractWIthClient();
-                    etat = WaiterState.GoToCounter;
+                    etat = WaiterState.Idle;
+                    idleTimer = Random.Range(timeToStayIdleMin, timeToStayIdleMax);
                     clients.Remove(currentClient);
                     currentClient = null;
+                }
+            }
+            else if (etat == WaiterState.Idle)
+            {
+                subText.text = "Time Left: " + idleTimer + "s";
+                idleTimer -= Time.deltaTime;
+                if (idleTimer <= 0)
+                {
+                    etat = WaiterState.GoToCounter;
                 }
             }
         }
