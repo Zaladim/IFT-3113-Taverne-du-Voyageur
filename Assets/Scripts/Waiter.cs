@@ -28,6 +28,8 @@ namespace Prototypes.Pathfinding.Scripts
 
         private WaiterState etat;
 
+        public float DistanceFromClientToInterct = 2;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -77,7 +79,7 @@ namespace Prototypes.Pathfinding.Scripts
             {
                 text.text = "Taking Client's Order";
                 subText.text = "";
-                if (mouvement.isCloseToLocation(currentClient.getPosition(),5))
+                if (mouvement.isCloseToLocation(currentClient.getPosition(), DistanceFromClientToInterct))
                 {
                     currentClient.InteractWIthClient();
                     etat = WaiterState.GoToCounter;
@@ -115,7 +117,7 @@ namespace Prototypes.Pathfinding.Scripts
             {
                 text.text = "Giving Client's Order";
                 subText.text = "";
-                if (mouvement.isCloseToLocation(currentClient.getPosition(), 5))
+                if (mouvement.isCloseToLocation(currentClient.getPosition(), DistanceFromClientToInterct))
                 {
                     currentClient.InteractWIthClient();
                     etat = WaiterState.GoToCounter;

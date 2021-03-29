@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6141251953617675826}
   - component: {fileID: 8657342238021845507}
   - component: {fileID: 1844293741228402133}
-  - component: {fileID: 821707345663104527}
+  - component: {fileID: 8566034607882808854}
   m_Layer: 0
   m_Name: WaiterAI
   m_TagString: Untagged
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMin: 3
   speedMax: 7
---- !u!114 &821707345663104527
+--- !u!114 &8566034607882808854
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 752900504331954548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 300d395442aaacc49a96918370005e0f, type: 3}
+  m_Script: {fileID: 11500000, guid: d7d975096d5792d4298f2934cc57fd5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3920383082770216970

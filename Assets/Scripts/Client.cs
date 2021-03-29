@@ -46,6 +46,9 @@ namespace Prototypes.Pathfinding.Scripts
         public float timeToMakeOrderMin = 30f;
         public float timeToMakeOrderMax = 100f;
 
+        public int orderPriceMin = 10;
+        public int orderPriceMax = 40;
+
 
         // Start is called before the first frame update
         void Start()
@@ -139,6 +142,11 @@ namespace Prototypes.Pathfinding.Scripts
                         {
                             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                             etat = ClientState.Leaving;
+                            RessourcesManager[] resources = FindObjectsOfType<RessourcesManager>();
+                            for (int i = 0; i < resources.Length; i++)
+                            {
+                                resources[i].Gold += Random.Range(orderPriceMin, orderPriceMax);
+                            }
                         }
                     }
                 }
