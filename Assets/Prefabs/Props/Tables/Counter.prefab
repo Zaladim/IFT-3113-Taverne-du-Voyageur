@@ -106,3 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6f3aed790b3864d880b558b4abbb6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  foodLocations: []
+  payLocations: []
+  lookDirection: {fileID: 0}
