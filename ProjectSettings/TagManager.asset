@@ -9,6 +9,8 @@ TagManager:
   - Room
   - Ground
   - RessourcesManager
+  - Node
+  - PlacementManager
   layers:
   - Default
   - TransparentFX

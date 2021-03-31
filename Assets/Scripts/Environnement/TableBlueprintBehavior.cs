@@ -1,16 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Prototypes.Pathfinding.Scripts;
 using UnityEngine;
 
 public class TableBlueprintBehavior : MonoBehaviour
 {
+    private float rotateSpeed = 50f;
+    [SerializeField] private Quaternion rot;
+
     private RaycastHit hit;
+    private PlacementManager placementManager;
 
     [SerializeField] private GameObject prefab;
+    private Graph graph;
+    private List<Collider> colliders = new List<Collider>();
 
+    private void Awake()
+    {
+        placementManager = GameObject.FindGameObjectWithTag("PlacementManager").GetComponent<PlacementManager>();
+        graph = GameObject.Find("Graph").GetComponent<Graph>();
+    }
     private void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        float rotateInput = Input.GetAxis("RotatePrefab");
+
+        rot = transform.rotation;
+        transform.Rotate(0.0f, rotateInput * rotateSpeed * Time.deltaTime, 0.0f);
+        // rot.y += rotateInput * rotateSpeed * Time.deltaTime;
+        // if (rot.y >= 1f)
+        // {
+        //     rot.y -= 1f;
+        // }
+        // if (rot.y <= -1f)
+        // {
+        //     rot.y += 1f;
+        // }
+        // transform.rotation = rot;
 
         if (Physics.Raycast(ray, out hit))
         {
@@ -19,67 +46,55 @@ public class TableBlueprintBehavior : MonoBehaviour
                 Vector3 pos = hit.point;
                 pos.y = hit.collider.transform.position.y + 1;
                 transform.position = pos;
+                
                 //transform.position.y = hit.collider.transform.position.y + 1;
 
             }
         }
 
+       
+
         if (Input.GetMouseButtonDown(0))
         {
-            gameObject.SetActive(false);
-            Collider[] hitColliders = Physics.OverlapSphere(hit.point, 1f);
-            
-            GameObject o = Instantiate(prefab, transform.position, Quaternion.identity);
+            Collider[] hitColliders = Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 1f), transform.rotation);
             foreach (var hitCollider in hitColliders)
             {
-                //print(hitCollider);
-                if (!hitCollider.gameObject.CompareTag("Ground"))
+                if (!hitCollider.transform.IsChildOf(transform))
                 {
-                    gameObject.SetActive(true);
-                    Destroy(o);
-                    return;
+                    print(hitCollider);
+                    if (!hitCollider.gameObject.CompareTag("Ground"))
+                    {
+                        return;
+                    }
                 }
             }
-            
-            
-            
-            gameObject.SetActive(true);
+            GameObject o = Instantiate(prefab, transform.position, transform.rotation);
+            graph.UpdateGraph();
             Destroy(gameObject);
         }
     }
-
-    private void DestroyObjectAtLocation(float minDist, GameObject item)
+    
+    void OnDrawGizmos()
     {
-        Vector3 tmpLocation = item.transform.position;
-        // print(tmpLocation);
-        Transform[] tiles = GameObject.FindObjectsOfType<Transform> ();
-       
-        for (int i = 0; i < tiles.Length; i++) {
-            if(Vector3.Distance(tiles[i].position, tmpLocation) <= minDist){
-                if (item != tiles[i].gameObject)
-                {
-                    item.tag = "Wall";
-                    Destroy(tiles[i].gameObject);
-                }
-            }
+        Gizmos.color = Color.red;
+        //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
+        //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
+        Gizmos.DrawWireCube(transform.position, new Vector3(1f, 0.5f, 1f)*2);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(!colliders.Contains(other))
+        {
+            colliders.Add(other);
         }
     }
 
-    private bool CheckForOtherRoom(float minDist, GameObject item)
+    private void OnTriggerExit(Collider other)
     {
-        Vector3 tmpLocation = item.transform.position;
-        // print(tmpLocation);
-        Transform[] tiles = GameObject.FindObjectsOfType<Transform> ();
-        
-        for (int i = 0; i < tiles.Length; i++) {
-            if(Vector3.Distance(tiles[i].position, tmpLocation) <= minDist){
-                if (tiles[i].gameObject.CompareTag("Room"))
-                {
-                    return true;
-                }
-            }
+        if(colliders.Contains(other))
+        {
+            colliders.Remove(other);
         }
-
-        return false;
     }
 }

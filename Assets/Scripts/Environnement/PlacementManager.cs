@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Prototypes.Pathfinding.Scripts;
 using UnityEngine;
 
 public class PlacementManager : MonoBehaviour
 {
     [SerializeField] private GameObject roomUI;
     [SerializeField] private RessourcesManager ressources;
+
+    [SerializeField] private List<Node> nodes;   
+    
 
     private int price;
 
@@ -15,6 +19,17 @@ public class PlacementManager : MonoBehaviour
         get => price;
         set => price = value;
     }
+
+
+    // private void Awake()
+    // {
+    //     GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+    //
+    //     foreach (var node in n)
+    //     {
+    //         nodes.Add(node.GetComponent<Node>());
+    //     }
+    // }
 
     private void Update()
     {
@@ -43,6 +58,14 @@ public class PlacementManager : MonoBehaviour
             {
                 roomUI.gameObject.SetActive(true);
             }
+        }
+    }
+
+    public void InitAllNodes()
+    {
+        foreach (var node in nodes)
+        {
+            node.initialize();
         }
     }
 }

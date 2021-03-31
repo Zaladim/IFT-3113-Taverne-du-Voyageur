@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &26621307
 RectTransform:
   m_ObjectHideFlags: 0
@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 390588481}
   m_Layer: 0
   m_Name: PlacementManager
-  m_TagString: Untagged
+  m_TagString: PlacementManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -649,6 +649,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomUI: {fileID: 26621306}
   ressources: {fileID: 1069792013}
+  nodes: []
 --- !u!4 &390588482
 Transform:
   m_ObjectHideFlags: 0
@@ -4022,6 +4023,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 2337427123151600793, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: DrawGraph
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2337427124260463612, guid: 88b8d4557a0395b4f869ba22b6a70c82,
         type: 3}
