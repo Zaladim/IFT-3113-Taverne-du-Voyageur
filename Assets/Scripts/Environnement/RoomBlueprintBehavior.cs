@@ -9,8 +9,15 @@ public class RoomBlueprintBehavior : MonoBehaviour
     private float tavernLimit = -10;
     private RaycastHit hit;
     private GameObject wallAnchor;
+    private PlacementManager placementManager;
 
     [SerializeField] private GameObject prefab;
+
+
+    private void Awake()
+    {
+        placementManager = GameObject.FindGameObjectWithTag("PlacementManager").GetComponent<PlacementManager>();
+    }
 
     private void Update()
     {
@@ -58,6 +65,7 @@ public class RoomBlueprintBehavior : MonoBehaviour
             }
             
             gameObject.SetActive(true);
+            placementManager.InitAllNodes();
             Destroy(wallAnchor);
             Destroy(gameObject);
         }
