@@ -10,8 +10,8 @@ public class PlacementManager : MonoBehaviour
     [SerializeField] private GameObject roomUI;
     [SerializeField] private RessourcesManager ressources;
 
-    [SerializeField] private List<Node> nodes;   
-    
+    [SerializeField] private List<Node> nodes;
+
 
     private int price;
 
@@ -32,7 +32,7 @@ public class PlacementManager : MonoBehaviour
     //     }
     // }
 
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -44,7 +44,7 @@ public class PlacementManager : MonoBehaviour
                 roomUI.gameObject.SetActive(true);
             }
         }
-    }
+    }*/
 
     public void CreateBlueprint(GameObject blueprint)
     {
@@ -55,7 +55,8 @@ public class PlacementManager : MonoBehaviour
             if (roomUI.gameObject.activeSelf)
             {
                 roomUI.gameObject.SetActive(false);
-            } else
+            }
+            else
             {
                 roomUI.gameObject.SetActive(true);
             }
