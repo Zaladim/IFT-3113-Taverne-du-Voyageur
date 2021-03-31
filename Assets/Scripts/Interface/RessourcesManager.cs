@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class RessourcesManager : MonoBehaviour
+namespace Interface
 {
-    [SerializeField] private int gold = 500;
-    [SerializeField] private Text display;
-
-    public int Gold
+    public class RessourcesManager : MonoBehaviour
     {
-        get => gold;
-        set
+        [SerializeField] private int gold = 500;
+        [SerializeField] private Text display;
+
+        public int Gold
         {
-            gold = value;
-            display.text = "Gold: " + gold;
+            get => gold;
+            set
+            {
+                gold = value;
+                display.text = gold.ToString();
+            }
         }
-    }
 
-    private void Awake()
-    {
-        display.text = "Gold: " + gold;
+        private void Awake()
+        {
+            display.text = gold.ToString();
+        }
     }
 }
