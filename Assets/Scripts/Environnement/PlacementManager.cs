@@ -30,7 +30,7 @@ public class PlacementManager : MonoBehaviour
         }
     }
 
-    public void CreateRoom(GameObject blueprint)
+    public void CreateBlueprint(GameObject blueprint)
     {
         if (ressources.Gold >= price)
         {

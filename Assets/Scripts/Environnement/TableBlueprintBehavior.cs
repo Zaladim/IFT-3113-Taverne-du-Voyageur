@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlueprintBehavior : MonoBehaviour
+public class TableBlueprintBehavior : MonoBehaviour
 {
-    private float tavernLimit = -10;
     private RaycastHit hit;
-    private GameObject wallAnchor;
 
     [SerializeField] private GameObject prefab;
 
@@ -17,46 +14,36 @@ public class BlueprintBehavior : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.gameObject.CompareTag("BorderWall"))
+            if (hit.collider.gameObject.CompareTag("Ground"))
             {
-                wallAnchor = hit.collider.gameObject;
-                transform.position = hit.collider.transform.position;
-                transform.rotation = hit.collider.transform.rotation;
+                Vector3 pos = hit.point;
+                pos.y = hit.collider.transform.position.y + 1;
+                transform.position = pos;
+                //transform.position.y = hit.collider.transform.position.y + 1;
+
             }
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject o = Instantiate(prefab, transform.position, transform.rotation);
             gameObject.SetActive(false);
+            Collider[] hitColliders = Physics.OverlapSphere(hit.point, 1f);
             
-            foreach (var item in o.GetComponentsInChildren<Transform>())
+            GameObject o = Instantiate(prefab, transform.position, Quaternion.identity);
+            foreach (var hitCollider in hitColliders)
             {
-                if (item.CompareTag("BorderWall"))
+                //print(hitCollider);
+                if (!hitCollider.gameObject.CompareTag("Ground"))
                 {
-                    if (CheckForOtherRoom(1f, item.gameObject))
-                    {
-                        Destroy(o);
-                        gameObject.SetActive(true);
-                        return;
-                    }
+                    gameObject.SetActive(true);
+                    Destroy(o);
+                    return;
                 }
             }
-
-            foreach (var item in o.GetComponentsInChildren<Transform>())
-            {
-                if (item.CompareTag("BorderWall"))
-                {
-                    if (item.position.x < tavernLimit)
-                    {
-                        item.gameObject.tag = "Wall";
-                    }
-
-                    DestroyObjectAtLocation(1f, item.gameObject);
-                }
-            }
+            
+            
+            
             gameObject.SetActive(true);
-            Destroy(wallAnchor);
             Destroy(gameObject);
         }
     }
