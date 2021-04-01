@@ -120,7 +120,7 @@ PrefabInstance:
     - target: {fileID: 5011085622351157340, guid: 21f97c20d32c1594e86e9fe1645bd592,
         type: 3}
       propertyPath: m_Name
-      value: Wall Variant (2)
+      value: Wall Variant 3
       objectReference: {fileID: 0}
     - target: {fileID: 5151817398101480258, guid: 21f97c20d32c1594e86e9fe1645bd592,
         type: 3}
@@ -195,7 +195,7 @@ PrefabInstance:
     - target: {fileID: 5011085622351157340, guid: 21f97c20d32c1594e86e9fe1645bd592,
         type: 3}
       propertyPath: m_Name
-      value: Wall Variant (1)
+      value: Wall Variant 2
       objectReference: {fileID: 0}
     - target: {fileID: 5151817398101480258, guid: 21f97c20d32c1594e86e9fe1645bd592,
         type: 3}
@@ -342,10 +342,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6584110139861037137}
     m_Modifications:
+    - target: {fileID: 445873411198326302, guid: 21f97c20d32c1594e86e9fe1645bd592,
+        type: 3}
+      propertyPath: m_TagString
+      value: WallDisplay
+      objectReference: {fileID: 0}
     - target: {fileID: 5011085622351157340, guid: 21f97c20d32c1594e86e9fe1645bd592,
         type: 3}
       propertyPath: m_Name
-      value: Wall Variant
+      value: Wall Variant 1
       objectReference: {fileID: 0}
     - target: {fileID: 5151817398101480258, guid: 21f97c20d32c1594e86e9fe1645bd592,
         type: 3}

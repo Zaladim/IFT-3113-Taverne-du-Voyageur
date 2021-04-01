@@ -108,6 +108,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mur
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 47cf8d3ccad767048bb73298895acacf,
+        type: 3}
+      propertyPath: m_TagString
+      value: WallDisplay
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47cf8d3ccad767048bb73298895acacf, type: 3}
 --- !u!1001 &6122313541764021941
@@ -120,6 +125,26 @@ PrefabInstance:
     - target: {fileID: 376619015248233082, guid: 5d0cc63b95efed442bd578342ccdddac,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 979556153083877408, guid: 5d0cc63b95efed442bd578342ccdddac,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 979556153083877408, guid: 5d0cc63b95efed442bd578342ccdddac,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 979556153083877408, guid: 5d0cc63b95efed442bd578342ccdddac,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 979556153083877408, guid: 5d0cc63b95efed442bd578342ccdddac,
+        type: 3}
+      propertyPath: m_Center.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1259917628133517033, guid: 5d0cc63b95efed442bd578342ccdddac,

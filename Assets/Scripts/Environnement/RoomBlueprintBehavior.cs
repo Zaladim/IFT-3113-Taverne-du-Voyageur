@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Prototypes.Pathfinding.Scripts;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class RoomBlueprintBehavior : MonoBehaviour
@@ -10,6 +11,8 @@ public class RoomBlueprintBehavior : MonoBehaviour
     private RaycastHit hit;
     private GameObject wallAnchor;
     private PlacementManager placementManager;
+
+    private float delay;
 
     [SerializeField] private GameObject prefab;
 
@@ -27,9 +30,21 @@ public class RoomBlueprintBehavior : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("BorderWall"))
             {
-                wallAnchor = hit.collider.gameObject;
-                transform.position = hit.collider.transform.position;
-                transform.rotation = hit.collider.transform.rotation;
+                if (wallAnchor == hit.collider.gameObject)
+                {
+                    delay += Time.deltaTime;
+                }
+                else
+                {
+                    wallAnchor = hit.collider.gameObject;
+                    delay = 0f;
+                }
+
+                if (delay >= 0.5f)
+                {
+                    transform.position = hit.collider.transform.position;
+                    transform.rotation = hit.collider.transform.rotation;
+                }
             }
         }
 
@@ -59,8 +74,8 @@ public class RoomBlueprintBehavior : MonoBehaviour
                     {
                         item.gameObject.tag = "Wall";
                     }
-
-                    DestroyObjectAtLocation(1f, item.gameObject);
+                    
+                    DestroyObjectAtLocation(0.5f, item.gameObject);
                 }
             }
             
@@ -74,18 +89,24 @@ public class RoomBlueprintBehavior : MonoBehaviour
     private void DestroyObjectAtLocation(float minDist, GameObject item)
     {
         Vector3 tmpLocation = item.transform.position;
-        // print(tmpLocation);
-        Transform[] tiles = GameObject.FindObjectsOfType<Transform> ();
-       
-        for (int i = 0; i < tiles.Length; i++) {
-            if(Vector3.Distance(tiles[i].position, tmpLocation) <= minDist){
-                if (item != tiles[i].gameObject)
+
+        //Transform[] tiles = GameObject.FindObjectsOfType<Transform> ();
+        Collider[] tiles = Physics.OverlapBox(item.transform.position, new Vector3(1f, 1f, 1f)/2, item.transform.rotation);
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            if (item.GetComponent<Collider>() == tiles[i])
+            {
+                continue;
+            }
+            if (Vector3.Distance(tiles[i].transform.position, tmpLocation) <= minDist)
                 {
-                    item.tag = "Wall";
-                    Destroy(tiles[i].gameObject);
+                    if (item != tiles[i].gameObject)
+                    {
+                        item.tag = "Wall";
+                        Destroy(tiles[i].gameObject);
+                    }
                 }
             }
-        }
     }
 
     private bool CheckForOtherRoom(float minDist, GameObject item)

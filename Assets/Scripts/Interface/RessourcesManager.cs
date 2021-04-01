@@ -6,12 +6,12 @@ namespace Interface
 {
     public class RessourcesManager : MonoBehaviour
     {
-        private class Resource
+        private class Ressource
         {
             private Text display;
             private uint amount;
 
-            public Resource(Text display, uint amount = 1)
+            public Ressource(Text display, uint amount = 1)
             {
                 this.display = display;
                 this.display.text = amount.ToString();
@@ -28,17 +28,18 @@ namespace Interface
             }
         }
 
-        private Resource gold;
+        private Ressource gold;
         [SerializeField] private Text goldDisplay;
         [SerializeField] private uint goldAmount;
 
-        private Resource reputation;
+        private Ressource reputation;
         [SerializeField] private Text reputationDisplay;
 
         private void Awake()
         {
-            gold = new Resource(goldDisplay, goldAmount);
-            reputation = new Resource(reputationDisplay);
+            gold = new Ressource(goldDisplay, goldAmount);
+            gold.Amount = 500;
+            reputation = new Ressource(reputationDisplay);
         }
 
         public uint Gold

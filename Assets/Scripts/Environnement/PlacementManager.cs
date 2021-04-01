@@ -13,45 +13,20 @@ public class PlacementManager : MonoBehaviour
     [SerializeField] private List<Node> nodes;
 
 
-    private uint price;
+    private int price;
 
-    public uint Price
+    public int Price
     {
         get => price;
         set => price = value;
     }
 
-
-    // private void Awake()
-    // {
-    //     GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
-    //
-    //     foreach (var node in n)
-    //     {
-    //         nodes.Add(node.GetComponent<Node>());
-    //     }
-    // }
-
-    /*private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (roomUI.gameObject.activeSelf)
-            {
-                roomUI.gameObject.SetActive(false);
-            } else
-            {
-                roomUI.gameObject.SetActive(true);
-            }
-        }
-    }*/
-
     public void CreateBlueprint(GameObject blueprint)
     {
-        if (rm.Gold >= price)
+        if (rm.Gold >= Convert.ToUInt32(price))
         {
             Instantiate(blueprint);
-            rm.Gold += price;
+            rm.Gold -= Convert.ToUInt32(price);
             if (roomUI.gameObject.activeSelf)
             {
                 roomUI.gameObject.SetActive(false);
@@ -62,6 +37,7 @@ public class PlacementManager : MonoBehaviour
             }
         }
     }
+    
 
     public void InitAllNodes()
     {
