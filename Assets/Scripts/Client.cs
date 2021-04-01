@@ -87,6 +87,7 @@ namespace Prototypes.Pathfinding.Scripts
                         {
                             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                         }
+
                         etat = ClientState.WaitingToOrder;
                     }
                 }
@@ -101,6 +102,7 @@ namespace Prototypes.Pathfinding.Scripts
                     orderTimer = Random.Range(timeToMakeOrderMin, timeToMakeOrderMax);
                     hasBeenInteractedWith = false;
                 }
+
                 if (lookDirection != null)
                 {
                     mouvement.FaceLocation(lookDirection.transform.position);
@@ -117,6 +119,7 @@ namespace Prototypes.Pathfinding.Scripts
                     timeLeftToEat = Random.Range(timeToEatMin, timeToEatMax);
                     hasBeenInteractedWith = false;
                 }
+
                 if (lookDirection != null)
                 {
                     mouvement.FaceLocation(lookDirection.transform.position);
@@ -131,6 +134,7 @@ namespace Prototypes.Pathfinding.Scripts
                 {
                     etat = ClientState.GoingToPay;
                 }
+
                 if (lookDirection != null)
                 {
                     mouvement.FaceLocation(lookDirection.transform.position);
@@ -163,11 +167,12 @@ namespace Prototypes.Pathfinding.Scripts
                             {
                                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                             }
+
                             etat = ClientState.Leaving;
                             RessourcesManager[] resources = FindObjectsOfType<RessourcesManager>();
                             for (int i = 0; i < resources.Length; i++)
                             {
-                                resources[i].Gold += Random.Range(orderPriceMin, orderPriceMax);
+                                resources[i].Gold += (uint) Random.Range(orderPriceMin, orderPriceMax);
                             }
                         }
                     }

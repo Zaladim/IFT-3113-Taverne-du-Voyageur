@@ -8,14 +8,14 @@ using UnityEngine;
 public class PlacementManager : MonoBehaviour
 {
     [SerializeField] private GameObject roomUI;
-    [SerializeField] private RessourcesManager ressources;
+    [SerializeField] private RessourcesManager rm;
 
     [SerializeField] private List<Node> nodes;
 
 
-    private int price;
+    private uint price;
 
-    public int Price
+    public uint Price
     {
         get => price;
         set => price = value;
@@ -48,10 +48,10 @@ public class PlacementManager : MonoBehaviour
 
     public void CreateBlueprint(GameObject blueprint)
     {
-        if (ressources.Gold >= price)
+        if (rm.Gold >= price)
         {
             Instantiate(blueprint);
-            ressources.Gold -= price;
+            rm.Gold += price;
             if (roomUI.gameObject.activeSelf)
             {
                 roomUI.gameObject.SetActive(false);
