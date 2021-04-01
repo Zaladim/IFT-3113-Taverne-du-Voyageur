@@ -4,6 +4,7 @@ using Interface;
 using Managers;
 using Prototypes.Pathfinding.Scripts;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Environnement
 {
@@ -11,11 +12,13 @@ namespace Environnement
     {
         [SerializeField] private GameObject roomUI;
         [SerializeField] private ResourcesManager rm;
-
+        [SerializeField] private GameObject waiter;
         [SerializeField] private List<Node> nodes;
 
 
         public int Price { get; set; }
+        public int Reputation { get; set; }
+        public int Seats { get; set; }
 
         public void CreateBlueprint(GameObject blueprint)
         {
@@ -23,7 +26,20 @@ namespace Environnement
         
             Instantiate(blueprint);
             rm.Gold -= Convert.ToUInt32(Price);
+            rm.Reputation = Reputation;
+            rm.Seats = Seats;
             roomUI.gameObject.SetActive(!roomUI.gameObject.activeSelf);
+        }
+
+        public void AddWaiter(GameObject btn)
+        {
+            if (rm.Gold < Convert.ToUInt32(Price)) return;
+            
+            rm.Gold -= Convert.ToUInt32(Price);
+            rm.Reputation = Reputation;
+            rm.Seats = Seats;
+            waiter.SetActive(true);
+            btn.SetActive(false);
         }
 
         public void InitAllNodes()
