@@ -15,7 +15,7 @@ namespace Interface
 
         public void ToggleElement()
         {
-            defaultVisibility = !defaultVisibility;
+            defaultVisibility = !element.activeSelf;
             element.SetActive(defaultVisibility);
         }
     }
