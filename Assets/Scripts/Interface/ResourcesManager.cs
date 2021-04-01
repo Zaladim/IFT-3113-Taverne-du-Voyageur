@@ -4,17 +4,18 @@ using UnityEngine.UI;
 
 namespace Interface
 {
-    public class RessourcesManager : MonoBehaviour
+    public class ResourcesManager : MonoBehaviour
     {
-        private class Ressource
+        private class Resource
         {
-            private Text display;
+            private readonly Text display;
             private uint amount;
 
-            public Ressource(Text display, uint amount = 1)
+            public Resource(Text display, uint amount = 1)
             {
                 this.display = display;
                 this.display.text = amount.ToString();
+                this.amount = amount;
             }
 
             public uint Amount
@@ -28,18 +29,17 @@ namespace Interface
             }
         }
 
-        private Ressource gold;
+        private Resource gold;
         [SerializeField] private Text goldDisplay;
-        [SerializeField] private uint goldAmount;
+        [SerializeField] private uint goldAmount = 25;
 
-        private Ressource reputation;
+        private Resource reputation;
         [SerializeField] private Text reputationDisplay;
 
         private void Awake()
         {
-            gold = new Ressource(goldDisplay, goldAmount);
-            gold.Amount = 500;
-            reputation = new Ressource(reputationDisplay);
+            gold = new Resource(goldDisplay, goldAmount);
+            reputation = new Resource(reputationDisplay);
         }
 
         public uint Gold
@@ -48,10 +48,9 @@ namespace Interface
             set => gold.Amount = value;
         }
 
-        public uint Reputation
+        public int Reputation
         {
-            get => reputation.Amount;
-            set => reputation.Amount = value;
+            set => reputation.Amount += (uint) value;
         }
     }
 }

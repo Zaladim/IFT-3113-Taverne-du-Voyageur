@@ -16,7 +16,7 @@ namespace Environnement
         [SerializeField]private List<GameObject> walls = new List<GameObject>();
 
         [SerializeField] private GameObject roomUI;
-        [SerializeField] private RessourcesManager rm;
+        [SerializeField] private ResourcesManager rm;
 
         public bool placeRoom;
 
@@ -34,7 +34,7 @@ namespace Environnement
 
         private void Awake()
         {
-            rm = GameObject.FindGameObjectWithTag("RessourcesManager").GetComponent<RessourcesManager>();
+            rm = GameObject.FindGameObjectWithTag("ResourcesManager").GetComponent<ResourcesManager>();
             foreach (var wall in GameObject.FindGameObjectsWithTag("BorderWall"))
             {
                 if (wall.transform.position.x < tavernLimit)

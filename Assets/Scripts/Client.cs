@@ -169,7 +169,7 @@ namespace Prototypes.Pathfinding.Scripts
                             }
 
                             etat = ClientState.Leaving;
-                            RessourcesManager[] resources = FindObjectsOfType<RessourcesManager>();
+                            ResourcesManager[] resources = FindObjectsOfType<ResourcesManager>();
                             for (int i = 0; i < resources.Length; i++)
                             {
                                 resources[i].Gold += (uint) Random.Range(orderPriceMin, orderPriceMax);

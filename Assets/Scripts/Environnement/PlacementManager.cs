@@ -1,49 +1,36 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Interface;
 using Prototypes.Pathfinding.Scripts;
 using UnityEngine;
 
-public class PlacementManager : MonoBehaviour
+namespace Environnement
 {
-    [SerializeField] private GameObject roomUI;
-    [SerializeField] private RessourcesManager rm;
-
-    [SerializeField] private List<Node> nodes;
-
-
-    private int price;
-
-    public int Price
+    public class PlacementManager : MonoBehaviour
     {
-        get => price;
-        set => price = value;
-    }
+        [SerializeField] private GameObject roomUI;
+        [SerializeField] private ResourcesManager rm;
 
-    public void CreateBlueprint(GameObject blueprint)
-    {
-        if (rm.Gold >= Convert.ToUInt32(price))
+        [SerializeField] private List<Node> nodes;
+
+
+        public int Price { get; set; }
+
+        public void CreateBlueprint(GameObject blueprint)
         {
+            if (rm.Gold < Convert.ToUInt32(Price)) return;
+        
             Instantiate(blueprint);
-            rm.Gold -= Convert.ToUInt32(price);
-            if (roomUI.gameObject.activeSelf)
-            {
-                roomUI.gameObject.SetActive(false);
-            }
-            else
-            {
-                roomUI.gameObject.SetActive(true);
-            }
+            rm.Gold -= Convert.ToUInt32(Price);
+            roomUI.gameObject.SetActive(!roomUI.gameObject.activeSelf);
         }
-    }
-    
 
-    public void InitAllNodes()
-    {
-        foreach (var node in nodes)
+        public void InitAllNodes()
         {
-            node.initialize();
+            foreach (var node in nodes)
+            {
+                node.initialize();
+            }
         }
     }
 }
