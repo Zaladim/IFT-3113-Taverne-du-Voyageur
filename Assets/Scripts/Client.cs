@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Interface;
+using Managers;
 using UnityEngine;
 
 namespace Prototypes.Pathfinding.Scripts
@@ -115,7 +116,7 @@ namespace Prototypes.Pathfinding.Scripts
             else if (etat == ClientState.WaitingToReciveOrder)
             {
                 text.text = "Waiting To Recive Order";
-                subText.text = "Time Left: " + Mathf.Ceil(orderTimer).ToString() + "s";
+                subText.text = Mathf.Ceil(orderTimer).ToString() + "s";
                 orderTimer -= Time.deltaTime;
                 isHappy = orderTimer >= -10;
 
@@ -134,7 +135,7 @@ namespace Prototypes.Pathfinding.Scripts
             else if (etat == ClientState.Eating)
             {
                 text.text = "Eating";
-                subText.text = "Time Left: " + Mathf.Ceil(timeLeftToEat).ToString() + "s";
+                subText.text = Mathf.Ceil(timeLeftToEat).ToString() + "s";
                 timeLeftToEat -= Time.deltaTime;
                 if (timeLeftToEat <= 0)
                 {
@@ -166,7 +167,6 @@ namespace Prototypes.Pathfinding.Scripts
                     }
                     else
                     {
-                        subText.text = $"Amount: {price.ToString()} / Happy: {isHappy.ToString()}";
                         if (mouvement.isAtLocation(payLocation.transform.position))
                         {
                             if (lookDirection == null)
@@ -179,7 +179,7 @@ namespace Prototypes.Pathfinding.Scripts
                             for (int i = 0; i < resources.Length; i++)
                             {
                                 resources[i].Gold += price;
-                                resources[i].Reputation = isHappy ? 1 : 0;
+                                resources[i].Reputation = isHappy ? 1 : -1;
                             }
                         }
                     }
@@ -207,7 +207,11 @@ namespace Prototypes.Pathfinding.Scripts
                         if (mouvement.isAtLocation(exit.transform.position))
                         {
                             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                            etat = ClientState.Inactive;
+                            //etat = ClientState.Inactive;
+                            {
+                                FindObjectOfType<ClientManager>().ClientLeft(1);
+                                Destroy(gameObject);
+                            }
                         }
                     }
                 }

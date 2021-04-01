@@ -1,8 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Interface
+namespace Managers
 {
     public class ResourcesManager : MonoBehaviour
     {
@@ -14,7 +13,8 @@ namespace Interface
             public Resource(Text display, uint amount = 1)
             {
                 this.display = display;
-                this.display.text = amount.ToString();
+                if (display)
+                    display.text = amount.ToString();
                 this.amount = amount;
             }
 
@@ -24,7 +24,8 @@ namespace Interface
                 set
                 {
                     amount = value;
-                    display.text = amount.ToString();
+                    if (display)
+                        display.text = amount.ToString();
                 }
             }
         }
@@ -36,10 +37,13 @@ namespace Interface
         private Resource reputation;
         [SerializeField] private Text reputationDisplay;
 
+        private Resource seats;
+
         private void Awake()
         {
             gold = new Resource(goldDisplay, goldAmount);
             reputation = new Resource(reputationDisplay);
+            seats = new Resource(null, 4);
         }
 
         public uint Gold
@@ -51,7 +55,17 @@ namespace Interface
         public int Reputation
         {
             get => (int) reputation.Amount;
-            set => reputation.Amount += (uint) value;
+            set
+            {
+                reputation.Amount += (uint) value;
+                if (reputation.Amount < 1) reputation.Amount = 1;
+            }
+        }
+
+        public int Seats
+        {
+            get => (int) seats.Amount;
+            set => seats.Amount += (uint) value;
         }
     }
 }
