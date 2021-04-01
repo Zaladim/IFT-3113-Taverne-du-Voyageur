@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Interface;
 using Prototypes.Pathfinding.Scripts;
 using UnityEngine;
 
 public class PlacementManager : MonoBehaviour
 {
     [SerializeField] private GameObject roomUI;
-    [SerializeField] private RessourcesManager ressources;
+    [SerializeField] private RessourcesManager rm;
 
-    [SerializeField] private List<Node> nodes;   
-    
+    [SerializeField] private List<Node> nodes;
 
-    private int price;
 
-    public int Price
+    private uint price;
+
+    public uint Price
     {
         get => price;
         set => price = value;
@@ -31,7 +32,7 @@ public class PlacementManager : MonoBehaviour
     //     }
     // }
 
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -43,18 +44,19 @@ public class PlacementManager : MonoBehaviour
                 roomUI.gameObject.SetActive(true);
             }
         }
-    }
+    }*/
 
     public void CreateBlueprint(GameObject blueprint)
     {
-        if (ressources.Gold >= price)
+        if (rm.Gold >= price)
         {
             Instantiate(blueprint);
-            ressources.Gold -= price;
+            rm.Gold += price;
             if (roomUI.gameObject.activeSelf)
             {
                 roomUI.gameObject.SetActive(false);
-            } else
+            }
+            else
             {
                 roomUI.gameObject.SetActive(true);
             }
