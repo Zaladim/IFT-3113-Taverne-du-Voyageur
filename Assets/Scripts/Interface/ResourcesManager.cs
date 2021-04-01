@@ -50,6 +50,7 @@ namespace Interface
 
         public int Reputation
         {
+            get => (int) reputation.Amount;
             set => reputation.Amount += (uint) value;
         }
     }

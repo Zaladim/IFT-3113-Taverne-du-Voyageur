@@ -52,6 +52,9 @@ namespace Prototypes.Pathfinding.Scripts
         public int orderPriceMin = 10;
         public int orderPriceMax = 40;
 
+        private bool isHappy = true;
+        private uint price;
+
 
         // Start is called before the first frame update
         void Start()
@@ -63,6 +66,7 @@ namespace Prototypes.Pathfinding.Scripts
             subText = temp.GetComponent<TextMesh>();
             etat = ClientState.FindingSeat;
             hasBeenInteractedWith = false;
+            price = (uint) Random.Range(orderPriceMin, orderPriceMax);
         }
 
         // Update is called once per frame
@@ -113,6 +117,8 @@ namespace Prototypes.Pathfinding.Scripts
                 text.text = "Waiting To Recive Order";
                 subText.text = "Time Left: " + Mathf.Ceil(orderTimer).ToString() + "s";
                 orderTimer -= Time.deltaTime;
+                isHappy = orderTimer >= -10;
+
                 if (hasBeenInteractedWith)
                 {
                     etat = ClientState.Eating;
@@ -160,7 +166,7 @@ namespace Prototypes.Pathfinding.Scripts
                     }
                     else
                     {
-                        subText.text = "Counter Found";
+                        subText.text = $"Amount: {price.ToString()} / Happy: {isHappy.ToString()}";
                         if (mouvement.isAtLocation(payLocation.transform.position))
                         {
                             if (lookDirection == null)
@@ -172,7 +178,8 @@ namespace Prototypes.Pathfinding.Scripts
                             ResourcesManager[] resources = FindObjectsOfType<ResourcesManager>();
                             for (int i = 0; i < resources.Length; i++)
                             {
-                                resources[i].Gold += (uint) Random.Range(orderPriceMin, orderPriceMax);
+                                resources[i].Gold += price;
+                                resources[i].Reputation = isHappy ? 1 : 0;
                             }
                         }
                     }
