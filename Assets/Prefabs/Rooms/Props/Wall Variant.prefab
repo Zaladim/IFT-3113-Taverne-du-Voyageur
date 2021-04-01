@@ -8,6 +8,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5011085622351157340}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &8930722395677990345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011085622351157340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8530d8346bd8f1a4ab701c6767789df4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canActorsPassThrough: 0
 --- !u!1001 &788523906591468367
 PrefabInstance:
   m_ObjectHideFlags: 0
