@@ -2087,11 +2087,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tavernLimit: -10
   room: {fileID: 3831970623751232170, guid: 430fd18e3e412674a91c067dce63d965, type: 3}
-  table: {fileID: 2471926772088360913, guid: ef1a8f6d35aa8c645b1b8df81362d41b, type: 3}
+  table: {fileID: 2476434546763658195, guid: cf6508c77a1c94c45a63c530a1854270, type: 3}
   price: 0
-  walls: []
+  walls:
+  - {fileID: 0}
   roomUI: {fileID: 0}
-  rm: {fileID: 0}
+  rm: {fileID: 1069792013}
   placeRoom: 1
 --- !u!1 &1091103872
 GameObject:
