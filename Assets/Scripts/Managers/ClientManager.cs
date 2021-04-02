@@ -11,7 +11,7 @@ namespace Managers
         [SerializeField] private ResourcesManager rm;
 
         private int curAmount;
-        private int targetAmount;
+        [SerializeField] private int targetAmount;
         private float timeToSpawn;
 
         // Start is called before the first frame update
@@ -58,12 +58,9 @@ namespace Managers
 
         public void ClientLeft(int n)
         {
-            Debug.Log("Before: " + targetAmount.ToString());
-
             targetAmount -= n;
+            curAmount -= n;
             if (targetAmount < minAmount) targetAmount = minAmount;
-            
-            Debug.Log("After: " + targetAmount.ToString());
         }
     }
 }

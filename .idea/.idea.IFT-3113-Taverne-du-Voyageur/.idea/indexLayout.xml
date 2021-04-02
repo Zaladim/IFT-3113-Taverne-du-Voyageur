@@ -16,7 +16,7 @@
     <explicitExcludes>
       <Path>.git</Path>
       <Path>.idea</Path>
-      <Path>IFT3113H21_TP3_Equipe04</Path>
+      <Path>Build</Path>
       <Path>Library</Path>
       <Path>Logs</Path>
       <Path>Prototype Environnement</Path>

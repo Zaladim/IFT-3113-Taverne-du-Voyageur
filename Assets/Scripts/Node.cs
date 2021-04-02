@@ -3,92 +3,89 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Prototypes.Pathfinding.Scripts
+public class Node : MonoBehaviour, IEquatable<Node>
 {
-    public class Node : MonoBehaviour, IEquatable<Node>
+    public bool Equals(Node other)
     {
-        public bool Equals(Node other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Equals(neighborsNodes, other.neighborsNodes);
-        }
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return base.Equals(other) && Equals(neighborsNodes, other.neighborsNodes);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Node) obj);
-        }
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        return obj.GetType() == GetType() && Equals((Node) obj);
+    }
 
-        public override int GetHashCode()
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            unchecked
+            return (base.GetHashCode() * 397) ^ (neighborsNodes != null ? neighborsNodes.GetHashCode() : 0);
+        }
+    }
+    //public List<GameObject> neighborsObjects;
+
+    private List<Node> neighborsNodes;
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        initialize();
+    }
+
+    public void initialize()
+    {
+        neighborsNodes = new List<Node>();
+        var allNodes = FindObjectsOfType<Node>();
+        foreach (var t in allNodes)
+        {
+            if (t == this) continue;
+            if (canReachOtherNode(t))
             {
-                return (base.GetHashCode() * 397) ^ (neighborsNodes != null ? neighborsNodes.GetHashCode() : 0);
+                neighborsNodes.Add(t);
             }
         }
-        //public List<GameObject> neighborsObjects;
+    }
 
-        private List<Node> neighborsNodes;
+    private bool canReachOtherNode(Component node)
+    {
+        var position = node.transform.position;
+        var direction = position - getPosition();
+        var distance = Vector3.Distance(position, getPosition());
+        var hits = Physics.RaycastAll(getPosition(), direction, distance);
 
-        // Start is called before the first frame update
-        private void Start()
-        {
-            initialize();
-        }
+        return (
+            from t in hits
+            where t.collider.GetComponent<ObjectAIBehavior>() != null
+            select t.collider.GetComponent<ObjectAIBehavior>()
+        ).All(behavior => behavior.canActorsPassThrough);
+    }
 
-        public void initialize()
-        {
-            neighborsNodes = new List<Node>();
-            var allNodes = FindObjectsOfType<Node>();
-            foreach (var t in allNodes)
-            {
-                if (t == this) continue;
-                if (canReachOtherNode(t))
-                {
-                    neighborsNodes.Add(t);
-                }
-            }
-        }
+    // Update is called once per frame
+    void Update()
+    {
+    }
 
-        private bool canReachOtherNode(Component node)
-        {
-            var position = node.transform.position;
-            var direction = position - getPosition();
-            var distance = Vector3.Distance(position, getPosition());
-            var hits = Physics.RaycastAll(getPosition(), direction, distance);
+    public Vector3 getPosition()
+    {
+        return transform.position;
+    }
 
-            return (
-                from t in hits
-                where t.collider.GetComponent<ObjectAIBehavior>() != null
-                select t.collider.GetComponent<ObjectAIBehavior>()
-            ).All(behavior => behavior.canActorsPassThrough);
-        }
+    public IEnumerable<Node> getNeighbors()
+    {
+        return neighborsNodes;
+    }
 
-        // Update is called once per frame
-        void Update()
-        {
-        }
+    public static bool operator ==(Node left, Node right)
+    {
+        return Equals(left, right);
+    }
 
-        public Vector3 getPosition()
-        {
-            return transform.position;
-        }
-
-        public IEnumerable<Node> getNeighbors()
-        {
-            return neighborsNodes;
-        }
-
-        public static bool operator ==(Node left, Node right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(Node left, Node right)
-        {
-            return !Equals(left, right);
-        }
+    public static bool operator !=(Node left, Node right)
+    {
+        return !Equals(left, right);
     }
 }

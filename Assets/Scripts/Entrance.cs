@@ -1,17 +1,14 @@
 ﻿using UnityEngine;
 
-namespace Prototypes.Pathfinding.Scripts
+public class Entrance : MonoBehaviour
 {
-    public class Entrance : MonoBehaviour
+    // Start is called before the first frame update
+    void Start()
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        }
+    }
 
-        // Update is called once per frame
-        void Update()
-        {
-        }
+    // Update is called once per frame
+    void Update()
+    {
     }
 }
