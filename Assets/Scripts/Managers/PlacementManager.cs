@@ -24,7 +24,6 @@ namespace Environnement
             Instantiate(blueprint);
             rm.Gold -= Convert.ToUInt32(Price);
             rm.Reputation = Reputation;
-            rm.Seats = Seats;
             roomUI.gameObject.SetActive(!roomUI.gameObject.activeSelf);
         }
 

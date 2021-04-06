@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 2476434546763658195, guid: cf6508c77a1c94c45a63c530a1854270, type: 3}
+  seats: 4
 --- !u!65 &2546226943413895951
 BoxCollider:
   m_ObjectHideFlags: 0
