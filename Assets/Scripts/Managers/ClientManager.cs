@@ -43,6 +43,12 @@ namespace Managers
                     addNewClient();
 
                 timeToSpawn = spawnSpeed;
+                Debug.Log(
+                    "Seats: " + rm.Seats.ToString() + 
+                          " Clients: " + curAmount.ToString() + 
+                          " Target: " + targetAmount.ToString() + 
+                          " Remaining: " + remaining.ToString()
+                          );
             }
         }
 

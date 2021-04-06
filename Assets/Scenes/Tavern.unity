@@ -1915,7 +1915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goldDisplay: {fileID: 2025079070}
-  goldAmount: 75
+  goldAmount: 5000
   reputationDisplay: {fileID: 1784770172}
 --- !u!1 &1090935629
 GameObject:
@@ -2077,7 +2077,7 @@ MonoBehaviour:
         m_MethodName: CreateBlueprint
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 2996856596035462657, guid: f6dcc0a8a407a5f4e857f333a9ab24a2,
+          m_ObjectArgument: {fileID: 8692187147906604369, guid: 9e2f060b94054b645b8a1bcf1133bdfa,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
@@ -2601,7 +2601,7 @@ MonoBehaviour:
         m_MethodName: CreateBlueprint
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 2996856596035462657, guid: f6dcc0a8a407a5f4e857f333a9ab24a2,
+          m_ObjectArgument: {fileID: 7833925618821807271, guid: c20bc9a5854827d47988a587efa83109,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
@@ -3085,7 +3085,7 @@ MonoBehaviour:
         m_MethodName: CreateBlueprint
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 2996856596035462657, guid: f6dcc0a8a407a5f4e857f333a9ab24a2,
+          m_ObjectArgument: {fileID: 5981683954552854630, guid: dca8c5548e300004282f15063a10df46,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
