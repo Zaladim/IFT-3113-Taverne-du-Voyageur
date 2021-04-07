@@ -202,11 +202,7 @@ public class Client : MonoBehaviour
                     if (mouvement.isAtLocation(exit.transform.position))
                     {
                         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                        //etat = ClientState.Inactive;
-                        {
-                            FindObjectOfType<ClientManager>().ClientLeft(1);
-                            Destroy(gameObject);
-                        }
+                        etat = ClientState.Inactive;
                     }
                 }
             }
