@@ -7,7 +7,6 @@ namespace Managers
     {
         [SerializeField] private GameObject roomUI;
         [SerializeField] private ResourcesManager rm;
-        [SerializeField] private GameObject waiter;
         [SerializeField] private List<Node> nodes;
 
 
@@ -17,29 +16,16 @@ namespace Managers
         public void CreateBlueprint(GameObject blueprint)
         {
             if (rm.Gold < Price) return;
-        
+
             Instantiate(blueprint);
             rm.Gold -= Price;
             rm.Reputation += Reputation;
             roomUI.gameObject.SetActive(!roomUI.gameObject.activeSelf);
         }
 
-        public void AddWaiter(GameObject btn)
-        {
-            if (rm.Gold < Price) return;
-            
-            rm.Gold -= Price;
-            rm.Reputation += Reputation;
-            waiter.SetActive(true);
-            btn.SetActive(false);
-        }
-
         public void InitAllNodes()
         {
-            foreach (var node in nodes)
-            {
-                node.initialize();
-            }
+            foreach (var node in nodes) node.initialize();
         }
     }
 }

@@ -22,7 +22,6 @@ namespace Managers
         [SerializeField] private float timeToSpawn = 0;
         [SerializeField] private List<GameObject> clients;
 
-        // Start is called before the first frame update
         private void Start()
         {
             var capacity = rm.Seats;
@@ -55,7 +54,7 @@ namespace Managers
                 targetAmount += tmp;
 
                 if (curAmount < targetAmount)
-                    addNewClient(targetAmount - curAmount);
+                    AddNewClient(targetAmount - curAmount);
 
                 timeToSpawn = spawnSpeed;
             }
@@ -77,7 +76,7 @@ namespace Managers
             deltaAmount = rm.Seats - targetAmount;
         }
 
-        private void addNewClient(int n = 1)
+        private void AddNewClient(int n = 1)
         {
             for (var i = 0; i < n; i++)
             {
