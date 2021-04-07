@@ -9,47 +9,49 @@ namespace Managers
         private class Resource
         {
             private readonly Text display;
-            private uint amount;
+            private int amount;
+            private readonly int min;
 
-            public Resource(Text display, uint amount = 1)
+            public Resource(Text display, int amount = 1, int min = 0)
             {
                 this.display = display;
                 if (display)
                     display.text = amount.ToString();
                 this.amount = amount;
+                this.min = min;
             }
 
-            public uint Amount
+            public int Amount
             {
                 get => amount;
                 set
                 {
-                    amount = value;
+                    amount = value >= min ? value : min;
                     if (display)
                         display.text = amount.ToString();
                 }
             }
         }
 
-        private Resource gold;
+        [Header("Gold")] private Resource gold;
         [SerializeField] private Text goldDisplay;
-        [SerializeField] private uint goldAmount = 25;
+        [SerializeField] private int goldAmount = 25;
 
-        private Resource reputation;
+        [Header("Reputation")] private Resource reputation;
         [SerializeField] private Text reputationDisplay;
+        [SerializeField] private int minReputation = 10;
 
+        [Header("Seats")] private Resource seats;
         [SerializeField] private int startingSeatNumber = 4;
-
-        private Resource seats;
 
         private void Awake()
         {
             gold = new Resource(goldDisplay, goldAmount);
-            reputation = new Resource(reputationDisplay);
-            seats = new Resource(null, (uint) startingSeatNumber);
+            reputation = new Resource(reputationDisplay, minReputation, minReputation);
+            seats = new Resource(null, startingSeatNumber);
         }
 
-        public uint Gold
+        public int Gold
         {
             get => gold.Amount;
             set => gold.Amount = value;
@@ -57,18 +59,14 @@ namespace Managers
 
         public int Reputation
         {
-            get => (int) reputation.Amount;
-            set
-            {
-                reputation.Amount += (uint) value;
-                if (reputation.Amount < 1) reputation.Amount = 1;
-            }
+            get => reputation.Amount;
+            set => reputation.Amount = value;
         }
 
         public int Seats
         {
-            get => (int) seats.Amount;
-            set => seats.Amount += (uint) value;
+            get => seats.Amount;
+            set => seats.Amount = value;
         }
     }
 }

@@ -8,12 +8,12 @@ namespace Environnement
     {
         [SerializeField] private float tavernLimit = -10;
 
-        [SerializeField]private GameObject room;
-        [SerializeField]private GameObject table;
+        [SerializeField] private GameObject room;
+        [SerializeField] private GameObject table;
 
-        [SerializeField] private uint price;
+        [SerializeField] private int price;
 
-        [SerializeField]private List<GameObject> walls = new List<GameObject>();
+        [SerializeField] private List<GameObject> walls = new List<GameObject>();
 
         [SerializeField] private GameObject roomUI;
         [SerializeField] private ResourcesManager rm;
@@ -26,7 +26,7 @@ namespace Environnement
             set => room = value;
         }
 
-        public uint Price
+        public int Price
         {
             get => price;
             set => price = value;
@@ -90,7 +90,6 @@ namespace Environnement
 
                                         DestroyObjectAtLocation(1f, item.gameObject);
                                     }
-
                                 }
 
                                 //Instantiate(room, tmp.position, tmp.rotation);
@@ -133,22 +132,24 @@ namespace Environnement
                 if (roomUI.gameObject.activeSelf)
                 {
                     roomUI.gameObject.SetActive(false);
-                } else
+                }
+                else
                 {
                     roomUI.gameObject.SetActive(true);
                 }
             }
-        
         }
 
         private void DestroyObjectAtLocation(float minDist, GameObject item)
         {
             Vector3 tmpLocation = item.transform.position;
             // print(tmpLocation);
-            Transform[] tiles = GameObject.FindObjectsOfType<Transform> ();
-       
-            for (int i = 0; i < tiles.Length; i++) {
-                if(Vector3.Distance(tiles[i].position, tmpLocation) <= minDist){
+            Transform[] tiles = GameObject.FindObjectsOfType<Transform>();
+
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                if (Vector3.Distance(tiles[i].position, tmpLocation) <= minDist)
+                {
                     if (item != tiles[i].gameObject)
                     {
                         item.tag = "Wall";
@@ -162,10 +163,12 @@ namespace Environnement
         {
             Vector3 tmpLocation = item.transform.position;
             // print(tmpLocation);
-            Transform[] tiles = GameObject.FindObjectsOfType<Transform> ();
-        
-            for (int i = 0; i < tiles.Length; i++) {
-                if(Vector3.Distance(tiles[i].position, tmpLocation) <= minDist){
+            Transform[] tiles = GameObject.FindObjectsOfType<Transform>();
+
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                if (Vector3.Distance(tiles[i].position, tmpLocation) <= minDist)
+                {
                     if (tiles[i].gameObject.CompareTag("Room"))
                     {
                         return true;

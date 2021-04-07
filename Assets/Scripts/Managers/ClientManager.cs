@@ -8,17 +8,19 @@ namespace Managers
 {
     public class ClientManager : MonoBehaviour
     {
+        [Header("External Tools")] [SerializeField]
+        private ResourcesManager rm;
+
         [Header("Client Options")] public GameObject aiClientPrefab;
         [SerializeField] private Transform popZone;
         [SerializeField, Min(0)] private int minAmount;
         [SerializeField, Range(1.5f, 10)] private float spawnSpeed = 1.5f;
-        [SerializeField] private ResourcesManager rm;
 
-        private int curAmount = 0;
-        [SerializeField] private int targetAmount = 0;
-        private float timeToSpawn = 0;
-
-        private List<GameObject> clients;
+        [Header("Debug")] [SerializeField] private int targetAmount = 0;
+        [SerializeField] private int curAmount = 0;
+        [SerializeField] private int deltaAmount = 0;
+        [SerializeField] private float timeToSpawn = 0;
+        [SerializeField] private List<GameObject> clients;
 
         // Start is called before the first frame update
         private void Start()
@@ -30,7 +32,7 @@ namespace Managers
             clients = new List<GameObject>(capacity);
             for (var i = 0; i < capacity; i++)
             {
-                var client = Instantiate(aiClientPrefab);
+                var client = Instantiate(aiClientPrefab, popZone);
 
                 client.SetActive(false);
                 clients.Add(client);
@@ -45,28 +47,17 @@ namespace Managers
             }
             else
             {
-                var remaining = rm.Seats - targetAmount;
-                var n = remaining != 0 ? Random.Range(1, (remaining % 4) + 1) : 0;
-                var tmp = Random.Range(0, 100) < (
-                    rm.Reputation < 50
-                        ? rm.Reputation + 10
-                        : rm.Reputation
-                )
-                    ? n
-                    : 0;
+                var reputation = rm.Reputation;
+
+                var n = deltaAmount != 0 ? Random.Range(1, (deltaAmount % 4) + 1) : 0;
+                var tmp = Random.Range(0, 100 > reputation ? 100 : reputation) < reputation ? n : 0;
 
                 targetAmount += tmp;
-                
+
                 if (curAmount < targetAmount)
-                    addNewClient();
+                    addNewClient(targetAmount - curAmount);
 
                 timeToSpawn = spawnSpeed;
-                /*Debug.Log(
-                    "Seats: " + rm.Seats.ToString() +
-                    " Clients: " + curAmount.ToString() +
-                    " Target: " + targetAmount.ToString() +
-                    " Remaining: " + remaining.ToString()
-                );*/
             }
         }
 
@@ -74,24 +65,29 @@ namespace Managers
         {
             for (var i = clients.Count; i < rm.Seats; i++)
             {
-                var client = Instantiate(aiClientPrefab);
+                var client = Instantiate(aiClientPrefab, popZone);
 
                 client.SetActive(false);
                 clients.Add(client);
             }
 
-            curAmount = clients.Count(client => client.activeSelf);
+            var tmp = clients.Count(client => client.activeSelf);
+            /*targetAmount = curAmount - tmp;*/
+            curAmount = tmp;
+            deltaAmount = rm.Seats - targetAmount;
         }
 
-        private void addNewClient()
+        private void addNewClient(int n = 1)
         {
-            foreach (var client in clients.Where(client => !client.activeSelf))
+            for (var i = 0; i < n; i++)
             {
-                client.SetActive(true);
-                break;
+                foreach (var client in clients.Where(client => !client.activeSelf))
+                {
+                    client.SetActive(true);
+                    curAmount += 1;
+                    break;
+                }
             }
-
-            curAmount += 1;
         }
     }
 }

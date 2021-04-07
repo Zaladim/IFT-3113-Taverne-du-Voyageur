@@ -455,13 +455,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45897b9dd8f8f864f811d992e7cb03ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rm: {fileID: 1069792013}
   aiClientPrefab: {fileID: 3151688448833487375, guid: 4b3ab6a084765634f9d67f6987667a09,
     type: 3}
   popZone: {fileID: 2132536471}
   minAmount: 1
-  spawnSpeed: 5
-  rm: {fileID: 1069792013}
+  spawnSpeed: 3
   targetAmount: 0
+  curAmount: 0
+  deltaAmount: 0
+  timeToSpawn: 0
+  clients: []
 --- !u!1 &159678456
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +645,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1917,6 +1921,7 @@ MonoBehaviour:
   goldDisplay: {fileID: 2025079070}
   goldAmount: 5000
   reputationDisplay: {fileID: 1784770172}
+  minReputation: 10
   startingSeatNumber: 4
 --- !u!1 &1090935629
 GameObject:

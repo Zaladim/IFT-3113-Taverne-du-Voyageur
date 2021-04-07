@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Managers;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Environnement
+namespace Managers
 {
     public class PlacementManager : MonoBehaviour
     {
@@ -15,25 +13,23 @@ namespace Environnement
 
         public int Price { get; set; }
         public int Reputation { get; set; }
-        public int Seats { get; set; }
 
         public void CreateBlueprint(GameObject blueprint)
         {
-            if (rm.Gold < Convert.ToUInt32(Price)) return;
+            if (rm.Gold < Price) return;
         
             Instantiate(blueprint);
-            rm.Gold -= Convert.ToUInt32(Price);
-            rm.Reputation = Reputation;
+            rm.Gold -= Price;
+            rm.Reputation += Reputation;
             roomUI.gameObject.SetActive(!roomUI.gameObject.activeSelf);
         }
 
         public void AddWaiter(GameObject btn)
         {
-            if (rm.Gold < Convert.ToUInt32(Price)) return;
+            if (rm.Gold < Price) return;
             
-            rm.Gold -= Convert.ToUInt32(Price);
-            rm.Reputation = Reputation;
-            rm.Seats = Seats;
+            rm.Gold -= Price;
+            rm.Reputation += Reputation;
             waiter.SetActive(true);
             btn.SetActive(false);
         }

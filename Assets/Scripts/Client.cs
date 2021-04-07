@@ -49,7 +49,7 @@ public class Client : MonoBehaviour
     public int orderPriceMax = 40;
 
     private bool isHappy = true;
-    private uint price;
+    private int price;
 
 
     // Start is called before the first frame update
@@ -62,7 +62,7 @@ public class Client : MonoBehaviour
         subText = temp.GetComponent<TextMesh>();
         etat = ClientState.FindingSeat;
         hasBeenInteractedWith = false;
-        price = (uint) Random.Range(orderPriceMin, orderPriceMax);
+        price = Random.Range(orderPriceMin, orderPriceMax);
     }
 
     // Update is called once per frame
@@ -170,12 +170,10 @@ public class Client : MonoBehaviour
                         }
 
                         etat = ClientState.Leaving;
-                        ResourcesManager[] resources = FindObjectsOfType<ResourcesManager>();
-                        for (int i = 0; i < resources.Length; i++)
-                        {
-                            resources[i].Gold += price;
-                            resources[i].Reputation = isHappy ? 1 : -1;
-                        }
+                        
+                        var resources = FindObjectOfType<ResourcesManager>();
+                        resources.Gold += isHappy ? price : 0;
+                        resources.Reputation += isHappy ? 1 : -1;
                     }
                 }
             }
@@ -214,7 +212,7 @@ public class Client : MonoBehaviour
             etat = ClientState.FindingSeat;
             isHappy = true;
             hasBeenInteractedWith = false;
-            price = (uint) Random.Range(orderPriceMin, orderPriceMax);
+            price = Random.Range(orderPriceMin, orderPriceMax);
             hasAWaiter = false;
             gameObject.SetActive(false);
         }

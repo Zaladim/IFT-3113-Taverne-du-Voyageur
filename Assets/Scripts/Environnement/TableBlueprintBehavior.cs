@@ -57,7 +57,7 @@ namespace Environnement
                 }
 
                 Instantiate(prefab, transform.position, transform.rotation);
-                resourcesManager.Seats = seats;
+                resourcesManager.Seats += seats;
                 graph.UpdateGraph();
                 Destroy(gameObject);
             }
