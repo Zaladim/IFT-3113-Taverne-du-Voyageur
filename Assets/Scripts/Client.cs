@@ -202,11 +202,7 @@ public class Client : MonoBehaviour
                     if (mouvement.isAtLocation(exit.transform.position))
                     {
                         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                        //etat = ClientState.Inactive;
-                        {
-                            FindObjectOfType<ClientManager>().ClientLeft(1);
-                            Destroy(gameObject);
-                        }
+                        etat = ClientState.Inactive;
                     }
                 }
             }
@@ -216,7 +212,11 @@ public class Client : MonoBehaviour
             text.text = "Inactive";
             subText.text = "Enable to start over";
             etat = ClientState.FindingSeat;
-            transform.gameObject.SetActive(false);
+            isHappy = true;
+            hasBeenInteractedWith = false;
+            price = (uint) Random.Range(orderPriceMin, orderPriceMax);
+            hasAWaiter = false;
+            gameObject.SetActive(false);
         }
     }
 

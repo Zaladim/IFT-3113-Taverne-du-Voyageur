@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Managers
 {
@@ -14,10 +18,23 @@ namespace Managers
         [SerializeField] private int targetAmount = 0;
         private float timeToSpawn = 0;
 
+        private List<GameObject> clients;
+
         // Start is called before the first frame update
         private void Start()
         {
+            var capacity = rm.Seats;
+
             targetAmount = minAmount;
+
+            clients = new List<GameObject>(capacity);
+            for (var i = 0; i < capacity; i++)
+            {
+                var client = Instantiate(aiClientPrefab);
+
+                client.SetActive(false);
+                clients.Add(client);
+            }
         }
 
         private void FixedUpdate()
@@ -39,32 +56,42 @@ namespace Managers
                     : 0;
 
                 targetAmount += tmp;
+                
                 if (curAmount < targetAmount)
                     addNewClient();
 
                 timeToSpawn = spawnSpeed;
-                Debug.Log(
-                    "Seats: " + rm.Seats.ToString() + 
-                          " Clients: " + curAmount.ToString() + 
-                          " Target: " + targetAmount.ToString() + 
-                          " Remaining: " + remaining.ToString()
-                          );
+                /*Debug.Log(
+                    "Seats: " + rm.Seats.ToString() +
+                    " Clients: " + curAmount.ToString() +
+                    " Target: " + targetAmount.ToString() +
+                    " Remaining: " + remaining.ToString()
+                );*/
             }
+        }
+
+        private void Update()
+        {
+            for (var i = clients.Count; i < rm.Seats; i++)
+            {
+                var client = Instantiate(aiClientPrefab);
+
+                client.SetActive(false);
+                clients.Add(client);
+            }
+
+            curAmount = clients.Count(client => client.activeSelf);
         }
 
         private void addNewClient()
         {
-            var client = Instantiate(aiClientPrefab, popZone);
-            if (client is null) return;
+            foreach (var client in clients.Where(client => !client.activeSelf))
+            {
+                client.SetActive(true);
+                break;
+            }
 
             curAmount += 1;
-        }
-
-        public void ClientLeft(int n)
-        {
-            targetAmount -= n;
-            curAmount -= n;
-            if (targetAmount < minAmount) targetAmount = minAmount;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Managers;
 using UnityEngine;
 
@@ -47,15 +48,16 @@ namespace Environnement
                 {
                     if (!hitCollider.transform.IsChildOf(transform))
                     {
-                        resourcesManager.Seats = seats;
                         if (!hitCollider.gameObject.CompareTag("Ground"))
                         {
+                            Debug.Log("Placement Impossible!");
                             return;
                         }
                     }
                 }
 
-                GameObject o = Instantiate(prefab, transform.position, transform.rotation);
+                Instantiate(prefab, transform.position, transform.rotation);
+                resourcesManager.Seats = seats;
                 graph.UpdateGraph();
                 Destroy(gameObject);
             }
@@ -66,7 +68,7 @@ namespace Environnement
             Gizmos.color = Color.red;
             //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
             //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
-            Gizmos.DrawWireCube(transform.position, new Vector3(1f, 0.5f, 1f) * 2);
+            Gizmos.DrawWireCube(transform.position, new Vector3(2f, 2f, 4f));
         }
 
         private void OnTriggerEnter(Collider other)

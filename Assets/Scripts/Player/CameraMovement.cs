@@ -21,7 +21,7 @@ namespace Player
             float verticalInput = Input.GetAxis("Vertical");
             float scroll = Input.GetAxis("Mouse ScrollWheel");
         
-            if (Input.mousePosition.y >= Screen.height - panBorderThickness)
+            /*if (Input.mousePosition.y >= Screen.height - panBorderThickness)
             {
                 verticalInput = 1;
             }
@@ -39,7 +39,7 @@ namespace Player
             if (Input.mousePosition.x <= panBorderThickness)
             {
                 horizontalInput = -1;
-            }
+            }*/
 
             pos.x += horizontalInput * panSpeed * Time.deltaTime;
             pos.z += verticalInput * panSpeed * Time.deltaTime;
