@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Managers;
 using UnityEngine;
 
@@ -41,21 +42,16 @@ namespace Environnement
 
             if (Input.GetMouseButtonDown(0))
             {
-                Collider[] hitColliders =
+                var hitColliders =
                     Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 1f), transform.rotation);
-                foreach (var hitCollider in hitColliders)
+                if (hitColliders.Where(hitCollider => !hitCollider.transform.IsChildOf(transform))
+                    .Any(hitCollider => !hitCollider.gameObject.CompareTag("Ground")))
                 {
-                    if (!hitCollider.transform.IsChildOf(transform))
-                    {
-                        resourcesManager.Seats = seats;
-                        if (!hitCollider.gameObject.CompareTag("Ground"))
-                        {
-                            return;
-                        }
-                    }
+                    return;
                 }
 
-                GameObject o = Instantiate(prefab, transform.position, transform.rotation);
+                Instantiate(prefab, transform.position, transform.rotation);
+                resourcesManager.Seats = seats;
                 graph.UpdateGraph();
                 Destroy(gameObject);
             }
