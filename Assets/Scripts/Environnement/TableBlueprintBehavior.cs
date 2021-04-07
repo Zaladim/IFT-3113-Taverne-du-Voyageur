@@ -42,12 +42,18 @@ namespace Environnement
 
             if (Input.GetMouseButtonDown(0))
             {
-                var hitColliders =
+                Collider[] hitColliders =
                     Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 1f), transform.rotation);
-                if (hitColliders.Where(hitCollider => !hitCollider.transform.IsChildOf(transform))
-                    .Any(hitCollider => !hitCollider.gameObject.CompareTag("Ground")))
+                foreach (var hitCollider in hitColliders)
                 {
-                    return;
+                    if (!hitCollider.transform.IsChildOf(transform))
+                    {
+                        if (!hitCollider.gameObject.CompareTag("Ground"))
+                        {
+                            Debug.Log("Placement Impossible!");
+                            return;
+                        }
+                    }
                 }
 
                 Instantiate(prefab, transform.position, transform.rotation);
@@ -62,7 +68,7 @@ namespace Environnement
             Gizmos.color = Color.red;
             //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
             //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
-            Gizmos.DrawWireCube(transform.position, new Vector3(1f, 0.5f, 1f) * 2);
+            Gizmos.DrawWireCube(transform.position, new Vector3(2f, 2f, 4f));
         }
 
         private void OnTriggerEnter(Collider other)
