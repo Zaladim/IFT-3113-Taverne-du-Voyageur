@@ -10,14 +10,13 @@ namespace Managers
         [SerializeField, Range(1.5f, 10)] private float spawnSpeed = 1.5f;
         [SerializeField] private ResourcesManager rm;
 
-        private int curAmount;
-        [SerializeField] private int targetAmount;
-        private float timeToSpawn;
+        private int curAmount = 0;
+        [SerializeField] private int targetAmount = 0;
+        private float timeToSpawn = 0;
 
         // Start is called before the first frame update
         private void Start()
         {
-            timeToSpawn = spawnSpeed;
             targetAmount = minAmount;
         }
 
@@ -29,8 +28,6 @@ namespace Managers
             }
             else
             {
-                timeToSpawn = spawnSpeed;
-
                 var remaining = rm.Seats - targetAmount;
                 var n = remaining != 0 ? Random.Range(1, (remaining % 4) + 1) : 0;
                 var tmp = Random.Range(0, 100) < (
@@ -44,14 +41,21 @@ namespace Managers
                 targetAmount += tmp;
                 if (curAmount < targetAmount)
                     addNewClient();
+
+                timeToSpawn = spawnSpeed;
+                Debug.Log(
+                    "Seats: " + rm.Seats.ToString() + 
+                          " Clients: " + curAmount.ToString() + 
+                          " Target: " + targetAmount.ToString() + 
+                          " Remaining: " + remaining.ToString()
+                          );
             }
         }
 
-
         private void addNewClient()
         {
-            var nc = Instantiate(aiClientPrefab, popZone);
-            if (nc is null) return;
+            var client = Instantiate(aiClientPrefab, popZone);
+            if (client is null) return;
 
             curAmount += 1;
         }

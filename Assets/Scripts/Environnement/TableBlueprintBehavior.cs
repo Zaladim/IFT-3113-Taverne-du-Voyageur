@@ -1,21 +1,24 @@
 ﻿using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 namespace Environnement
 {
     public class TableBlueprintBehavior : MonoBehaviour
     {
-        private float rotateSpeed = 50f;
-
-        private RaycastHit hit;
-
         [SerializeField] private GameObject prefab;
+        [SerializeField] private int seats;
+
+        private ResourcesManager resourcesManager;
+        private float rotateSpeed = 50f;
+        private RaycastHit hit;
         private Graph graph;
         private List<Collider> colliders = new List<Collider>();
 
         private void Awake()
         {
             graph = GameObject.Find("Graph").GetComponent<Graph>();
+            resourcesManager = FindObjectOfType<ResourcesManager>();
         }
 
         private void Update()
@@ -44,7 +47,7 @@ namespace Environnement
                 {
                     if (!hitCollider.transform.IsChildOf(transform))
                     {
-                        print(hitCollider);
+                        resourcesManager.Seats = seats;
                         if (!hitCollider.gameObject.CompareTag("Ground"))
                         {
                             return;

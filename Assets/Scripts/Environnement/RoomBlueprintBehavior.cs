@@ -10,7 +10,10 @@ namespace Environnement
         private RaycastHit hit;
         private PlacementManager placementManager;
         private readonly float tavernLimit = -10;
-        private GameObject wallAnchor;
+        [SerializeField]private GameObject wallAnchor;
+        [SerializeField]private GameObject nextAnchor;
+
+        private bool placeable = false;
 
 
         private void Awake()
@@ -25,24 +28,26 @@ namespace Environnement
             if (Physics.Raycast(ray, out hit))
                 if (hit.collider.gameObject.CompareTag("BorderWall"))
                 {
-                    if (wallAnchor == hit.collider.gameObject)
+                    if (nextAnchor == hit.collider.gameObject)
                     {
                         delay += Time.deltaTime;
                     }
                     else
                     {
-                        wallAnchor = hit.collider.gameObject;
+                        nextAnchor = hit.collider.gameObject;
                         delay = 0f;
                     }
 
                     if (delay >= 0.5f)
                     {
+                        placeable = true;
+                        wallAnchor = nextAnchor;
                         transform.position = hit.collider.transform.position;
                         transform.rotation = hit.collider.transform.rotation;
                     }
                 }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && placeable)
             {
                 var o = Instantiate(prefab, transform.position, transform.rotation);
                 gameObject.SetActive(false);
