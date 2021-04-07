@@ -216,7 +216,7 @@ public class Client : MonoBehaviour
             hasBeenInteractedWith = false;
             price = (uint) Random.Range(orderPriceMin, orderPriceMax);
             hasAWaiter = false;
-            transform.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 

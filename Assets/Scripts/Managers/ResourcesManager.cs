@@ -38,13 +38,15 @@ namespace Managers
         private Resource reputation;
         [SerializeField] private Text reputationDisplay;
 
+        [SerializeField] private int startingSeatNumber = 4;
+
         private Resource seats;
 
         private void Awake()
         {
             gold = new Resource(goldDisplay, goldAmount);
             reputation = new Resource(reputationDisplay);
-            seats = new Resource(null, 1);
+            seats = new Resource(null, (uint) startingSeatNumber);
         }
 
         public uint Gold
