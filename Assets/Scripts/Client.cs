@@ -212,6 +212,10 @@ public class Client : MonoBehaviour
             text.text = "Inactive";
             subText.text = "Enable to start over";
             etat = ClientState.FindingSeat;
+            isHappy = true;
+            hasBeenInteractedWith = false;
+            price = (uint) Random.Range(orderPriceMin, orderPriceMax);
+            hasAWaiter = false;
             transform.gameObject.SetActive(false);
         }
     }

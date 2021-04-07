@@ -44,7 +44,7 @@ namespace Managers
         {
             gold = new Resource(goldDisplay, goldAmount);
             reputation = new Resource(reputationDisplay);
-            seats = new Resource(null, 4);
+            seats = new Resource(null, 1);
         }
 
         public uint Gold

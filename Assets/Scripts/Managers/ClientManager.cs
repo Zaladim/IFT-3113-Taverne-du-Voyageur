@@ -56,7 +56,7 @@ namespace Managers
                     : 0;
 
                 targetAmount += tmp;
-
+                
                 if (curAmount < targetAmount)
                     addNewClient();
 
@@ -81,10 +81,6 @@ namespace Managers
             }
 
             curAmount = clients.Count(client => client.activeSelf);
-            Debug.Log(
-                " Clients: " + curAmount.ToString() +
-                " Target: " + targetAmount.ToString()
-            );
         }
 
         private void addNewClient()
