@@ -1,6 +1,8 @@
-﻿using Managers;
+﻿using System;
+using Managers;
 using Pathfinding;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Characters
 {
@@ -57,6 +59,16 @@ namespace Characters
 
         // Start is called before the first frame update
         private void Start()
+        {
+            SetUp();
+            /*hasBeenInteractedWith = false;
+            isHappy = true;
+            TimeLeft = Random.Range(timeToOrderMin, timeToOrderMax);
+            price = Random.Range(orderPriceMin, orderPriceMax);
+            etat = ClientState.FindingSeat;*/
+        }
+
+        private void SetUp()
         {
             hasBeenInteractedWith = false;
             isHappy = true;
@@ -171,15 +183,12 @@ namespace Characters
                             if (mouvement.IsAtLocation(payLocation.transform.position))
                             {
                                 if (lookDirection == null) transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                                
-                                {
-                                    var resources = FindObjectOfType<ResourcesManager>();
-                                    var g = isHappy ? price : unHappyPrice;
-                                    var r = isHappy ? happyReputation : unHappyReputation;
-                                    resources.Gold += g;
-                                    resources.Reputation += r;
-                                    Debug.Log(g + " " + r);
-                                }
+
+                                var resources = FindObjectOfType<ResourcesManager>();
+                                var g = isHappy ? price : unHappyPrice;
+                                var r = isHappy ? happyReputation : unHappyReputation;
+                                resources.Gold += g;
+                                resources.Reputation += r;
 
                                 etat = ClientState.Leaving;
                             }
@@ -219,7 +228,7 @@ namespace Characters
                     break;
                 }
                 case ClientState.Inactive:
-                    Start();
+                    SetUp();
                     gameObject.SetActive(false);
                     break;
             }

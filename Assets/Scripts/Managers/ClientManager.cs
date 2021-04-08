@@ -51,7 +51,14 @@ namespace Managers
                 var n = deltaAmount != 0 ? Random.Range(1, (deltaAmount % 4) + 1) : 0;
                 var tmp = Random.Range(0, 100 > reputation ? 100 : reputation) < reputation ? n : 0;
 
-                targetAmount += tmp;
+                if (targetAmount <= reputation)
+                {
+                    targetAmount += tmp;
+                }
+                else
+                {
+                    targetAmount = reputation;
+                }
 
                 if (curAmount < targetAmount)
                     AddNewClient(targetAmount - curAmount);
@@ -71,7 +78,6 @@ namespace Managers
             }
 
             var tmp = clients.Count(client => client.activeSelf);
-            /*targetAmount = curAmount - tmp;*/
             curAmount = tmp;
             deltaAmount = rm.Seats - targetAmount;
         }
