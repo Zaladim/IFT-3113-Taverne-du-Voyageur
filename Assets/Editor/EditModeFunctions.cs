@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Pathfinding;
+using UnityEngine;
 using UnityEditor;
 
 public class EditModeFunctions : EditorWindow

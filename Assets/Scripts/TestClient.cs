@@ -1,4 +1,5 @@
 ﻿using System;
+using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
