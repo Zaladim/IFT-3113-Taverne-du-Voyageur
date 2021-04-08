@@ -1362,7 +1362,7 @@ GameObject:
   m_Layer: 0
   m_Name: ClientPopZone
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6781,6 +6781,11 @@ PrefabInstance:
       propertyPath: popZone
       value: 
       objectReference: {fileID: 1458846696}
+    - target: {fileID: 6888276621887610054, guid: 05979ea91d8811840a293f1882b6425c,
+        type: 3}
+      propertyPath: minAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8823681018303534278, guid: 05979ea91d8811840a293f1882b6425c,
         type: 3}
       propertyPath: m_Name

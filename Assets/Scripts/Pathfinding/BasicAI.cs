@@ -104,17 +104,17 @@ namespace Pathfinding
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, speed * Time.deltaTime / 2);
         }
 
-        public Vector3 getLocation()
+        public Vector3 GETLocation()
         {
             return centerOfMass.position;
         }
 
-        public bool isAtLocation(Vector3 position)
+        public bool IsAtLocation(Vector3 position)
         {
             return centerOfMass.position == position;
         }
 
-        public bool isCloseToLocation(Vector3 position, float minimalDistance)
+        public bool IsCloseToLocation(Vector3 position, float minimalDistance)
         {
             return Vector3.Distance(centerOfMass.position, position) <= minimalDistance;
         }
@@ -186,7 +186,7 @@ namespace Pathfinding
             List<Client> allAvailableClients = new List<Client>();
             for (int i = 0; i < allClients.Length; i++)
             {
-                if (allClients[i].getState() == Client.ClientState.WaitingToOrder && !allClients[i].hasAWaiter)
+                if (allClients[i].GETState() == ClientState.WaitingToOrder && !allClients[i].HasAWaiter)
                 {
                     allAvailableClients.Add(allClients[i]);
                 }
@@ -196,17 +196,15 @@ namespace Pathfinding
             {
                 return null;
             }
-            else
-            {
-                var randomClient = allAvailableClients[Random.Range(0, allAvailableClients.Count)];
-                randomClient.hasAWaiter = true;
-                target = randomClient.getPosition();
-                currentPath = pathFinding.A_Star(transform.position, target);
-                currentNode = 0;
-                currentDestination = currentPath[currentNode].getPosition();
-                hasDestination = true;
-                return randomClient;
-            }
+
+            var randomClient = allAvailableClients[Random.Range(0, allAvailableClients.Count)];
+            randomClient.HasAWaiter = true;
+            target = randomClient.GETPosition();
+            currentPath = pathFinding.A_Star(transform.position, target);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
+            return randomClient;
         }
 
         public GameObject GoToCounter(out GameObject lookdirection)
@@ -232,7 +230,7 @@ namespace Pathfinding
 
         public void GoToSpecificClient(Client person)
         {
-            target = person.getPosition();
+            target = person.GETPosition();
             currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();

@@ -31,7 +31,7 @@ namespace Characters
 
         private WaiterState etat;
 
-        public float DistanceFromClientToInterct = 2;
+        public float distanceFromClientToInteract = 2;
 
         private float idleTimer;
 
@@ -64,7 +64,8 @@ namespace Characters
                 //check if any of its own orders are ready
                 for (int i = 0; i < clients.Count; i++)
                 {
-                    if (clients[i].orderTimer <= 0 && clients[i].getState() == Client.ClientState.WaitingToReciveOrder)
+                    if (clients[i].TimeLeft <= 0 &&
+                        clients[i].GETState() == ClientState.WaitingToReciveOrder)
                     {
                         currentClient = clients[i];
                         mouvement.GoToSpecificClient(currentClient);
@@ -94,7 +95,7 @@ namespace Characters
             {
                 text.text = "Taking Client's Order";
                 subText.text = "";
-                if (mouvement.isCloseToLocation(currentClient.getPosition(), DistanceFromClientToInterct))
+                if (mouvement.IsCloseToLocation(currentClient.GETPosition(), distanceFromClientToInteract))
                 {
                     currentClient.InteractWIthClient();
                     etat = WaiterState.Idle;
@@ -120,7 +121,7 @@ namespace Characters
                     else
                     {
                         subText.text = "Counter Found";
-                        if (mouvement.isAtLocation(foodLocation.transform.position))
+                        if (mouvement.IsAtLocation(foodLocation.transform.position))
                         {
                             if (lookDirection == null)
                             {
@@ -137,7 +138,7 @@ namespace Characters
             {
                 text.text = "Giving Client's Order";
                 subText.text = "";
-                if (mouvement.isCloseToLocation(currentClient.getPosition(), DistanceFromClientToInterct))
+                if (mouvement.IsCloseToLocation(currentClient.GETPosition(), distanceFromClientToInteract))
                 {
                     currentClient.InteractWIthClient();
                     etat = WaiterState.Idle;
@@ -149,7 +150,7 @@ namespace Characters
             {
                 mouvement.StopMoving();
                 mouvement.FaceLocation(currentClient.gameObject.transform.position);
-                subText.text = "Time Left: " + Mathf.Ceil(idleTimer).ToString() + "s";
+                subText.text = "Time Left: " + Mathf.Ceil(idleTimer) + "s";
                 idleTimer -= Time.deltaTime;
                 if (idleTimer <= 0)
                 {
