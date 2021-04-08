@@ -15,6 +15,11 @@ namespace Environnement
         private RaycastHit hit;
         private Graph graph;
         private List<Collider> colliders = new List<Collider>();
+        
+        [SerializeField] private List<GameObject> childs = new List<GameObject>();
+
+        [SerializeField] private Vector3 pos;
+        [SerializeField] private Collider tmp;
 
         private void Awake()
         {
@@ -24,6 +29,7 @@ namespace Environnement
 
         private void Update()
         {
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             float rotateInput = Input.GetAxis("RotatePrefab");
 
@@ -31,10 +37,11 @@ namespace Environnement
 
             if (Physics.Raycast(ray, out hit))
             {
+                tmp = hit.collider;
                 if (hit.collider.gameObject.CompareTag("Ground"))
                 {
-                    Vector3 pos = hit.point;
-                    pos.y = hit.collider.transform.position.y + 1;
+                    pos = hit.point;
+                    pos.y += 1;
                     transform.position = pos;
                 }
             }
@@ -43,7 +50,7 @@ namespace Environnement
             if (Input.GetMouseButtonDown(0))
             {
                 Collider[] hitColliders =
-                    Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 1f), transform.rotation);
+                    Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 2f), transform.rotation);
                 foreach (var hitCollider in hitColliders)
                 {
                     if (!hitCollider.transform.IsChildOf(transform))
@@ -63,12 +70,47 @@ namespace Environnement
             }
         }
 
+        void setColor()
+        {
+            
+            
+            Collider[] hitColliders =
+                Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 2f), transform.rotation);
+            foreach (var hitCollider in hitColliders)
+            {
+                if (!hitCollider.transform.IsChildOf(transform))
+                {
+                    if (!hitCollider.gameObject.CompareTag("Ground"))
+                    {
+                        foreach (var child in childs)
+                        {
+                            //FABRICE
+                            //Changer a couleur du gameobject
+                            child.GetComponent<Renderer>().material.color = Color.red;
+                            //FABRICE
+                        }
+                        return;
+                    }
+                }
+            }
+            
+            foreach (var child in childs)
+            {
+                //FABRICE
+                //Retirer la couleur du Gameobject
+                child.GetComponent<Renderer>().material.color = Color.red;
+                //FABRICE
+            }
+            
+        }
+
         void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
             //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
-            Gizmos.DrawWireCube(transform.position, new Vector3(2f, 2f, 4f));
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+            Gizmos.DrawWireCube(Vector3.zero, new Vector3(1f, 0.5f, 2f)*2);
         }
 
         private void OnTriggerEnter(Collider other)

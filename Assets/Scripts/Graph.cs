@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Graph : MonoBehaviour
 {
-    private Node[] nodes;
+    [SerializeField]private Node[] nodes;
 
     public bool DrawGraph; //debug only
 
