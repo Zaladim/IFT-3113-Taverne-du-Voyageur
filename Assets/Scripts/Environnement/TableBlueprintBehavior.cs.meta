@@ -3,7 +3,10 @@ guid: dad577792e8b072499108f8e9a328264
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - prefab: {instanceID: 0}
+  - ConstructMat: {fileID: 2100000, guid: f90f6921f9f9af146be3a197e63bd7f6, type: 2}
+  - tmp: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
