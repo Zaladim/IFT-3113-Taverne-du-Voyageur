@@ -9,6 +9,8 @@ namespace Environnement
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private int seats;
+        [SerializeField] private Material DefaultMat;
+        [SerializeField] private Material ConstructMat;
 
         private ResourcesManager resourcesManager;
         private float rotateSpeed = 50f;
@@ -57,6 +59,7 @@ namespace Environnement
                     {
                         if (!hitCollider.gameObject.CompareTag("Ground"))
                         {
+                            setColor(true);
                             Debug.Log("Placement Impossible!");
                             return;
                         }
@@ -70,10 +73,10 @@ namespace Environnement
             }
         }
 
-        void setColor()
+        void setColor(bool state)
         {
-            
-            
+            Material defaultMat =  null;
+
             Collider[] hitColliders =
                 Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 2f), transform.rotation);
             foreach (var hitCollider in hitColliders)
@@ -82,24 +85,30 @@ namespace Environnement
                 {
                     if (!hitCollider.gameObject.CompareTag("Ground"))
                     {
+
                         foreach (var child in childs)
                         {
-                            //FABRICE
-                            //Changer a couleur du gameobject
-                            child.GetComponent<Renderer>().material.color = Color.red;
-                            //FABRICE
+                            if(child.gameObject.tag == "Model"){
+                                //Changer a couleur du gameobject
+
+                                Renderer render = child.GetComponent<Renderer>();
+                                defaultMat = render.material;
+
+                                render.material = ConstructMat;
+
+                            }
                         }
                         return;
                     }
                 }
             }
-            
-            foreach (var child in childs)
-            {
-                //FABRICE
-                //Retirer la couleur du Gameobject
-                child.GetComponent<Renderer>().material.color = Color.red;
-                //FABRICE
+            if(!state){
+                foreach (var child in childs)
+                {
+                  //Retirer la couleur du Gameobject
+                  child.GetComponent<Renderer>().material = defaultMat;
+
+                }
             }
             
         }
