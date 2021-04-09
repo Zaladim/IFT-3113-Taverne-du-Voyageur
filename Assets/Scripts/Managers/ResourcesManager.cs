@@ -33,22 +33,39 @@ namespace Managers
             }
         }
 
-        [Header("Gold")] private Resource gold;
-        [SerializeField] private Text goldDisplay;
+        [Header("Tools")] [SerializeField] private ClientManager clientManager;
+        
+        [Header("Gold")] [SerializeField]
+        private Text goldDisplay;
         [SerializeField] private int goldAmount = 25;
 
-        [Header("Reputation")] private Resource reputation;
-        [SerializeField] private Text reputationDisplay;
+        [Header("Reputation")] [SerializeField]
+        private Text reputationDisplay;
         [SerializeField] private int minReputation = 10;
 
-        [Header("Seats")] private Resource seats;
-        [SerializeField] private int startingSeatNumber = 4;
+        [Header("Seats")] [SerializeField]
+        private int startingSeatNumber = 4;
+
+        [Header("Beers")] [SerializeField]
+        private Text beersDisplay;
+        [SerializeField] private int beersAmount = 30;
+        
+        [Header("Clients")] [SerializeField]
+        private Text clientsDisplay;
+        
+        private Resource beers;
+        private Resource clients;
+        private Resource gold;
+        private Resource seats;
+        private Resource reputation;
 
         private void Awake()
         {
             gold = new Resource(goldDisplay, goldAmount);
             reputation = new Resource(reputationDisplay, minReputation, minReputation);
             seats = new Resource(null, startingSeatNumber);
+            beers = new Resource(beersDisplay, beersAmount);
+            clients = new Resource(clientsDisplay);
         }
 
         public int Gold
@@ -67,6 +84,17 @@ namespace Managers
         {
             get => seats.Amount;
             set => seats.Amount = value;
+        }
+
+        public int Beers
+        {
+            get => beers.Amount;
+            set => beers.Amount = value;
+        }
+
+        private void Update()
+        {
+            clients.Amount = clientManager.ClientsNumber;
         }
     }
 }

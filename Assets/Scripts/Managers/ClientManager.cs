@@ -22,6 +22,8 @@ namespace Managers
         [SerializeField] private float timeToSpawn = 0;
         [SerializeField] private List<GameObject> clients;
 
+        public int ClientsNumber => curAmount;
+        
         private void Start()
         {
             var capacity = rm.Seats;
