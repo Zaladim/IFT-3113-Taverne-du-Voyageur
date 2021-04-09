@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Managers;
+using UnityEngine;
 
 namespace Player
 {
@@ -13,7 +14,7 @@ namespace Player
         [SerializeField] private float minY = 15f;
         [SerializeField] private float maxY = 50f;
 
-        [SerializeField] private bool mouseControl = false;
+        [SerializeField] private GameManager gameManager;
 
         private void Update()
         {
@@ -23,7 +24,7 @@ namespace Player
             var verticalInput = Input.GetAxis("Vertical");
             var scroll = Input.GetAxis("Mouse ScrollWheel");
 
-            if (mouseControl)
+            if (gameManager.MouseControl)
             {
                 if (Input.mousePosition.y >= Screen.height - panBorderThickness) verticalInput = 1;
                 if (Input.mousePosition.y <= panBorderThickness) verticalInput = -1;
