@@ -10,8 +10,8 @@ namespace Environnement
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private int seats;
-        [SerializeField] private Material DefaultMat;
-        [SerializeField] private Material ConstructMat;
+        [SerializeField] private Material defaultMat;
+        [SerializeField] private Material constructMat;
 
         private ResourcesManager resourcesManager;
         private float rotateSpeed = 50f;
@@ -91,39 +91,20 @@ namespace Environnement
 
         void setColor(bool state)
         {
-            Material defaultMat =  null;
-
-            Collider[] hitColliders =
-                Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 2f), transform.rotation);
-            foreach (var hitCollider in hitColliders)
-            {
-                if (!hitCollider.transform.IsChildOf(transform))
-                {
-                    if (!hitCollider.gameObject.CompareTag("Ground"))
-                    {
-
-                        foreach (var child in childs)
-                        {
-                            if(child.gameObject.tag == "Model"){
-                                //Changer a couleur du gameobject
-
-                                Renderer render = child.GetComponent<Renderer>();
-                                defaultMat = render.material;
-
-                                render.material = ConstructMat;
-
-                            }
-                        }
-                        return;
-                    }
-                }
-            }
             if(!state){
                 foreach (var child in childs)
                 {
-                  //Retirer la couleur du Gameobject
+                  //Couleur non plaçable
                   child.GetComponent<Renderer>().material = defaultMat;
 
+                }
+            }
+            else
+            {
+                foreach (var child in childs)
+                {
+                    //Couleur plaçable
+                    child.GetComponent<Renderer>().material = constructMat;
                 }
             }
             

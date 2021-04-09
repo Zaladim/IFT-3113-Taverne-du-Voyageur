@@ -1,11 +1,15 @@
 ﻿using Managers;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Environnement
 {
     public class RoomBlueprintBehavior : MonoBehaviour
     {
         [SerializeField] private GameObject prefab;
+        
+        [SerializeField] private Material defaultMat;
+        [SerializeField] private Material constructMat;
 
         private float delay;
         private RaycastHit hit;
@@ -13,6 +17,8 @@ namespace Environnement
         private readonly float tavernLimit = -10;
         [SerializeField]private GameObject wallAnchor;
         [SerializeField]private GameObject nextAnchor;
+        
+        [SerializeField] private List<GameObject> childs = new List<GameObject>();
 
         private bool placeable = false;
         private void Awake()
@@ -51,6 +57,14 @@ namespace Environnement
                 placeable = false;
             }
 
+            if (placeable)
+            {
+                setColor(true);
+            }
+            else
+            {
+                setColor(false);
+            }
 
             if (Input.GetMouseButtonDown(0) && placeable)
             {
@@ -116,6 +130,27 @@ namespace Environnement
             print(hitColliders.Length);
             
             return false;
+        }
+        
+        void setColor(bool state)
+        {
+            if(!state){
+                foreach (var child in childs)
+                {
+                    //Couleur non plaçable
+                    child.GetComponent<Renderer>().material = defaultMat;
+
+                }
+            }
+            else
+            {
+                foreach (var child in childs)
+                {
+                    //Couleur plaçable
+                    child.GetComponent<Renderer>().material = constructMat;
+                }
+            }
+            
         }
 
         private Vector3 CalculateCentroid()
