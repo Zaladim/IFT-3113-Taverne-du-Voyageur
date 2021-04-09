@@ -1154,8 +1154,6 @@ Transform:
   m_Children:
   - {fileID: 2132536470}
   - {fileID: 1030001967}
-  - {fileID: 1017426649}
-  - {fileID: 1458846696}
   m_Father: {fileID: 967511925}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2438,7 +2436,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1017426649
 Transform:
@@ -2447,12 +2445,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1017426648}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.5, y: 1.17, z: 3.3}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -20.5, y: 1.17, z: 13.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 470349859}
-  m_RootOrder: 2
+  m_Father: {fileID: 1182533132}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1030001966
 PrefabInstance:
@@ -2750,7 +2748,7 @@ MonoBehaviour:
   goldAmount: 75
   reputationDisplay: {fileID: 1784770172}
   minReputation: 10
-  startingSeatNumber: 1
+  startingSeatNumber: 64
   beersDisplay: {fileID: 1188814417}
   beersAmount: 30
   clientsDisplay: {fileID: 779481454}
@@ -3158,6 +3156,8 @@ Transform:
   - {fileID: 390588482}
   - {fileID: 116896828}
   - {fileID: 8927702708346344322}
+  - {fileID: 1017426649}
+  - {fileID: 1458846696}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4041,7 +4041,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1458846696
 Transform:
@@ -4050,13 +4050,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458846695}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.29, y: 1.17, z: -1.33}
+  m_LocalRotation: {x: -0, y: -0.793352, z: -0, w: 0.6087632}
+  m_LocalPosition: {x: 8.63, y: 1.17, z: 15.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 470349859}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1182533132}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: -105.00001, z: 0}
 --- !u!1 &1466236035
 GameObject:
   m_ObjectHideFlags: 0
@@ -4430,7 +4430,7 @@ PrefabInstance:
     - target: {fileID: 752900504331954548, guid: 54ac99e2e1ea4f341a4c3de96cbb054f,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 752900504331954548, guid: 54ac99e2e1ea4f341a4c3de96cbb054f,
         type: 3}
@@ -9020,6 +9020,11 @@ PrefabInstance:
       propertyPath: minAmount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3214632303005934585, guid: e20719bca51ae394b90bb1bf32d6a12d,
+        type: 3}
+      propertyPath: resourcesManager
+      value: 
+      objectReference: {fileID: 1069792013}
     - target: {fileID: 3214632303005934591, guid: e20719bca51ae394b90bb1bf32d6a12d,
         type: 3}
       propertyPath: m_Name
@@ -9107,7 +9112,7 @@ PrefabInstance:
     - target: {fileID: 6888276621887610054, guid: 05979ea91d8811840a293f1882b6425c,
         type: 3}
       propertyPath: minAmount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8823681018303534278, guid: 05979ea91d8811840a293f1882b6425c,
         type: 3}
