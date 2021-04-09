@@ -41,17 +41,16 @@ namespace Characters
         [SerializeField] private int happyReputation = 1;
         [SerializeField] private int unHappyReputation = -1;
         [SerializeField] private int notServedReputation = -3;
-        private ClientState etat;
-        private Entrance exit;
-        private bool hasBeenInteractedWith;
-        private bool isHappy = true;
-        private GameObject lookDirection;
-        private GameObject payLocation;
 
-
-        private int price;
-        private Seat seat;
-        private float timer;
+        [Header("Debug")] [SerializeField] private ClientState etat;
+        [SerializeField] private Entrance exit;
+        [SerializeField] private bool hasBeenInteractedWith;
+        [SerializeField] private bool isHappy = true;
+        [SerializeField] private GameObject lookDirection;
+        [SerializeField] private GameObject payLocation;
+        [SerializeField] private int price;
+        [SerializeField] private Seat seat;
+        [SerializeField] private float timer;
 
         public bool HasAWaiter { get; set; }
 
@@ -61,16 +60,12 @@ namespace Characters
         private void Start()
         {
             SetUp();
-            /*hasBeenInteractedWith = false;
-            isHappy = true;
-            TimeLeft = Random.Range(timeToOrderMin, timeToOrderMax);
-            price = Random.Range(orderPriceMin, orderPriceMax);
-            etat = ClientState.FindingSeat;*/
         }
 
         private void SetUp()
         {
             hasBeenInteractedWith = false;
+            HasAWaiter = false;
             isHappy = true;
             TimeLeft = Random.Range(timeToOrderMin, timeToOrderMax);
             price = Random.Range(orderPriceMin, orderPriceMax);
