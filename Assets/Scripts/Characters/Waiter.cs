@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Managers;
 using Pathfinding;
 using UnityEngine;
 
@@ -15,13 +16,12 @@ namespace Characters
 
     public class Waiter : MonoBehaviour
     {
-        [Header("Options")]
-        [SerializeField] private float distanceFromClientToInteract = 2;
+        [Header("Options")] [SerializeField] private float distanceFromClientToInteract = 2;
         [SerializeField] private float timeToStayIdleMin = 1f;
         [SerializeField] private float timeToStayIdleMax = 10f;
-        
-        [Header("Debug")]
-        [SerializeField] private float idleTimer;
+        [SerializeField] private ResourcesManager resourcesManager;
+
+        [Header("Debug")] [SerializeField] private float idleTimer;
         [SerializeField] private List<Client> clients;
         [SerializeField] private Client currentClient;
         [SerializeField] private WaiterState etat;
@@ -31,7 +31,12 @@ namespace Characters
         [SerializeField] private TextMesh subText;
         [SerializeField] private TextMesh text;
 
-        // Start is called before the first frame update
+        public ResourcesManager ResourcesManager
+        {
+            get => resourcesManager;
+            set => resourcesManager = value;
+        }
+
         private void Start()
         {
             mouvement = GetComponent<BasicAI>();

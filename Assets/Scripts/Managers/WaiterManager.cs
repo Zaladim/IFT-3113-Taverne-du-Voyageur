@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using Characters;
 using UnityEngine;
 
 namespace Managers
@@ -7,14 +7,14 @@ namespace Managers
     public class WaiterManager : MonoBehaviour
     {
         [Header("External Tools")] [SerializeField]
-        private ResourcesManager rm;
+        private ResourcesManager resourcesManager;
 
         [Header("Waiter Options")] public GameObject aiWaiterPrefab;
         [SerializeField] private Transform popZone;
-        [SerializeField, Min(0)] private int minAmount;
+        [SerializeField] [Min(0)] private int minAmount;
 
-        [Header("Debug")] [SerializeField] private int targetAmount = 0;
-        [SerializeField] private List<GameObject> waiters;
+        [Header("Debug")] [SerializeField] private int targetAmount;
+        [SerializeField] private List<Waiter> waiters;
 
         public int Price { get; set; }
         public int Reputation { get; set; }
@@ -23,34 +23,34 @@ namespace Managers
         {
             targetAmount = minAmount;
 
-            waiters = new List<GameObject>(targetAmount);
-            for (var i = 0; i < targetAmount; i++)
-            {
-                var waiter = Instantiate(aiWaiterPrefab, popZone);
-
-                waiter.SetActive(true);
-                waiters.Add(waiter);
-            }
+            waiters = new List<Waiter>();
+            SpawnWaiter();
         }
 
         private void Update()
         {
-            for (var i = waiters.Count; i < targetAmount; i++)
-            {
-                var waiter = Instantiate(aiWaiterPrefab, popZone);
-
-                waiter.SetActive(true);
-                waiters.Add(waiter);
-            }
+            SpawnWaiter(waiters.Count);
         }
 
         public void IncreaseWaiterNumber(int n = 1)
         {
-            if (rm.Gold < Price) return;
-            
+            if (resourcesManager.Gold < Price) return;
+
             targetAmount += n;
-            rm.Reputation += Reputation;
-            rm.Gold -= Price;
+            resourcesManager.Reputation += Reputation;
+            resourcesManager.Gold -= Price;
+        }
+
+        private void SpawnWaiter(int n = 0)
+        {
+            for (var i = n; i < targetAmount; i++)
+            {
+                var waiter = Instantiate(aiWaiterPrefab, popZone).GetComponent<Waiter>();
+
+                waiter.ResourcesManager = resourcesManager;
+
+                waiters.Add(waiter);
+            }
         }
     }
 }

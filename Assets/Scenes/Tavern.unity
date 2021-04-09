@@ -2748,7 +2748,7 @@ MonoBehaviour:
   goldAmount: 75
   reputationDisplay: {fileID: 1784770172}
   minReputation: 10
-  startingSeatNumber: 64
+  startingSeatNumber: 2
   beersDisplay: {fileID: 1188814417}
   beersAmount: 30
   clientsDisplay: {fileID: 779481454}
@@ -9114,6 +9114,11 @@ PrefabInstance:
       propertyPath: minAmount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6888276621887610054, guid: 05979ea91d8811840a293f1882b6425c,
+        type: 3}
+      propertyPath: resourcesManager
+      value: 
+      objectReference: {fileID: 1069792013}
     - target: {fileID: 8823681018303534278, guid: 05979ea91d8811840a293f1882b6425c,
         type: 3}
       propertyPath: m_Name
