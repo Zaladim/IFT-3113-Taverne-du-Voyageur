@@ -6,10 +6,15 @@ ModelImporter:
   - first:
       74: -623603649343465320
     second: Walk
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Serveur
+    second: {fileID: 2100000, guid: 841fb80ba44815d46a7e173bb92d0e24, type: 2}
   materials:
-    materialImportMode: 1
-    materialName: 0
+    materialImportMode: 2
+    materialName: 1
     materialSearch: 1
     materialLocation: 1
   animations:
