@@ -46,6 +46,22 @@ namespace Environnement
                     pos = hit.point;
                     pos.y += 1;
                     transform.position = pos;
+                    
+                    Collider[] hitColliders =
+                        Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 2f), transform.rotation);
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        if (!hitCollider.transform.IsChildOf(transform))
+                        {
+                            if (!hitCollider.gameObject.CompareTag("Ground"))
+                            {
+                                setColor(true);
+                                return;
+                            }
+                        }
+                    }
+
+                    setColor(false);
                 }
             }
 
@@ -60,7 +76,6 @@ namespace Environnement
                     {
                         if (!hitCollider.gameObject.CompareTag("Ground"))
                         {
-                            setColor(true);
                             Debug.Log("Placement Impossible!");
                             return;
                         }

@@ -15,8 +15,6 @@ namespace Environnement
         [SerializeField]private GameObject nextAnchor;
 
         private bool placeable = false;
-
-
         private void Awake()
         {
             placementManager = GameObject.FindGameObjectWithTag("PlacementManager").GetComponent<PlacementManager>();
@@ -47,6 +45,12 @@ namespace Environnement
                         transform.rotation = hit.collider.transform.rotation;
                     }
                 }
+            Collider[] hitColliders = Physics.OverlapBox(CalculateCentroid(), new Vector3(1.5f, 2f, 1.5f), transform.rotation);
+            if (hitColliders.Length != 0)
+            {
+                placeable = false;
+            }
+
 
             if (Input.GetMouseButtonDown(0) && placeable)
             {
@@ -107,8 +111,40 @@ namespace Environnement
                 if (Vector3.Distance(tiles[i].position, tmpLocation) <= minDist)
                     if (tiles[i].gameObject.CompareTag("Room"))
                         return true;
-
+            Collider[] hitColliders =
+                Physics.OverlapBox(transform.position, new Vector3(2f, 2f, 2f), transform.rotation);
+            print(hitColliders.Length);
+            
             return false;
+        }
+
+        private Vector3 CalculateCentroid()
+        {
+            Vector3 centroid = Vector3.zero;
+            if (transform.root.gameObject == transform.gameObject)
+            {
+                
+                if (transform.childCount > 0)
+                {
+                    Transform[] allChilds = transform.gameObject.GetComponentsInChildren<Transform>();
+                    foreach (var child in allChilds)
+                    {
+                        centroid += child.transform.position;
+                    }
+
+                    centroid /= allChilds.Length;
+                }
+                
+            }
+            return centroid;
+        }
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
+            //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
+            Gizmos.matrix = Matrix4x4.TRS(CalculateCentroid(), transform.rotation, transform.lossyScale);
+            Gizmos.DrawWireCube(Vector3.zero, new Vector3(2f, 2f, 2f)*2);
         }
     }
 }
