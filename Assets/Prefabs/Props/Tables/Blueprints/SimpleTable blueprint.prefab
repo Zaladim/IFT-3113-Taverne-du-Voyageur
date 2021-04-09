@@ -47,8 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 2476434546763658195, guid: cf6508c77a1c94c45a63c530a1854270, type: 3}
   seats: 4
-  DefaultMat: {fileID: 2100000, guid: dd84f8234160e024b94dfb3a58089d2d, type: 2}
-  ConstructMat: {fileID: 2100000, guid: f90f6921f9f9af146be3a197e63bd7f6, type: 2}
+  defaultMat: {fileID: 2100000, guid: e0829cf27e03f434fb4d3661f3095a72, type: 2}
+  constructMat: {fileID: 2100000, guid: f2179aae14320144793079fa75112899, type: 2}
   childs:
   - {fileID: 1087581167787780369}
   - {fileID: 7250869155321135541}
