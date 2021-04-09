@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Managers;
 using Pathfinding;
 using UnityEngine;
@@ -58,14 +59,18 @@ namespace Characters
                     if (lookDirection != null) mouvement.FaceLocation(lookDirection.transform.position);
 
                     //check if any of its own orders are ready
-                    for (var i = 0; i < clients.Count; i++)
-                        if (clients[i].TimeLeft <= 10 &&
-                            clients[i].GETState() == ClientState.WaitingToReciveOrder)
-                        {
-                            currentClient = clients[i];
-                            mouvement.GoToSpecificClient(currentClient);
-                            etat = WaiterState.GivingOrder;
-                        }
+                    foreach (var client in
+                        clients.Where(
+                            client => client.TimeLeft <= 10 &&
+                                      client.GETState() ==
+                                      ClientState.WaitingToReciveOrder)
+                        )
+                    {
+                        currentClient = client;
+                        resourcesManager.Beers -= 1;
+                        mouvement.GoToSpecificClient(currentClient);
+                        etat = WaiterState.GivingOrder;
+                    }
 
                     //look for a new client
                     if (currentClient == null)
