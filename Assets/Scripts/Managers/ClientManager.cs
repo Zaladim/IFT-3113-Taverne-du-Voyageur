@@ -1,43 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Characters;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Managers
 {
     public class ClientManager : MonoBehaviour
     {
         [Header("External Tools")] [SerializeField]
-        private ResourcesManager rm;
+        private ResourcesManager resourcesManager;
 
         [Header("Client Options")] public GameObject aiClientPrefab;
         [SerializeField] private Transform popZone;
-        [SerializeField, Min(0)] private int minAmount;
-        [SerializeField, Range(1.5f, 10)] private float spawnSpeed = 1.5f;
+        [SerializeField] [Min(0)] private int minAmount;
+        [SerializeField] [Range(1.5f, 10)] private float spawnSpeed = 1.5f;
 
-        [Header("Debug")] [SerializeField] private int targetAmount = 0;
-        [SerializeField] private int curAmount = 0;
-        [SerializeField] private int deltaAmount = 0;
-        [SerializeField] private float timeToSpawn = 0;
-        [SerializeField] private List<GameObject> clients;
+        [Header("Debug")] [SerializeField] private int targetAmount;
+        [SerializeField] private int curAmount;
+        [SerializeField] private int deltaAmount;
+        [SerializeField] private float timeToSpawn;
+        [SerializeField] private List<Client> clients;
 
         public int ClientsNumber => curAmount;
-        
+
         private void Start()
         {
-            var capacity = rm.Seats;
-
             targetAmount = minAmount;
 
-            clients = new List<GameObject>(capacity);
-            for (var i = 0; i < capacity; i++)
-            {
-                var client = Instantiate(aiClientPrefab, popZone);
+            clients = new List<Client>();
+            SpawnClients();
+        }
 
-                client.SetActive(false);
-                clients.Add(client);
-            }
+        private void Update()
+        {
+            SpawnClients(clients.Count);
+
+            var tmp = clients.Count(client => client.gameObject.activeSelf);
+            curAmount = tmp;
+            deltaAmount = resourcesManager.Seats - targetAmount;
         }
 
         private void FixedUpdate()
@@ -48,19 +48,15 @@ namespace Managers
             }
             else
             {
-                var reputation = rm.Reputation;
+                var reputation = resourcesManager.Reputation;
 
-                var n = deltaAmount != 0 ? Random.Range(1, (deltaAmount % 4) + 1) : 0;
+                var n = deltaAmount != 0 ? Random.Range(1, deltaAmount % 4 + 1) : 0;
                 var tmp = Random.Range(0, 100 > reputation ? 100 : reputation) < reputation ? n : 0;
 
                 if (targetAmount <= reputation)
-                {
                     targetAmount += tmp;
-                }
                 else
-                {
                     targetAmount = reputation;
-                }
 
                 if (curAmount < targetAmount)
                     AddNewClient(targetAmount - curAmount);
@@ -69,31 +65,26 @@ namespace Managers
             }
         }
 
-        private void Update()
-        {
-            for (var i = clients.Count; i < rm.Seats; i++)
-            {
-                var client = Instantiate(aiClientPrefab, popZone);
-
-                client.SetActive(false);
-                clients.Add(client);
-            }
-
-            var tmp = clients.Count(client => client.activeSelf);
-            curAmount = tmp;
-            deltaAmount = rm.Seats - targetAmount;
-        }
-
         private void AddNewClient(int n = 1)
         {
             for (var i = 0; i < n; i++)
-            {
-                foreach (var client in clients.Where(client => !client.activeSelf))
+                foreach (var client in clients.Where(client => !client.gameObject.activeSelf))
                 {
-                    client.SetActive(true);
+                    client.gameObject.SetActive(true);
                     curAmount += 1;
                     break;
                 }
+        }
+
+        private void SpawnClients(int n = 0)
+        {
+            for (var i = n; i < resourcesManager.Seats; i++)
+            {
+                var client = Instantiate(aiClientPrefab, popZone).GetComponent<Client>();
+
+                client.gameObject.SetActive(false);
+                client.ResourcesManager = resourcesManager;
+                clients.Add(client);
             }
         }
     }

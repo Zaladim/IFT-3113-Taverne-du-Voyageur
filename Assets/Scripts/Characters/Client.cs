@@ -1,8 +1,6 @@
-﻿using System;
-using Managers;
+﻿using Managers;
 using Pathfinding;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Characters
 {
@@ -20,14 +18,13 @@ namespace Characters
 
     public class Client : MonoBehaviour
     {
-        [Header("Client Props")] [SerializeField]
-        private BasicAI mouvement;
+        [Header("Props")] [SerializeField] private BasicAI mouvement;
 
         [SerializeField] private TextMesh text;
         [SerializeField] private TextMesh subText;
+        [SerializeField] private ResourcesManager resourcesManager;
 
-        [Header("Client Options")] [SerializeField]
-        private int orderPriceMin = 10;
+        [Header("Options")] [SerializeField] private int orderPriceMin = 10;
 
         [SerializeField] private int orderPriceMax = 40;
         [SerializeField] private float timeToEatMin = 5f;
@@ -56,20 +53,17 @@ namespace Characters
 
         public float TimeLeft { get; private set; }
 
+        public ResourcesManager ResourcesManager
+        {
+            get => resourcesManager;
+            set => resourcesManager = value;
+        }
+
         // Start is called before the first frame update
         private void Start()
         {
             SetUp();
-        }
-
-        private void SetUp()
-        {
-            hasBeenInteractedWith = false;
-            HasAWaiter = false;
-            isHappy = true;
-            TimeLeft = Random.Range(timeToOrderMin, timeToOrderMax);
-            price = Random.Range(orderPriceMin, orderPriceMax);
-            etat = ClientState.FindingSeat;
+            //resourcesManager = FindObjectOfType<ResourcesManager>();
         }
 
         // Update is called once per frame
@@ -179,11 +173,10 @@ namespace Characters
                             {
                                 if (lookDirection == null) transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
-                                var resources = FindObjectOfType<ResourcesManager>();
                                 var g = isHappy ? price : unHappyPrice;
                                 var r = isHappy ? happyReputation : unHappyReputation;
-                                resources.Gold += g;
-                                resources.Reputation += r;
+                                resourcesManager.Gold += g;
+                                resourcesManager.Reputation += r;
 
                                 etat = ClientState.Leaving;
                             }
@@ -227,6 +220,16 @@ namespace Characters
                     gameObject.SetActive(false);
                     break;
             }
+        }
+
+        private void SetUp()
+        {
+            hasBeenInteractedWith = false;
+            HasAWaiter = false;
+            isHappy = true;
+            TimeLeft = Random.Range(timeToOrderMin, timeToOrderMax);
+            price = Random.Range(orderPriceMin, orderPriceMax);
+            etat = ClientState.FindingSeat;
         }
 
         public void InteractWIthClient()

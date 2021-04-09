@@ -141,6 +141,15 @@ MonoBehaviour:
   happyReputation: 1
   unHappyReputation: -1
   notServedReputation: -3
+  etat: 0
+  exit: {fileID: 0}
+  hasBeenInteractedWith: 0
+  isHappy: 1
+  lookDirection: {fileID: 0}
+  payLocation: {fileID: 0}
+  price: 0
+  seat: {fileID: 0}
+  timer: 0
 --- !u!1 &4284386174109325258
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &743058294922784974
 Transform:
   m_ObjectHideFlags: 0
