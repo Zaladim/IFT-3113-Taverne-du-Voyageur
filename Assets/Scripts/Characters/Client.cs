@@ -33,7 +33,8 @@ namespace Characters
         [SerializeField] private float timeToOrderMax = 100f;
         [SerializeField] private float waitingTimeMin = 45f;
         [SerializeField] private float waitingTimeMax = 100f;
-        [Space] [SerializeField] private int unHappyPrice;
+        [Space] [SerializeField] private int unHappyTime = -10;
+        [SerializeField] private int unHappyPrice;
         [SerializeField] private int notServedPrice;
         [SerializeField] private int happyReputation = 1;
         [SerializeField] private int unHappyReputation = -1;
@@ -122,7 +123,7 @@ namespace Characters
                 case ClientState.WaitingToReciveOrder:
                 {
                     TimeLeft -= Time.deltaTime;
-                    isHappy = TimeLeft >= -10;
+                    isHappy = TimeLeft >= unHappyTime;
 
                     text.text = "Waiting To Recive Order";
                     subText.text = Mathf.Ceil(TimeLeft) + "s";
