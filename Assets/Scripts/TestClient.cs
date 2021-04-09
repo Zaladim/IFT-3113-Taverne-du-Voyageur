@@ -1,4 +1,5 @@
 ﻿using System;
+using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -66,7 +67,7 @@ public class TestClient : MonoBehaviour
                 else
                 {
                     subText.text = "Seat Found";
-                    if (movement.isAtLocation(seat.transform.position))
+                    if (movement.IsAtLocation(seat.transform.position))
                     {
                         seat.isOccupied = true;
                         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -163,7 +164,7 @@ public class TestClient : MonoBehaviour
                     else
                     {
                         subText.text = "Exit Found";
-                        if (movement.isAtLocation(exit.transform.position))
+                        if (movement.IsAtLocation(exit.transform.position))
                         {
                             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                             state = State.Inactive;

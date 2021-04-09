@@ -125,14 +125,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 300d395442aaacc49a96918370005e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToEatMin: 5
-  timeToEatMax: 20
-  hasAWaiter: 0
-  orderTimer: 0
-  timeToMakeOrderMin: 30
-  timeToMakeOrderMax: 100
+  mouvement: {fileID: 6045182956156970538}
+  text: {fileID: 7688944346709398141}
+  subText: {fileID: 7765881849613691573}
   orderPriceMin: 10
   orderPriceMax: 40
+  timeToEatMin: 5
+  timeToEatMax: 20
+  timeToOrderMin: 10
+  timeToOrderMax: 100
+  waitingTimeMin: 45
+  waitingTimeMax: 100
+  unHappyPrice: 0
+  notServedPrice: 0
+  happyReputation: 1
+  unHappyReputation: -1
+  notServedReputation: -3
 --- !u!1 &4284386174109325258
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,7 +180,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4284386174109325258}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -212,7 +220,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4284386174109325258}
-  m_Text: Finding Seat
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 0.03
   m_LineSpacing: 1
@@ -305,7 +313,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7476786365271492597}
-  m_Text: Press Enter
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 0.03
   m_LineSpacing: 1
