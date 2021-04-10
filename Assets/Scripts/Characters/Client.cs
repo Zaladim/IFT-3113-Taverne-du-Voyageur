@@ -19,13 +19,11 @@ namespace Characters
     public class Client : MonoBehaviour
     {
         [Header("Props")] [SerializeField] private BasicAI mouvement;
-
         [SerializeField] private TextMesh text;
         [SerializeField] private TextMesh subText;
         [SerializeField] private ResourcesManager resourcesManager;
 
         [Header("Options")] [SerializeField] private int orderPriceMin = 10;
-
         [SerializeField] private int orderPriceMax = 40;
         [SerializeField] private float timeToEatMin = 5f;
         [SerializeField] private float timeToEatMax = 20f;
@@ -126,7 +124,7 @@ namespace Characters
                 {
                     TimeLeft -= Time.deltaTime;
                     isHappy = TimeLeft >= unHappyTime;
-                    
+
                     if (TimeLeft < notServedTime)
                     {
                         unHappyReputation = notServedReputation;

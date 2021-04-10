@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Managers
@@ -13,9 +12,6 @@ namespace Managers
 
         [Header("Game Elements")] [SerializeField]
         private GameObject startPanel;
-        [SerializeField] private GameObject gamePanel;
-        [SerializeField] private GameObject settingsPanel;
-
         [SerializeField] private GameObject gamePanel;
         [SerializeField] private GameObject settingsPanel;
 
@@ -33,6 +29,15 @@ namespace Managers
             waiterManager.gameObject.SetActive(false);
             placementManager.gameObject.SetActive(false);
             resourcesManager.gameObject.SetActive(true);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ToggleGamePaused();
+                if (gamePanel.activeSelf) settingsPanel.SetActive(!settingsPanel.activeSelf);
+            }
         }
 
         public void StartGame()
@@ -64,28 +69,12 @@ namespace Managers
                 Application.Quit();
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ToggleGamePaused();
-                if (gamePanel.activeSelf)
-                {
-                    settingsPanel.SetActive(!settingsPanel.activeSelf);
-                }
-            }
-        }
-
         private void PauseGame()
         {
             if (gameIsPaused)
-            {
                 Time.timeScale = 0f;
-            }
             else
-            {
                 Time.timeScale = 1;
-            }
         }
 
         public void ToggleGamePaused()

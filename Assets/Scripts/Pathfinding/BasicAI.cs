@@ -7,24 +7,16 @@ namespace Pathfinding
 {
     public class BasicAI : MonoBehaviour
     {
-        private Graph pathFinding;
-
-        private Vector3 target;
-
-        private List<Node> currentPath;
-
-        private int currentNode;
-
-        private Vector3 currentDestination;
-
-        private bool hasDestination;
-
-        private Transform centerOfMass;
-
         public float speedMin = 3f;
         public float speedMax = 7f;
-
+        private Transform centerOfMass;
+        private Vector3 currentDestination;
+        private int currentNode;
+        private List<Node> currentPath;
+        private bool hasDestination;
+        private Graph pathFinding;
         private float speed;
+        private Vector3 target;
 
         //private Seat currentSeat;
 
@@ -84,10 +76,7 @@ namespace Pathfinding
         {
             var currentPosition = centerOfMass.position;
 
-            if (turn)
-            {
-                Turn(destination);
-            }
+            if (turn) Turn(destination);
 
             transform.position = Vector3.MoveTowards(currentPosition, destination, speed * Time.deltaTime);
         }
@@ -128,12 +117,8 @@ namespace Pathfinding
                 areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt && !randomSeat.isOccupied);
 
                 if (!areAllSeatsOccupied)
-                {
                     while (randomSeat.isAIGoingForIt || randomSeat.isOccupied)
-                    {
                         randomSeat = allSeats[Random.Range(0, allSeats.Length)];
-                    }
-                }
             }
 
             if (areAllSeatsOccupied) return null;
@@ -170,7 +155,7 @@ namespace Pathfinding
 
             var randomCounter = allCounters[Random.Range(0, allCounters.Length)];
             lookdirection = randomCounter.lookDirection;
-            GameObject paylocation = randomCounter.payLocations[Random.Range(0, randomCounter.payLocations.Count)];
+            var paylocation = randomCounter.payLocations[Random.Range(0, randomCounter.payLocations.Count)];
             target = paylocation.transform.position;
             currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
@@ -182,19 +167,12 @@ namespace Pathfinding
         public Client GoToRandomClient()
         {
             var allClients = FindObjectsOfType<Client>();
-            List<Client> allAvailableClients = new List<Client>();
-            for (int i = 0; i < allClients.Length; i++)
-            {
+            var allAvailableClients = new List<Client>();
+            for (var i = 0; i < allClients.Length; i++)
                 if (allClients[i].GETState() == ClientState.WaitingToOrder && !allClients[i].HasAWaiter)
-                {
                     allAvailableClients.Add(allClients[i]);
-                }
-            }
 
-            if (allAvailableClients.Count == 0)
-            {
-                return null;
-            }
+            if (allAvailableClients.Count == 0) return null;
 
             var randomClient = allAvailableClients[Random.Range(0, allAvailableClients.Count)];
             randomClient.HasAWaiter = true;
@@ -217,7 +195,7 @@ namespace Pathfinding
 
             var randomCounter = allCounters[Random.Range(0, allCounters.Length)];
             lookdirection = randomCounter.lookDirection;
-            GameObject foodlocation = randomCounter.foodLocations[Random.Range(0, randomCounter.foodLocations.Count)];
+            var foodlocation = randomCounter.foodLocations[Random.Range(0, randomCounter.foodLocations.Count)];
             target = foodlocation.transform.position;
             currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
@@ -243,21 +221,15 @@ namespace Pathfinding
 
         public void StartMovingAgain()
         {
-            if (currentPath != null)
-            {
-                hasDestination = true;
-            }
+            if (currentPath != null) hasDestination = true;
         }
 
         public void FaceLocation(Vector3 location)
         {
-            Vector3 dirFromAtoB = (location - transform.position).normalized;
-            float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
+            var dirFromAtoB = (location - transform.position).normalized;
+            var dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-            if (dotProd != 1)
-            {
-                Turn(location);
-            }
+            if (dotProd != 1) Turn(location);
 
             /*Debug.Log(Vector3.Angle(location.forward, transform.position - location.position));
             if (Vector3.Angle(location.forward, transform.position - location.position) > 0)
