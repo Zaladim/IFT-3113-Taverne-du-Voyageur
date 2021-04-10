@@ -5,13 +5,13 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.92.0 commit date:2021-02-24, commit time:16:25, hash:02948a2cab44</authoring_tool>
     </contributor>
-    <created>2021-04-10T01:54:04</created>
-    <modified>2021-04-10T01:54:04</modified>
+    <created>2021-04-10T12:26:43</created>
+    <modified>2021-04-10T12:26:43</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_effects>
-    <effect id="terrain-effect">
+    <effect id="Meubles_001-effect">
       <profile_COMMON>
         <technique sid="common">
           <lambert>
@@ -31,49 +31,49 @@
   </library_effects>
   <library_images/>
   <library_materials>
-    <material id="terrain-material" name="terrain">
-      <instance_effect url="#terrain-effect"/>
+    <material id="Meubles_001-material" name="Meubles.001">
+      <instance_effect url="#Meubles_001-effect"/>
     </material>
   </library_materials>
   <library_geometries>
-    <geometry id="Plane_036-mesh" name="Plane.036">
+    <geometry id="Plane_038-mesh" name="Plane.038">
       <mesh>
-        <source id="Plane_036-mesh-positions">
-          <float_array id="Plane_036-mesh-positions-array" count="12">-1 -1 0 1 -1 0 -1 1 0 1 1 0</float_array>
+        <source id="Plane_038-mesh-positions">
+          <float_array id="Plane_038-mesh-positions-array" count="12">-1 -1 0 1 -1 0 -1 1 0 1 1 0</float_array>
           <technique_common>
-            <accessor source="#Plane_036-mesh-positions-array" count="4" stride="3">
+            <accessor source="#Plane_038-mesh-positions-array" count="4" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="Plane_036-mesh-normals">
-          <float_array id="Plane_036-mesh-normals-array" count="3">0 0 1</float_array>
+        <source id="Plane_038-mesh-normals">
+          <float_array id="Plane_038-mesh-normals-array" count="3">0 0 1</float_array>
           <technique_common>
-            <accessor source="#Plane_036-mesh-normals-array" count="1" stride="3">
+            <accessor source="#Plane_038-mesh-normals-array" count="1" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="Plane_036-mesh-map-0">
-          <float_array id="Plane_036-mesh-map-0-array" count="12">1 0 0 1 0 0 1 0 1 1 0 1</float_array>
+        <source id="Plane_038-mesh-map-0">
+          <float_array id="Plane_038-mesh-map-0-array" count="12">0.9469207 0.5888271 0.8388428 0.696905 0.8388428 0.5888271 0.9469207 0.5888271 0.9469207 0.696905 0.8388428 0.696905</float_array>
           <technique_common>
-            <accessor source="#Plane_036-mesh-map-0-array" count="6" stride="2">
+            <accessor source="#Plane_038-mesh-map-0-array" count="6" stride="2">
               <param name="S" type="float"/>
               <param name="T" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <vertices id="Plane_036-mesh-vertices">
-          <input semantic="POSITION" source="#Plane_036-mesh-positions"/>
+        <vertices id="Plane_038-mesh-vertices">
+          <input semantic="POSITION" source="#Plane_038-mesh-positions"/>
         </vertices>
-        <triangles material="terrain-material" count="2">
-          <input semantic="VERTEX" source="#Plane_036-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Plane_036-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Plane_036-mesh-map-0" offset="2" set="0"/>
+        <triangles material="Meubles_001-material" count="2">
+          <input semantic="VERTEX" source="#Plane_038-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Plane_038-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Plane_038-mesh-map-0" offset="2" set="0"/>
           <p>1 0 0 2 0 1 0 0 2 1 0 3 3 0 4 2 0 5</p>
         </triangles>
       </mesh>
@@ -81,12 +81,12 @@
   </library_geometries>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="Plane_047" name="Plane.047" type="NODE">
-        <matrix sid="transform">4.653026 0 0 0 0 4.653026 0 0 0 0 4.653026 0 0 0 0 1</matrix>
-        <instance_geometry url="#Plane_036-mesh" name="Plane.047">
+      <node id="Plane_048" name="Plane.048" type="NODE">
+        <matrix sid="transform">3.104143 0 0 0 0 3.104143 0 0 0 0 3.104143 0 0 0 0 1</matrix>
+        <instance_geometry url="#Plane_038-mesh" name="Plane.048">
           <bind_material>
             <technique_common>
-              <instance_material symbol="terrain-material" target="#terrain-material">
+              <instance_material symbol="Meubles_001-material" target="#Meubles_001-material">
                 <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
               </instance_material>
             </technique_common>
