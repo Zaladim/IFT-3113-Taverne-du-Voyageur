@@ -144,8 +144,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 47cf8d3ccad767048bb73298895acacf,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 47cf8d3ccad767048bb73298895acacf,
+        type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 47cf8d3ccad767048bb73298895acacf,
         type: 3}
@@ -204,7 +209,7 @@ PrefabInstance:
     - target: {fileID: 1259917628133517033, guid: 5d0cc63b95efed442bd578342ccdddac,
         type: 3}
       propertyPath: m_Name
-      value: Wall Variant (2)
+      value: Wall Variant
       objectReference: {fileID: 0}
     - target: {fileID: 1259917628133517033, guid: 5d0cc63b95efed442bd578342ccdddac,
         type: 3}
@@ -370,7 +375,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 92c681e857485224ebe23f266ab473a8,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 92c681e857485224ebe23f266ab473a8,
         type: 3}
