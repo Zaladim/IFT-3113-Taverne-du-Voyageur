@@ -7,23 +7,20 @@ namespace Interface
 {
     public class Tutorial : MonoBehaviour
     {
-        [Header("Tools")]
-        [SerializeField] private GameManager gameManager;
-        
-        [Header("Game Elements")]
-        [SerializeField] private GameObject closeAll;
+        [Header("Tools")] [SerializeField] private GameManager gameManager;
+
+        [Header("Game Elements")] [SerializeField]
+        private GameObject closeAll;
         [SerializeField] private GameObject buildMenu;
         [SerializeField] private GameObject buyMenu;
         [SerializeField] private GameObject enrollMenu;
-
         [SerializeField] private GameObject clientIcon;
         [SerializeField] private GameObject reputationIcon;
         [SerializeField] private GameObject coinIcon;
         [SerializeField] private GameObject beerIcon;
-        //[SerializeField] private GameObject settingsMenu;
-        
-        [Header("Tutorial Parts")]
-        [SerializeField] private GameObject part1;
+
+        [Header("Tutorial Parts")] [SerializeField]
+        private GameObject part1;
         [SerializeField] private GameObject part2;
         [SerializeField] private GameObject part3;
         [SerializeField] private GameObject part4;
@@ -34,12 +31,12 @@ namespace Interface
         {
             gameManager.ToggleGamePaused();
             closeAll.SetActive(false);
-            
+
             clientIcon.SetActive(false);
             reputationIcon.SetActive(false);
             coinIcon.SetActive(false);
             beerIcon.SetActive(false);
-            
+
             part1.SetActive(true);
             part2.SetActive(false);
             part3.SetActive(false);
@@ -52,7 +49,7 @@ namespace Interface
         {
             part1.SetActive(false);
             part2.SetActive(true);
-            
+
             buyMenu.SetActive(true);
             coinIcon.SetActive(true);
             beerIcon.SetActive(true);
@@ -62,7 +59,7 @@ namespace Interface
         {
             part2.SetActive(false);
             part3.SetActive(true);
-            
+
             buildMenu.SetActive(true);
             clientIcon.SetActive(true);
             reputationIcon.SetActive(true);
@@ -72,16 +69,16 @@ namespace Interface
         {
             part3.SetActive(false);
             part4.SetActive(true);
-            
+
             enrollMenu.SetActive(true);
         }
-        
+
         public void StartPart5()
         {
             part4.SetActive(false);
             part5.SetActive(true);
         }
-        
+
         public void LastPart()
         {
             part5.SetActive(false);
@@ -90,7 +87,6 @@ namespace Interface
 
         public void FinishTuto()
         {
-            
             buildMenu.SetActive(true);
             buyMenu.SetActive(true);
             enrollMenu.SetActive(true);
@@ -98,7 +94,7 @@ namespace Interface
             beerIcon.SetActive(true);
             clientIcon.SetActive(true);
             reputationIcon.SetActive(true);
-            
+
             gameManager.ToggleGamePaused();
             closeAll.SetActive(true);
             gameObject.SetActive(false);
