@@ -129,6 +129,16 @@ MonoBehaviour:
   distanceFromClientToInteract: 2
   timeToStayIdleMin: 1
   timeToStayIdleMax: 10
+  resourcesManager: {fileID: 0}
+  idleTimer: 0
+  clients: []
+  currentClient: {fileID: 0}
+  etat: 0
+  foodLocation: {fileID: 0}
+  lookDirection: {fileID: 0}
+  mouvement: {fileID: 0}
+  subText: {fileID: 0}
+  text: {fileID: 0}
 --- !u!1 &3920383082770216970
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +242,7 @@ Animator:
   m_GameObject: {fileID: 4206309471127956030}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 188985d5e36ebf146a23b535b7fe6d37, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
