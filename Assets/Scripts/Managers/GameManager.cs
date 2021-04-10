@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Managers
 {
@@ -37,6 +38,28 @@ namespace Managers
             resourcesManager.gameObject.SetActive(true);
         }
 
+        public void UseBasicLayout(bool isInUse)
+        {
+            const int basicLayoutSeats = 60;
+
+            resourcesManager.Seats += isInUse ? basicLayoutSeats : -basicLayoutSeats;
+        }
+
+        private void PauseGame()
+        {
+            Time.timeScale = 0;
+        }
+
+        private void ResumeGame()
+        {
+            Time.timeScale = 1;
+        }
+
+        public void RestartGame()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        
         public void QuitGame()
         {
             if (!runInEditMode)
