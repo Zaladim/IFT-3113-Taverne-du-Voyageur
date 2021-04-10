@@ -14,6 +14,7 @@ namespace Managers
         [Header("Reputation")] [SerializeField]
         private Text reputationDisplay;
 
+        [SerializeField] private int StartingReputation = 10;
         [SerializeField] private int minReputation = 10;
 
         [Header("Seats")] [SerializeField] private int startingSeatNumber = 4;
@@ -24,11 +25,20 @@ namespace Managers
 
         [Header("Clients")] [SerializeField] private Text clientsDisplay;
 
-        [Header("Debug")] [SerializeField] private int clientsQuantity;
-        [SerializeField] private int goldQuantity;
-        [SerializeField] private int reputationQuantity;
-        [SerializeField] private int beersQuantity;
-        [SerializeField] private int seatsQuantity;
+        [Header("Debug")] [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
+        private int clientsQuantity;
+
+        [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
+        private int goldQuantity;
+
+        [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
+        private int reputationQuantity;
+
+        [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
+        private int beersQuantity;
+
+        [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
+        private int seatsQuantity;
 
         private Resource beers;
         private Resource clients;
@@ -63,7 +73,7 @@ namespace Managers
         private void Awake()
         {
             gold = new Resource(goldDisplay, startingGoldAmount);
-            reputation = new Resource(reputationDisplay, minReputation, minReputation);
+            reputation = new Resource(reputationDisplay, StartingReputation, minReputation);
             seats = new Resource(null, startingSeatNumber);
             beers = new Resource(beersDisplay, startingBeersAmount);
             clients = new Resource(clientsDisplay);

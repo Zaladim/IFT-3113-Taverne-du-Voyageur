@@ -33,9 +33,12 @@ namespace Characters
         [SerializeField] private float timeToOrderMax = 100f;
         [SerializeField] private float waitingTimeMin = 45f;
         [SerializeField] private float waitingTimeMax = 100f;
-        [Space] [SerializeField] private int unHappyTime = -10;
+        [Space] [SerializeField] private int unHappyTimeMax = -10;
         [SerializeField] private int unHappyPrice;
         [SerializeField] private int notServedPrice;
+        [SerializeField] private int notServedTimeMax = -25;
+        [SerializeField] private int notServedTime;
+        [SerializeField] private int unHappyTime;
         [SerializeField] private int happyReputation = 1;
         [SerializeField] private int unHappyReputation = -1;
         [SerializeField] private int notServedReputation = -3;
@@ -64,7 +67,6 @@ namespace Characters
         private void Start()
         {
             SetUp();
-            //resourcesManager = FindObjectOfType<ResourcesManager>();
         }
 
         // Update is called once per frame
@@ -124,6 +126,14 @@ namespace Characters
                 {
                     TimeLeft -= Time.deltaTime;
                     isHappy = TimeLeft >= unHappyTime;
+                    
+                    if (TimeLeft < notServedTime)
+                    {
+                        unHappyReputation = notServedReputation;
+                        unHappyPrice = notServedPrice;
+                        isHappy = false;
+                        etat = ClientState.GoingToPay;
+                    }
 
                     text.text = "Waiting To Recive Order";
                     subText.text = Mathf.Ceil(TimeLeft) + "s";
@@ -225,9 +235,12 @@ namespace Characters
 
         private void SetUp()
         {
+            mouvement.Setup();
             hasBeenInteractedWith = false;
             HasAWaiter = false;
             isHappy = true;
+            notServedTime = Random.Range(notServedTimeMax, 0);
+            unHappyTime = Random.Range(unHappyTimeMax, 0);
             TimeLeft = Random.Range(timeToOrderMin, timeToOrderMax);
             price = Random.Range(orderPriceMin, orderPriceMax);
             etat = ClientState.FindingSeat;

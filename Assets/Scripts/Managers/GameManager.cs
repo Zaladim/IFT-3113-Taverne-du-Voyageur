@@ -13,10 +13,13 @@ namespace Managers
 
         [Header("Game Elements")] [SerializeField]
         private GameObject startPanel;
+
         [SerializeField] private GameObject gamePanel;
         [SerializeField] private GameObject settingsPanel;
 
-        [Header("Debug")] [SerializeField] [Tooltip("! Does nothing if changed in editor !")]private bool gameIsPaused;
+        [Header("Debug")] [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
+        private bool gameIsPaused;
+
         public bool MouseControl { get; set; }
 
         private void Start()
@@ -52,7 +55,7 @@ namespace Managers
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        
+
         public void QuitGame()
         {
             if (!runInEditMode)
@@ -71,13 +74,13 @@ namespace Managers
             }
         }
 
-        private void PauseGame ()
+        private void PauseGame()
         {
-            if(gameIsPaused)
+            if (gameIsPaused)
             {
                 Time.timeScale = 0f;
             }
-            else 
+            else
             {
                 Time.timeScale = 1;
             }

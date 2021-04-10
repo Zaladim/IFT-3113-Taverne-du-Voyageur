@@ -5058,12 +5058,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clientManager: {fileID: 905618212}
   goldDisplay: {fileID: 2025079070}
-  startingGoldAmount: 7500
+  startingGoldAmount: 75
   reputationDisplay: {fileID: 1784770172}
-  minReputation: 10
+  StartingReputation: 10
+  minReputation: 1
   startingSeatNumber: 4
   beersDisplay: {fileID: 1188814417}
-  startingBeersAmount: 30
+  startingBeersAmount: 0
   beerPrice: 5
   clientsDisplay: {fileID: 779481454}
   clientsQuantity: 0

@@ -34,8 +34,7 @@ namespace Pathfinding
             var graph = GameObject.Find("Graph");
             pathFinding = graph.GetComponent<Graph>();
             centerOfMass = GetComponent<Transform>().Find("CenterOfMass");
-            hasDestination = false;
-            speed = Random.Range(speedMin, speedMax);
+            Setup();
         }
 
         // Update is called once per frame
@@ -265,6 +264,12 @@ namespace Pathfinding
             {
                 Turn(location.position);
             }*/
+        }
+
+        public void Setup()
+        {
+            hasDestination = false;
+            speed = Random.Range(speedMin, speedMax);
         }
     }
 }

@@ -64,8 +64,9 @@ namespace Characters
                             client => client.TimeLeft <= 10 &&
                                       client.GETState() ==
                                       ClientState.WaitingToReciveOrder)
-                        )
+                    )
                     {
+                        if (resourcesManager.Beers <= 0) continue;
                         currentClient = client;
                         resourcesManager.Beers -= 1;
                         mouvement.GoToSpecificClient(currentClient);
