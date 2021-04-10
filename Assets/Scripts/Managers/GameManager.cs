@@ -13,6 +13,8 @@ namespace Managers
 
         [Header("Game Elements")] [SerializeField]
         private GameObject startPanel;
+        [SerializeField] private GameObject gamePanel;
+        [SerializeField] private GameObject settingsPanel;
 
         [SerializeField] private GameObject gamePanel;
         [SerializeField] private GameObject settingsPanel;

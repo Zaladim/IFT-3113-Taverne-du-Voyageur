@@ -4147,6 +4147,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1394575960}
+        m_MethodName: ToggleGamePaused
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &888569631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5131,6 +5142,11 @@ MonoBehaviour:
   startingBeersAmount: 0
   beerPrice: 5
   clientsDisplay: {fileID: 779481454}
+  clientsQuantity: 0
+  goldQuantity: 0
+  reputationQuantity: 0
+  beersQuantity: 0
+  seatsQuantity: 0
 --- !u!1 &1073480361
 GameObject:
   m_ObjectHideFlags: 0
@@ -7427,6 +7443,8 @@ MonoBehaviour:
   resourcesManager: {fileID: 1069792013}
   startPanel: {fileID: 609589581}
   gamePanel: {fileID: 1336521857}
+  settingsPanel: {fileID: 1939657055}
+  gameIsPaused: 0
 --- !u!4 &1394575961
 Transform:
   m_ObjectHideFlags: 0
