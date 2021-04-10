@@ -3,7 +3,12 @@ guid: 415964750fada96439e00363eb637178
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mur pier
+    second: {fileID: 2100000, guid: fcc68c87066d6d94c8071aafae34cc53, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
