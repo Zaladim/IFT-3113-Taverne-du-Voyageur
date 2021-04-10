@@ -24,6 +24,12 @@ namespace Managers
 
         [Header("Clients")] [SerializeField] private Text clientsDisplay;
 
+        [Header("Debug")] [SerializeField] private int clientsQuantity;
+        [SerializeField] private int goldQuantity;
+        [SerializeField] private int reputationQuantity;
+        [SerializeField] private int beersQuantity;
+        [SerializeField] private int seatsQuantity;
+
         private Resource beers;
         private Resource clients;
         private Resource gold;
@@ -66,6 +72,13 @@ namespace Managers
         private void Update()
         {
             clients.Amount = clientManager.ClientsNumber;
+
+            // debug update
+            clientsQuantity = clients.Amount;
+            goldQuantity = Gold;
+            reputationQuantity = Reputation;
+            beersQuantity = Beers;
+            seatsQuantity = Seats;
         }
 
         public void BuyBeers(int n)
