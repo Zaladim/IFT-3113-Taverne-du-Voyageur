@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Interface;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Managers
@@ -14,6 +15,7 @@ namespace Managers
         private GameObject startPanel;
         [SerializeField] private GameObject gamePanel;
         [SerializeField] private GameObject settingsPanel;
+        [SerializeField] private Tutorial tutorial;
 
         [Header("Debug")] [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
         private bool gameIsPaused;
@@ -49,6 +51,8 @@ namespace Managers
             waiterManager.gameObject.SetActive(true);
             placementManager.gameObject.SetActive(true);
             resourcesManager.gameObject.SetActive(true);
+            
+            tutorial.StartTuto();
         }
 
         public void UseBasicLayout(bool isInUse)
