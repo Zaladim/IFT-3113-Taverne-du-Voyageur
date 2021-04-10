@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Meubles.001
-    second: {fileID: 2100000, guid: 111e7ba9f8a4c8d4895359d6eec3ab98, type: 2}
+    second: {fileID: 2100000, guid: 51d2ead4ed6098e449d4eeb06e55d8b5, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
