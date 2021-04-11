@@ -214,6 +214,19 @@ namespace Pathfinding
             hasDestination = true;
         }
 
+        public QuestGiver GoToRandomQuestGiver()
+        {
+            var allQuestGivers = FindObjectsOfType<QuestGiver>();
+
+            var randomQuestGiver = allQuestGivers[Random.Range(0, allQuestGivers.Length)];
+            target = randomQuestGiver.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, target);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
+            return randomQuestGiver;
+        }
+
         public void StopMoving()
         {
             hasDestination = false;

@@ -12,6 +12,7 @@ namespace Characters
         Eating,
         GoingToPay,
         GettingQuest,
+        Idle,
         Leaving,
         Inactive
     }
@@ -41,6 +42,9 @@ namespace Characters
         [SerializeField] private int happyReputation = 1;
         [SerializeField] private int unHappyReputation = -1;
         [SerializeField] private int notServedReputation = -3;
+        [SerializeField] private float distanceFromQuestGiverToInteract = 2;
+        [SerializeField] private float timeToStayIdleMin = 1f;
+        [SerializeField] private float timeToStayIdleMax = 10f;
 
         [Header("Debug")] [SerializeField] private ClientState etat;
         [SerializeField] private Entrance exit;
@@ -50,6 +54,7 @@ namespace Characters
         [SerializeField] private GameObject payLocation;
         [SerializeField] private int price;
         [SerializeField] private Seat seat;
+        [SerializeField] private QuestGiver questGiver;
         [SerializeField] private float timer;
 
         public bool HasAWaiter { get; set; }
@@ -194,10 +199,60 @@ namespace Characters
                                     resourcesManager.Gold += g;
                                     resourcesManager.Reputation += r;
 
-                                    etat = ClientState.Leaving;
+                                    etat = ClientState.GettingQuest;
                                 }
                             }
                         }
+
+                        break;
+                    }
+                case ClientState.GettingQuest:
+                    {
+                        anim.SetBool("moving", true);
+                        text.text = "Getting Quest";
+                        if (payLocation != null)
+                        {
+                            subText.text = "Quest Giver Not Found";
+                            payLocation = null;
+                            questGiver = mouvement.GoToRandomQuestGiver();
+                        }
+                        else
+                        {
+                            if (exit == null)
+                            {
+                                subText.text = "Exit Not Found";
+                                exit = mouvement.GoToExit();
+                            }
+                            if (questGiver == null)
+                            {
+                                subText.text = "Quest Giver Not Found";
+                                questGiver = mouvement.GoToRandomQuestGiver();
+
+                            }
+                            else
+                            {
+                                subText.text = "Quest Giver Found";
+                                if (mouvement.IsCloseToLocation(questGiver.transform.position, distanceFromQuestGiverToInteract))
+                                {
+                                    etat = ClientState.Idle;
+                                    timer = Random.Range(timeToStayIdleMin, timeToStayIdleMax);
+                                }
+
+                            }
+                        }
+
+
+                        break;
+                    }
+                case ClientState.Idle:
+                    {
+                        anim.SetBool("moving", false);
+                        mouvement.StopMoving();
+                        mouvement.FaceLocation(questGiver.transform.position);
+                        subText.text = "Time Left: " + Mathf.Ceil(timer) + "s";
+                        timer -= Time.deltaTime;
+
+                        if (timer <= 0) etat = ClientState.Leaving;
 
                         break;
                     }
