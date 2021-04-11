@@ -14,6 +14,7 @@ namespace Environnement
         private float delay;
         private RaycastHit hit;
         private PlacementManager placementManager;
+        private GameManager gameManager;
         private readonly float tavernLimit = -10;
         [SerializeField]private GameObject wallAnchor;
         [SerializeField]private GameObject nextAnchor;
@@ -23,6 +24,7 @@ namespace Environnement
         private bool placeable = false;
         private void Awake()
         {
+            gameManager = FindObjectOfType<GameManager>();
             placementManager = GameObject.FindGameObjectWithTag("PlacementManager").GetComponent<PlacementManager>();
         }
 
@@ -35,7 +37,7 @@ namespace Environnement
                 {
                     if (nextAnchor == hit.collider.gameObject)
                     {
-                        delay += Time.deltaTime;
+                        delay += Time.unscaledDeltaTime;
                     }
                     else
                     {
@@ -92,6 +94,7 @@ namespace Environnement
                 placementManager.InitAllNodes();
                 Destroy(wallAnchor);
                 Destroy(gameObject);
+                gameManager.ToggleGamePaused();
             }
         }
 

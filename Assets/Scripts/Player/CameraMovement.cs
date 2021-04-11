@@ -18,11 +18,12 @@ namespace Player
 
         private void Update()
         {
+            var elapsedTime = Time.unscaledDeltaTime;
             var pos = transform.position;
 
-            var horizontalInput = Input.GetAxis("Horizontal");
-            var verticalInput = Input.GetAxis("Vertical");
-            var scroll = Input.GetAxis("Mouse ScrollWheel");
+            var horizontalInput = Input.GetAxisRaw("Horizontal");
+            var verticalInput = Input.GetAxisRaw("Vertical");
+            var scroll = Input.GetAxisRaw("Mouse ScrollWheel");
 
             if (gameManager.MouseControl)
             {
@@ -32,9 +33,9 @@ namespace Player
                 if (Input.mousePosition.x <= panBorderThickness) horizontalInput = -1;
             }
 
-            pos.x += horizontalInput * panSpeed * Time.deltaTime;
-            pos.z += verticalInput * panSpeed * Time.deltaTime;
-            pos.y -= scroll * scrollSpeed * 100f * Time.deltaTime;
+            pos.x += horizontalInput * panSpeed * elapsedTime;
+            pos.z += verticalInput * panSpeed * elapsedTime;
+            pos.y -= scroll * scrollSpeed * 100f * elapsedTime;
 
             pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);
             pos.z = Mathf.Clamp(pos.z, -panLimit.y, panLimit.y);
