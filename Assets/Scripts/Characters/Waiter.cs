@@ -17,11 +17,12 @@ namespace Characters
 
     public class Waiter : MonoBehaviour
     {
+        [Header("Props")] [SerializeField] private Animator anim;
+
         [Header("Options")] [SerializeField] private float distanceFromClientToInteract = 2;
         [SerializeField] private float timeToStayIdleMin = 1f;
         [SerializeField] private float timeToStayIdleMax = 10f;
         [SerializeField] private ResourcesManager resourcesManager;
-        [SerializeField] private Animator anim;
 
         [Header("Debug")] [SerializeField] private float idleTimer;
         [SerializeField] private List<Client> clients;

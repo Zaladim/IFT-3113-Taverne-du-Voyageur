@@ -22,6 +22,7 @@ namespace Characters
         [SerializeField] private TextMesh text;
         [SerializeField] private TextMesh subText;
         [SerializeField] private ResourcesManager resourcesManager;
+        [SerializeField] private Animator anim;
 
         [Header("Options")] [SerializeField] private int orderPriceMin = 10;
         [SerializeField] private int orderPriceMax = 40;
@@ -74,6 +75,7 @@ namespace Characters
             {
                 case ClientState.FindingSeat:
                 {
+                    anim.SetBool("moving", true);
                     text.text = "Finding Seat";
                     if (seat == null)
                     {
@@ -97,6 +99,7 @@ namespace Characters
                     break;
                 }
                 case ClientState.WaitingToOrder:
+                    anim.SetBool("moving", false);
                     timer -= Time.deltaTime;
 
                     text.text = "Waiting To Order";
@@ -122,6 +125,7 @@ namespace Characters
                     break;
                 case ClientState.WaitingToReciveOrder:
                 {
+                    anim.SetBool("moving", false);
                     TimeLeft -= Time.deltaTime;
                     isHappy = TimeLeft >= unHappyTime;
 
@@ -149,6 +153,7 @@ namespace Characters
                 }
                 case ClientState.Eating:
                 {
+                    anim.SetBool("moving", false);
                     text.text = "Eating";
                     subText.text = Mathf.Ceil(timer) + "s";
                     timer -= Time.deltaTime;
@@ -160,6 +165,7 @@ namespace Characters
                 }
                 case ClientState.GoingToPay:
                 {
+                    anim.SetBool("moving", true);
                     text.text = "Going To Pay";
                     if (seat != null)
                     {
@@ -196,6 +202,7 @@ namespace Characters
                 }
                 case ClientState.Leaving:
                 {
+                    anim.SetBool("moving", true);
                     text.text = "Leaving";
 
                     if (payLocation != null)
