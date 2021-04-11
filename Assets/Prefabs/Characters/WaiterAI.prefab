@@ -130,6 +130,7 @@ MonoBehaviour:
   timeToStayIdleMin: 1
   timeToStayIdleMax: 10
   resourcesManager: {fileID: 0}
+  anim: {fileID: 1494329217090020609}
   idleTimer: 0
   clients: []
   currentClient: {fileID: 0}

@@ -21,6 +21,7 @@ namespace Characters
         [SerializeField] private float timeToStayIdleMin = 1f;
         [SerializeField] private float timeToStayIdleMax = 10f;
         [SerializeField] private ResourcesManager resourcesManager;
+        [SerializeField] private Animator anim;
 
         [Header("Debug")] [SerializeField] private float idleTimer;
         [SerializeField] private List<Client> clients;
@@ -57,6 +58,7 @@ namespace Characters
             {
                 case WaiterState.Neutral:
                     if (lookDirection != null) mouvement.FaceLocation(lookDirection.transform.position);
+                    anim.SetBool("moving", false);
 
                     //check if any of its own orders are ready
                     foreach (var client in
@@ -93,6 +95,7 @@ namespace Characters
 
                     break;
                 case WaiterState.TakingClientOrder:
+                    anim.SetBool("moving", true);
                     text.text = "Taking Client's Order";
                     subText.text = "";
                     if (mouvement.IsCloseToLocation(currentClient.GETPosition(), distanceFromClientToInteract))
@@ -104,6 +107,7 @@ namespace Characters
 
                     break;
                 case WaiterState.GoToCounter:
+                    anim.SetBool("moving", true);
                     text.text = "Going To Counter";
                     if (currentClient != null)
                     {
@@ -133,6 +137,7 @@ namespace Characters
 
                     break;
                 case WaiterState.GivingOrder:
+                    anim.SetBool("moving", false);
                     text.text = "Giving Client's Order";
                     subText.text = "";
                     if (mouvement.IsCloseToLocation(currentClient.GETPosition(), distanceFromClientToInteract))
@@ -145,10 +150,12 @@ namespace Characters
 
                     break;
                 case WaiterState.Idle:
+                    anim.SetBool("moving", false);
                     mouvement.StopMoving();
                     mouvement.FaceLocation(currentClient.gameObject.transform.position);
                     subText.text = "Time Left: " + Mathf.Ceil(idleTimer) + "s";
                     idleTimer -= Time.deltaTime;
+
                     if (idleTimer <= 0) etat = WaiterState.GoToCounter;
 
                     break;
