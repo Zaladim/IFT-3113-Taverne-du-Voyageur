@@ -218,12 +218,6 @@ namespace Characters
                         }
                         else
                         {
-                            if (exit == null)
-                            {
-                                subText.text = "Exit Not Found";
-                                exit = mouvement.GoToExit();
-                            }
-
                             if (questGiver == null)
                             {
                                 subText.text = "Quest Giver Not Found";
