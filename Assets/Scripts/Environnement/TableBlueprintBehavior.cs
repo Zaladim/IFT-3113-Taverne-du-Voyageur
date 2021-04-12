@@ -38,9 +38,6 @@ namespace Environnement
             var elapsedTime = Time.unscaledDeltaTime;
 
             transform.Rotate(0.0f, rotateInput * rotateSpeed * elapsedTime, 0.0f);
-            Debug.Log("Rotate Input: " + rotateInput);
-            Debug.Log("Rotate Speed: " + rotateSpeed);
-            Debug.Log("Time: " + elapsedTime);
 
             if (Physics.Raycast(ray, out hit))
             {

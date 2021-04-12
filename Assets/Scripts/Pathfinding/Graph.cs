@@ -7,7 +7,7 @@ namespace Pathfinding
 {
     public class Graph : MonoBehaviour
     {
-        [SerializeField]private Node[] nodes;
+        [SerializeField] private Node[] nodes;
 
         public bool DrawGraph; //debug only
 
@@ -19,17 +19,14 @@ namespace Pathfinding
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
         }
 
         public void UpdateGraph()
         {
             nodes = FindObjectsOfType<Node>();
-            for (int i = 0; i < nodes.Length; i++)
-            {
-                nodes[i].initialize();
-            }
+            for (var i = 0; i < nodes.Length; i++) nodes[i].initialize();
         }
 
         public Node[] getNodes()
@@ -39,15 +36,9 @@ namespace Pathfinding
 
         public void drawGraph(bool inEditor)
         {
-            if (inEditor)
-            {
-                nodes = FindObjectsOfType<Node>();
-            }
+            if (inEditor) nodes = FindObjectsOfType<Node>();
 
-            foreach (var t in nodes)
-            {
-                t.initialize();
-            }
+            foreach (var t in nodes) t.initialize();
 
             foreach (var t in nodes)
             {
@@ -143,16 +134,9 @@ namespace Pathfinding
 
             while (openSet.Count > 0)
             {
-                /*if (!isAlive)
-            {
-                return null;
-            }*/
                 var currentPosition = findPositionOfSmallest(fScore, vistedNodes);
                 var current = nodes[currentPosition];
-                if (current == endNode)
-                {
-                    return reconstruct_path(cameFrom, current);
-                }
+                if (current == endNode) return reconstruct_path(cameFrom, current);
 
                 openSet.Remove(current);
                 vistedNodes[currentPosition] = true;
@@ -162,10 +146,7 @@ namespace Pathfinding
                     var neighborPosition = findPositionInGrid(neighbor);
                     var isNeighborVisited = vistedNodes[neighborPosition];
                     if (isNeighborVisited) continue;
-                    if (!isNodeInList(openSet, current))
-                    {
-                        openSet.Add(current);
-                    }
+                    if (!isNodeInList(openSet, current)) openSet.Add(current);
 
                     var tentativeGScore = gScore[currentPosition] +
                                           getDistance(current.getPosition(), neighbor.getPosition());
@@ -230,12 +211,8 @@ namespace Pathfinding
         private int findPositionInGrid(Node node)
         {
             for (var i = 0; i < nodes.Length; i++)
-            {
                 if (nodes[i] == node)
-                {
                     return i;
-                }
-            }
 
             throw new Exception($"the given node ({node.getPosition()}) isn't in the grid");
         }
