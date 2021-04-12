@@ -220,8 +220,7 @@ namespace Characters
                         {
                             if (questGiver == null)
                             {
-                                subText.text = "Quest Giver Not Found";
-                                questGiver = mouvement.GoToRandomQuestGiver();
+                                etat = ClientState.Leaving;
                             }
                             else
                             {
