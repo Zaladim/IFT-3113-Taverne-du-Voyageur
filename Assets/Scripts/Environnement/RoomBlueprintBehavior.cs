@@ -126,7 +126,6 @@ namespace Environnement
                 {
                     if (child.name == "Mur")
                     {
-                        //child.tag = "Untagged";
                         child.gameObject.SetActive(false);
                     }
 
