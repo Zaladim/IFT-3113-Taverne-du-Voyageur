@@ -28,11 +28,11 @@ namespace Characters
         [Header("Options")] [SerializeField] private int orderPriceMin = 10;
         [SerializeField] private int orderPriceMax = 40;
         [SerializeField] private float timeToEatMin = 5f;
-        [SerializeField] private float timeToEatMax = 20f;
+        [SerializeField] private float timeToEatMax = 10f;
         [SerializeField] private float timeToOrderMin = 10f;
-        [SerializeField] private float timeToOrderMax = 100f;
-        [SerializeField] private float waitingTimeMin = 45f;
-        [SerializeField] private float waitingTimeMax = 100f;
+        [SerializeField] private float timeToOrderMax = 15f;
+        [SerializeField] private float waitingTimeMin = 15f;
+        [SerializeField] private float waitingTimeMax = 20f;
         [Space] [SerializeField] private int unHappyTimeMax = -10;
         [SerializeField] private int unHappyPrice;
         [SerializeField] private int notServedPrice;
@@ -54,8 +54,10 @@ namespace Characters
         [SerializeField] private GameObject payLocation;
         [SerializeField] private int price;
         [SerializeField] private Seat seat;
-        [SerializeField] private QuestGiver questGiver;
+        [SerializeField] private GameObject questGiver;
         [SerializeField] private float timer;
+
+        [SerializeField] private bool hasQuest = false;
 
         public bool HasAWaiter { get; set; }
 
@@ -214,7 +216,14 @@ namespace Characters
                         {
                             subText.text = "Quest Giver Not Found";
                             payLocation = null;
-                            questGiver = mouvement.GoToRandomQuestGiver();
+                            if (questGiver == null)
+                            {
+                                questGiver = mouvement.GoToRandomQuestGiver();
+                            }
+                            else
+                            {
+                                mouvement.GoToQuestGiver(questGiver);
+                            }
                         }
                         else
                         {
@@ -230,6 +239,15 @@ namespace Characters
                                 {
                                     etat = ClientState.Idle;
                                     timer = Random.Range(timeToStayIdleMin, timeToStayIdleMax);
+                                    if (hasQuest)
+                                    {
+                                        questGiver.GetComponent<QuestGiver>().ReturnQuest();
+                                        hasQuest = false;
+                                    }
+                                    else
+                                    {
+                                        hasQuest = true;
+                                    }
                                 }
                             }
                         }
@@ -246,7 +264,15 @@ namespace Characters
                         subText.text = "Time Left: " + Mathf.Ceil(timer) + "s";
                         timer -= Time.deltaTime;
 
-                        if (timer <= 0) etat = ClientState.Leaving;
+                        if (timer <= 0)
+                        {
+                            etat = ClientState.Leaving;
+
+                            if (!hasQuest)
+                            {
+                                questGiver = null;
+                            }
+                        }
 
                         break;
                     }

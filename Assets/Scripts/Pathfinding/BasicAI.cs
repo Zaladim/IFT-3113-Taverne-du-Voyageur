@@ -214,9 +214,9 @@ namespace Pathfinding
             hasDestination = true;
         }
 
-        public QuestGiver GoToRandomQuestGiver()
+        public GameObject GoToRandomQuestGiver()
         {
-            var allQuestGivers = FindObjectsOfType<QuestGiver>();
+            var allQuestGivers = GameObject.FindGameObjectsWithTag("QuestGiver");
             if (allQuestGivers.Length == 0)
             {
                 return null;
@@ -229,6 +229,15 @@ namespace Pathfinding
             currentDestination = currentPath[currentNode].getPosition();
             hasDestination = true;
             return randomQuestGiver;
+        }
+
+        public void GoToQuestGiver(GameObject vmac)
+        {
+            target = vmac.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, target);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
         }
 
         public void StopMoving()
