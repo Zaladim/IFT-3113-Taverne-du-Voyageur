@@ -311,6 +311,7 @@ namespace Characters
                 case ClientState.Inactive:
                     SetUp();
                     gameObject.SetActive(false);
+                    exit = null;
                     break;
             }
         }
