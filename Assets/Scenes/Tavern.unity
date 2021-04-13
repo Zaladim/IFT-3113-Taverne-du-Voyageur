@@ -8851,7 +8851,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clientManager: {fileID: 905618212}
   goldDisplay: {fileID: 2025079070}
-  startingGoldAmount: 7500
+  startingGoldAmount: 70
   reputationDisplay: {fileID: 1784770172}
   StartingReputation: 10
   minReputation: 1
