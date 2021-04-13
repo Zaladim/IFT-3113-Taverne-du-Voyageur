@@ -7,32 +7,40 @@ namespace Pathfinding
 {
     public class Graph : MonoBehaviour
     {
-        [SerializeField]private Node[] nodes;
+        [SerializeField] private List<Node> nodes = new List<Node>();
 
         public bool DrawGraph; //debug only
 
         // Start is called before the first frame update
         private void Start()
         {
-            nodes = FindObjectsOfType<Node>();
+            GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+            foreach (var node in n)
+            {
+                nodes.Add(node.GetComponent<Node>());
+            }
+            // nodes = FindObjectsOfType<Node>();
             drawGraph(DrawGraph);
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
         }
 
         public void UpdateGraph()
         {
-            nodes = FindObjectsOfType<Node>();
-            for (int i = 0; i < nodes.Length; i++)
+            nodes.Clear();
+            GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+            foreach (var node in n)
             {
-                nodes[i].initialize();
+                nodes.Add(node.GetComponent<Node>());
             }
+            // nodes = FindObjectsOfType<Node>();
+            for (var i = 0; i < nodes.Count; i++) nodes[i].initialize();
         }
 
-        public Node[] getNodes()
+        public List<Node> getNodes()
         {
             return nodes;
         }
@@ -41,13 +49,16 @@ namespace Pathfinding
         {
             if (inEditor)
             {
-                nodes = FindObjectsOfType<Node>();
+                nodes.Clear();
+                GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+                foreach (var node in n)
+                {
+                    nodes.Add(node.GetComponent<Node>());
+                }
+                // nodes = FindObjectsOfType<Node>();
             }
 
-            foreach (var t in nodes)
-            {
-                t.initialize();
-            }
+            foreach (var t in nodes) t.initialize();
 
             foreach (var t in nodes)
             {
@@ -108,21 +119,21 @@ namespace Pathfinding
             // Initially, only the start node is known.
             var openSet = new List<Node> {startNode};
 
-            var vistedNodes = new bool[nodes.Length];
+            var vistedNodes = new bool[nodes.Count];
 
             // For each node, which node it can most efficiently be reached from.
             // If a node can be reached from many nodes, cameFrom will eventually contain the
             // most efficient previous step.
-            var cameFrom = new Node[nodes.Length];
+            var cameFrom = new Node[nodes.Count];
 
             // For each node, the cost of getting from the start node to that node.
-            var gScore = new float[nodes.Length];
+            var gScore = new float[nodes.Count];
 
             // For each node, the total cost of getting from the start node to the goal
             // by passing by that node. That value is partly known, partly heuristic.
-            var fScore = new float[nodes.Length];
+            var fScore = new float[nodes.Count];
             //initialize all the lists
-            for (var i = 0; i < nodes.Length; i++)
+            for (var i = 0; i < nodes.Count; i++)
             {
                 if (endNode is null) continue;
                 cameFrom[i] = null;
@@ -143,16 +154,13 @@ namespace Pathfinding
 
             while (openSet.Count > 0)
             {
-                /*if (!isAlive)
-            {
-                return null;
-            }*/
                 var currentPosition = findPositionOfSmallest(fScore, vistedNodes);
-                var current = nodes[currentPosition];
-                if (current == endNode)
+                if (currentPosition < 0 || currentPosition > nodes.Count)
                 {
-                    return reconstruct_path(cameFrom, current);
+                    break;
                 }
+                var current = nodes[currentPosition];
+                if (current == endNode) return reconstruct_path(cameFrom, current);
 
                 openSet.Remove(current);
                 vistedNodes[currentPosition] = true;
@@ -162,10 +170,7 @@ namespace Pathfinding
                     var neighborPosition = findPositionInGrid(neighbor);
                     var isNeighborVisited = vistedNodes[neighborPosition];
                     if (isNeighborVisited) continue;
-                    if (!isNodeInList(openSet, current))
-                    {
-                        openSet.Add(current);
-                    }
+                    if (!isNodeInList(openSet, current)) openSet.Add(current);
 
                     var tentativeGScore = gScore[currentPosition] +
                                           getDistance(current.getPosition(), neighbor.getPosition());
@@ -229,13 +234,9 @@ namespace Pathfinding
 
         private int findPositionInGrid(Node node)
         {
-            for (var i = 0; i < nodes.Length; i++)
-            {
+            for (var i = 0; i < nodes.Count; i++)
                 if (nodes[i] == node)
-                {
                     return i;
-                }
-            }
 
             throw new Exception($"the given node ({node.getPosition()}) isn't in the grid");
         }

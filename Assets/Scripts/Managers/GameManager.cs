@@ -13,6 +13,7 @@ namespace Managers
 
         [Header("Game Elements")] [SerializeField]
         private GameObject startPanel;
+
         [SerializeField] private GameObject gamePanel;
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private Tutorial tutorial;
@@ -51,7 +52,7 @@ namespace Managers
             waiterManager.gameObject.SetActive(true);
             placementManager.gameObject.SetActive(true);
             resourcesManager.gameObject.SetActive(true);
-            
+
             tutorial.StartTuto();
         }
 
@@ -69,8 +70,7 @@ namespace Managers
 
         public void QuitGame()
         {
-            if (!runInEditMode)
-                Application.Quit();
+            Application.Quit();
         }
 
         private void PauseGame()

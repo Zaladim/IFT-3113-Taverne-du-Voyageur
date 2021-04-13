@@ -12,6 +12,9 @@ TagManager:
   - Node
   - PlacementManager
   - WallDisplay
+  - Model
+  - QuestGiver
+  - GameManager
   layers:
   - Default
   - TransparentFX

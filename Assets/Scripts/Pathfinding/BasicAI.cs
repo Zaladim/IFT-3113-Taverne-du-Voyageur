@@ -16,7 +16,7 @@ namespace Pathfinding
         private bool hasDestination;
         private Graph pathFinding;
         private float speed;
-        private Vector3 target;
+        [SerializeField] private Vector3 target;
 
         //private Seat currentSeat;
 
@@ -208,6 +208,32 @@ namespace Pathfinding
         public void GoToSpecificClient(Client person)
         {
             target = person.GETPosition();
+            currentPath = pathFinding.A_Star(transform.position, target);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
+        }
+
+        public GameObject GoToRandomQuestGiver()
+        {
+            var allQuestGivers = GameObject.FindGameObjectsWithTag("QuestGiver");
+            if (allQuestGivers.Length == 0)
+            {
+                return null;
+            }
+            
+            var randomQuestGiver = allQuestGivers[Random.Range(0, allQuestGivers.Length)];
+            target = randomQuestGiver.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, target);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
+            return randomQuestGiver;
+        }
+
+        public void GoToQuestGiver(GameObject vmac)
+        {
+            target = vmac.transform.position;
             currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();

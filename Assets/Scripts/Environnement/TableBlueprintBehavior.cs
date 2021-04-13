@@ -13,6 +13,7 @@ namespace Environnement
         [SerializeField] private Material constructMat;
 
         [SerializeField] private List<GameObject> childs = new List<GameObject>();
+        private GameManager gameManager;
 
         [SerializeField] private Vector3 pos;
         [SerializeField] private Collider tmp;
@@ -25,6 +26,7 @@ namespace Environnement
 
         private void Awake()
         {
+            gameManager = FindObjectOfType<GameManager>();
             graph = GameObject.Find("Graph").GetComponent<Graph>();
             resourcesManager = FindObjectOfType<ResourcesManager>();
         }
@@ -32,9 +34,10 @@ namespace Environnement
         private void Update()
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            var rotateInput = Input.GetAxis("RotatePrefab");
+            var rotateInput = Input.GetAxisRaw("RotatePrefab");
+            var elapsedTime = Time.unscaledDeltaTime;
 
-            transform.Rotate(0.0f, rotateInput * rotateSpeed * Time.deltaTime, 0.0f);
+            transform.Rotate(0.0f, rotateInput * rotateSpeed * elapsedTime, 0.0f);
 
             if (Physics.Raycast(ray, out hit))
             {
@@ -74,6 +77,7 @@ namespace Environnement
                 resourcesManager.Seats += seats;
                 graph.UpdateGraph();
                 Destroy(gameObject);
+                gameManager.ToggleGamePaused();
             }
         }
 

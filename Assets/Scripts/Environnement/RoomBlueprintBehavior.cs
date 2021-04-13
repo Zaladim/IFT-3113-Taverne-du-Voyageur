@@ -14,6 +14,7 @@ namespace Environnement
         private float delay;
         private RaycastHit hit;
         private PlacementManager placementManager;
+        private GameManager gameManager;
         private readonly float tavernLimit = -10;
         [SerializeField]private GameObject wallAnchor;
         [SerializeField]private GameObject nextAnchor;
@@ -23,6 +24,7 @@ namespace Environnement
         private bool placeable = false;
         private void Awake()
         {
+            gameManager = FindObjectOfType<GameManager>();
             placementManager = GameObject.FindGameObjectWithTag("PlacementManager").GetComponent<PlacementManager>();
         }
 
@@ -35,7 +37,7 @@ namespace Environnement
                 {
                     if (nextAnchor == hit.collider.gameObject)
                     {
-                        delay += Time.deltaTime;
+                        delay += Time.unscaledDeltaTime;
                     }
                     else
                     {
@@ -92,12 +94,15 @@ namespace Environnement
                 placementManager.InitAllNodes();
                 Destroy(wallAnchor);
                 Destroy(gameObject);
+                gameManager.ToggleGamePaused();
             }
         }
 
         private void DestroyObjectAtLocation(float minDist, GameObject item)
         {
+            print(item);
             var tmpLocation = item.transform.position;
+            bool setToInterior = false;
 
             //Transform[] tiles = GameObject.FindObjectsOfType<Transform> ();
             var tiles =
@@ -111,7 +116,25 @@ namespace Environnement
                     {
                         item.tag = "Wall";
                         Destroy(tiles[i].gameObject);
+                        setToInterior = true;
                     }
+            }
+            
+            if (setToInterior)
+            {
+                foreach (Transform child in item.transform)
+                {
+                    if (child.name == "Mur")
+                    {
+                        child.gameObject.SetActive(false);
+                    }
+
+                    if (child.name == "MurInterieur")
+                    {
+                        child.tag = "WallDisplay";
+                        child.gameObject.GetComponent<MeshRenderer>().enabled = true;
+                    }
+                }
             }
         }
 
@@ -127,8 +150,7 @@ namespace Environnement
                         return true;
             Collider[] hitColliders =
                 Physics.OverlapBox(transform.position, new Vector3(2f, 2f, 2f), transform.rotation);
-            print(hitColliders.Length);
-            
+
             return false;
         }
         
