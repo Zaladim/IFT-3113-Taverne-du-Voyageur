@@ -148,6 +148,9 @@ MonoBehaviour:
   happyReputation: 1
   unHappyReputation: -1
   notServedReputation: -3
+  distanceFromQuestGiverToInteract: 2
+  timeToStayIdleMin: 1
+  timeToStayIdleMax: 5
   etat: 0
   exit: {fileID: 0}
   hasBeenInteractedWith: 0
@@ -156,6 +159,7 @@ MonoBehaviour:
   payLocation: {fileID: 0}
   price: 0
   seat: {fileID: 0}
+  questGiver: {fileID: 0}
   timer: 0
 --- !u!1 &4284386174109325258
 GameObject:
