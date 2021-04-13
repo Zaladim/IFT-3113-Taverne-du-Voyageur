@@ -217,7 +217,10 @@ namespace Pathfinding
         public QuestGiver GoToRandomQuestGiver()
         {
             var allQuestGivers = FindObjectsOfType<QuestGiver>();
-            if (allQuestGivers == null) return null;
+            if (allQuestGivers.Length == 0)
+            {
+                return null;
+            }
             
             var randomQuestGiver = allQuestGivers[Random.Range(0, allQuestGivers.Length)];
             target = randomQuestGiver.transform.position;

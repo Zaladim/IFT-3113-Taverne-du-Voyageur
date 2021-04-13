@@ -7,14 +7,19 @@ namespace Pathfinding
 {
     public class Graph : MonoBehaviour
     {
-        [SerializeField] private Node[] nodes;
+        [SerializeField] private List<Node> nodes = new List<Node>();
 
         public bool DrawGraph; //debug only
 
         // Start is called before the first frame update
         private void Start()
         {
-            nodes = FindObjectsOfType<Node>();
+            GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+            foreach (var node in n)
+            {
+                nodes.Add(node.GetComponent<Node>());
+            }
+            // nodes = FindObjectsOfType<Node>();
             drawGraph(DrawGraph);
         }
 
@@ -25,18 +30,33 @@ namespace Pathfinding
 
         public void UpdateGraph()
         {
-            nodes = FindObjectsOfType<Node>();
-            for (var i = 0; i < nodes.Length; i++) nodes[i].initialize();
+            nodes.Clear();
+            GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+            foreach (var node in n)
+            {
+                nodes.Add(node.GetComponent<Node>());
+            }
+            // nodes = FindObjectsOfType<Node>();
+            for (var i = 0; i < nodes.Count; i++) nodes[i].initialize();
         }
 
-        public Node[] getNodes()
+        public List<Node> getNodes()
         {
             return nodes;
         }
 
         public void drawGraph(bool inEditor)
         {
-            if (inEditor) nodes = FindObjectsOfType<Node>();
+            if (inEditor)
+            {
+                nodes.Clear();
+                GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+                foreach (var node in n)
+                {
+                    nodes.Add(node.GetComponent<Node>());
+                }
+                // nodes = FindObjectsOfType<Node>();
+            }
 
             foreach (var t in nodes) t.initialize();
 
@@ -99,21 +119,21 @@ namespace Pathfinding
             // Initially, only the start node is known.
             var openSet = new List<Node> {startNode};
 
-            var vistedNodes = new bool[nodes.Length];
+            var vistedNodes = new bool[nodes.Count];
 
             // For each node, which node it can most efficiently be reached from.
             // If a node can be reached from many nodes, cameFrom will eventually contain the
             // most efficient previous step.
-            var cameFrom = new Node[nodes.Length];
+            var cameFrom = new Node[nodes.Count];
 
             // For each node, the cost of getting from the start node to that node.
-            var gScore = new float[nodes.Length];
+            var gScore = new float[nodes.Count];
 
             // For each node, the total cost of getting from the start node to the goal
             // by passing by that node. That value is partly known, partly heuristic.
-            var fScore = new float[nodes.Length];
+            var fScore = new float[nodes.Count];
             //initialize all the lists
-            for (var i = 0; i < nodes.Length; i++)
+            for (var i = 0; i < nodes.Count; i++)
             {
                 if (endNode is null) continue;
                 cameFrom[i] = null;
@@ -135,6 +155,10 @@ namespace Pathfinding
             while (openSet.Count > 0)
             {
                 var currentPosition = findPositionOfSmallest(fScore, vistedNodes);
+                if (currentPosition < 0 || currentPosition > nodes.Count)
+                {
+                    break;
+                }
                 var current = nodes[currentPosition];
                 if (current == endNode) return reconstruct_path(cameFrom, current);
 
@@ -210,7 +234,7 @@ namespace Pathfinding
 
         private int findPositionInGrid(Node node)
         {
-            for (var i = 0; i < nodes.Length; i++)
+            for (var i = 0; i < nodes.Count; i++)
                 if (nodes[i] == node)
                     return i;
 
