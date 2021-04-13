@@ -16,7 +16,7 @@ namespace Pathfinding
         private bool hasDestination;
         private Graph pathFinding;
         private float speed;
-        private Vector3 target;
+        [SerializeField] private Vector3 target;
 
         //private Seat currentSeat;
 

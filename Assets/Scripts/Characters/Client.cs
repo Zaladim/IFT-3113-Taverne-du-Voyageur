@@ -243,6 +243,7 @@ namespace Characters
                                     {
                                         questGiver.GetComponent<QuestGiver>().ReturnQuest();
                                         hasQuest = false;
+                                        exit = null;
                                     }
                                     else
                                     {
