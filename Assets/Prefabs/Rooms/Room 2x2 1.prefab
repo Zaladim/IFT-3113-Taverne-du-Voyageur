@@ -1056,10 +1056,60 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1238546345058026962}
     m_Modifications:
+    - target: {fileID: 387261631665837329, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2159964
+      objectReference: {fileID: 0}
+    - target: {fileID: 387261631665837329, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.20810176
+      objectReference: {fileID: 0}
+    - target: {fileID: 387261631665837329, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2095171
+      objectReference: {fileID: 0}
+    - target: {fileID: 387261631665837329, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.006000102
+      objectReference: {fileID: 0}
+    - target: {fileID: 387261631665837329, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.005
+      objectReference: {fileID: 0}
     - target: {fileID: 2996111563083469658, guid: 209fdcae65655044e9a0a45c0af91a2c,
         type: 3}
       propertyPath: m_Name
       value: Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960269077100374156, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4818519873082401844, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2159964
+      objectReference: {fileID: 0}
+    - target: {fileID: 4818519873082401844, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.20810176
+      objectReference: {fileID: 0}
+    - target: {fileID: 4818519873082401844, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2095171
+      objectReference: {fileID: 0}
+    - target: {fileID: 4818519873082401844, guid: 209fdcae65655044e9a0a45c0af91a2c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.088
       objectReference: {fileID: 0}
     - target: {fileID: 5049941337210077385, guid: 209fdcae65655044e9a0a45c0af91a2c,
         type: 3}
