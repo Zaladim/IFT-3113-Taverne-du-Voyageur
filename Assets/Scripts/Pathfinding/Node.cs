@@ -52,6 +52,7 @@ namespace Pathfinding
                     neighborsNodes.Add(t);
                 }
             }
+            position = transform.position;
         }
 
         private bool canReachOtherNode(Component node)

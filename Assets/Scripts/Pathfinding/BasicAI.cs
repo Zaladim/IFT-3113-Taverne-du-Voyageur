@@ -15,7 +15,7 @@ namespace Pathfinding
         private int currentNode;
         private List<Node> currentPath;
         private bool hasDestination;
-        public Graph pathFinding;
+        private Graph pathFinding;
         private float speed;
         [SerializeField] private Vector3 target;
 
@@ -23,6 +23,8 @@ namespace Pathfinding
         //temporary variables for the thread
         private Node currentPosition;
         private Node destinationPosition;
+
+        private bool graphUpdateScheduled;
 
         //private Seat currentSeat;
 
@@ -38,6 +40,12 @@ namespace Pathfinding
         // Update is called once per frame
         private void Update()
         {
+            if (graphUpdateScheduled && !IsThreadRunning())
+            {
+                graphUpdateScheduled = false;
+                pathFinding.UpdateGraph();
+            }
+
             //move
             if (hasDestination)
             {
@@ -111,6 +119,11 @@ namespace Pathfinding
         public bool IsCloseToLocation(Vector3 position, float minimalDistance)
         {
             return Vector3.Distance(centerOfMass.position, position) <= minimalDistance;
+        }
+
+        public void ScheduledGraphUpdate()
+        {
+            graphUpdateScheduled = true;
         }
 
         public bool IsThreadRunning()
@@ -258,7 +271,7 @@ namespace Pathfinding
 
 
         public void GoToSpecificClient(Client person)
-        {           
+        {
             SetNewPath(person.GETPosition());
             /*target = person.GETPosition();
             currentPath = pathFinding.A_Star(transform.position, target);

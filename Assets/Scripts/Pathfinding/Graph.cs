@@ -13,6 +13,8 @@ namespace Pathfinding
 
         private bool isAlive = true;
 
+        private bool isOriginal = true;
+
         public void Kill()
         {
             isAlive = false;
@@ -28,6 +30,7 @@ namespace Pathfinding
             Graph temp = new Graph();
             temp.nodes = nodes;
             temp.DrawGraph = DrawGraph;
+            temp.isOriginal = false;
             return temp;
         }
 
@@ -46,6 +49,7 @@ namespace Pathfinding
         // Update is called once per frame
         private void Update()
         {
+            UpdateGraph();
         }
 
         public void UpdateGraph()
@@ -59,11 +63,14 @@ namespace Pathfinding
             // nodes = FindObjectsOfType<Node>();
             for (var i = 0; i < nodes.Count; i++) nodes[i].initialize();
 
-            //take care of all the copies of the graph
-            BasicAI[] allBasicAI = FindObjectsOfType<BasicAI>();
-            for (int i = 0; i < allBasicAI.Length; i++)
+            if (isOriginal)
             {
-                allBasicAI[i].pathFinding.UpdateGraph();
+                //take care of all the copies of the graph
+                BasicAI[] allBasicAI = FindObjectsOfType<BasicAI>();
+                for (int i = 0; i < allBasicAI.Length; i++)
+                {
+                    allBasicAI[i].ScheduledGraphUpdate();
+                }
             }
         }
 
@@ -91,10 +98,10 @@ namespace Pathfinding
             {
                 var position = t.getPosition();
                 Debug.DrawLine(position - new Vector3(0.1f, 0.1f, 0.1f), position + new Vector3(0.1f, 0.1f, 0.1f),
-                    Color.blue,2);
+                    Color.blue, 2);
 
                 var neighbors = t.getNeighbors();
-                
+
                 foreach (var t1 in neighbors)
                 {
                     var neighborsNeighbors = t1.getNeighbors();
@@ -102,11 +109,11 @@ namespace Pathfinding
                     {
                         if (t2 == t)
                         {
-                            Debug.DrawLine(position, t1.getPosition(), Color.green,2);
+                            Debug.DrawLine(position, t1.getPosition(), Color.green, 2);
                             break;
                         }
 
-                        Debug.DrawLine(position, t1.getPosition(), Color.red,2);
+                        Debug.DrawLine(position, t1.getPosition(), Color.red, 2);
                     }
                 }
             }
@@ -126,8 +133,8 @@ namespace Pathfinding
                 var hits = Physics.RaycastAll(position, direction, currentDistance);
                 var canGoToObject =
                     (from t in hits
-                        where t.collider.GetComponent<ObjectAIBehavior>() != null
-                        select t.collider.GetComponent<ObjectAIBehavior>())
+                     where t.collider.GetComponent<ObjectAIBehavior>() != null
+                     select t.collider.GetComponent<ObjectAIBehavior>())
                     .All(behavior => behavior.canActorsPassThrough);
 
                 if (!canGoToObject) continue;
@@ -145,7 +152,7 @@ namespace Pathfinding
 
             // The set of currently discovered nodes that are not evaluated yet.
             // Initially, only the start node is known.
-            var openSet = new List<Node> {startNode};
+            var openSet = new List<Node> { startNode };
 
             var vistedNodes = new bool[nodes.Count];
 
@@ -224,12 +231,12 @@ namespace Pathfinding
 
         private List<Node> reconstruct_path(IReadOnlyList<Node> cameFrom, Node current)
         {
-            var totalPath = new List<Node> {current};
+            var totalPath = new List<Node> { current };
             while (cameFrom[findPositionInGrid(current)] != null)
             {
                 if (current is null) continue;
                 current = cameFrom[findPositionInGrid(current)];
-                var temp = new List<Node> {current};
+                var temp = new List<Node> { current };
                 temp.AddRange(totalPath);
                 totalPath = temp;
             }
