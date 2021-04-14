@@ -11,6 +11,26 @@ namespace Pathfinding
 
         public bool DrawGraph; //debug only
 
+        private bool isAlive = true;
+
+        public void Kill()
+        {
+            isAlive = false;
+        }
+
+        public void Resurect()
+        {
+            isAlive = true;
+        }
+
+        public Graph CopyGraph()
+        {
+            Graph temp = new Graph();
+            temp.nodes = nodes;
+            temp.DrawGraph = DrawGraph;
+            return temp;
+        }
+
         // Start is called before the first frame update
         private void Start()
         {
@@ -38,6 +58,13 @@ namespace Pathfinding
             }
             // nodes = FindObjectsOfType<Node>();
             for (var i = 0; i < nodes.Count; i++) nodes[i].initialize();
+
+            //take care of all the copies of the graph
+            BasicAI[] allBasicAI = FindObjectsOfType<BasicAI>();
+            for (int i = 0; i < allBasicAI.Length; i++)
+            {
+                allBasicAI[i].pathFinding.UpdateGraph();
+            }
         }
 
         public List<Node> getNodes()
@@ -64,9 +91,10 @@ namespace Pathfinding
             {
                 var position = t.getPosition();
                 Debug.DrawLine(position - new Vector3(0.1f, 0.1f, 0.1f), position + new Vector3(0.1f, 0.1f, 0.1f),
-                    Color.blue);
+                    Color.blue,2);
 
                 var neighbors = t.getNeighbors();
+                
                 foreach (var t1 in neighbors)
                 {
                     var neighborsNeighbors = t1.getNeighbors();
@@ -74,18 +102,18 @@ namespace Pathfinding
                     {
                         if (t2 == t)
                         {
-                            Debug.DrawLine(position, t1.getPosition(), Color.green);
+                            Debug.DrawLine(position, t1.getPosition(), Color.green,2);
                             break;
                         }
 
-                        Debug.DrawLine(position, t1.getPosition(), Color.red);
+                        Debug.DrawLine(position, t1.getPosition(), Color.red,2);
                     }
                 }
             }
         }
 
 
-        private Node getColsestNodeToPoint(Vector3 position)
+        public Node getColsestNodeToPoint(Vector3 position)
         {
             Node closestNode = null;
             var closestDistance = float.MaxValue;
@@ -110,10 +138,10 @@ namespace Pathfinding
             return closestNode;
         }
 
-        public List<Node> A_Star(Vector3 start, Vector3 end)
+        public List<Node> A_Star(Node startNode, Node endNode)
         {
-            var startNode = getColsestNodeToPoint(start);
-            var endNode = getColsestNodeToPoint(end);
+            /*var startNode = getColsestNodeToPoint(start);
+            var endNode = getColsestNodeToPoint(end);*/
 
             // The set of currently discovered nodes that are not evaluated yet.
             // Initially, only the start node is known.
@@ -154,6 +182,10 @@ namespace Pathfinding
 
             while (openSet.Count > 0)
             {
+                if (!isAlive)
+                {
+                    return null;
+                }
                 var currentPosition = findPositionOfSmallest(fScore, vistedNodes);
                 if (currentPosition < 0 || currentPosition > nodes.Count)
                 {
@@ -182,8 +214,8 @@ namespace Pathfinding
                 }
             }
 
-            if (startNode is null) throw new Exception("A* couldn't find the path");
-            if (endNode is null) throw new Exception("A* couldn't find the path");
+            if (startNode is null) throw new Exception("A* couldn't find the path, start node was null");
+            if (endNode is null) throw new Exception("A* couldn't find the path, end node was null");
             Debug.Log(
                 $"A* couldn't find the path between {startNode.getPosition()} and {endNode.getPosition()}");
             throw new Exception(
