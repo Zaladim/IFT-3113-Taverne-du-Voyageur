@@ -49,7 +49,6 @@ namespace Pathfinding
         // Update is called once per frame
         private void Update()
         {
-            UpdateGraph();
         }
 
         public void UpdateGraph()
