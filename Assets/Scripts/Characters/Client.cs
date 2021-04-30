@@ -1,5 +1,6 @@
 ﻿using Managers;
 using Pathfinding;
+using System.Linq;
 using UnityEngine;
 
 namespace Characters
@@ -7,6 +8,7 @@ namespace Characters
     public enum ClientState
     {
         FindingSeat,
+        LookingAround,
         WaitingToOrder,
         WaitingToReciveOrder,
         Eating,
@@ -45,6 +47,11 @@ namespace Characters
         [SerializeField] private float distanceFromQuestGiverToInteract = 2;
         [SerializeField] private float timeToStayIdleMin = 1f;
         [SerializeField] private float timeToStayIdleMax = 5f;
+        [SerializeField] private float timeToWaitBeforeLookingForDestinationAgain = 60f;
+        [SerializeField] private Node currentLookingAroundNode;
+        [SerializeField] private int lookingAroundNodesLeft = 3;
+
+
 
         [Header("Debug")] [SerializeField] private ClientState etat;
         [SerializeField] private Entrance exit;
@@ -56,6 +63,7 @@ namespace Characters
         [SerializeField] private Seat seat;
         [SerializeField] private GameObject questGiver;
         [SerializeField] private float timer;
+        [SerializeField] private float newDestinationTimer;
 
         [SerializeField] private bool hasQuest = false;
 
@@ -87,8 +95,16 @@ namespace Characters
                         if (seat == null)
                         {
                             subText.text = "Seat Not Found";
-                            seat = mouvement.GoToRandomSeat();
-                            lookDirection = seat.lookDirection;
+                            if (newDestinationTimer == -1)
+                            {
+                                etat = ClientState.LookingAround;
+                            }
+                            else
+                            {
+                                newDestinationTimer = -1;
+                                seat = mouvement.GoToRandomSeat();
+                                lookDirection = seat.lookDirection;
+                            }
                         }
                         else
                         {
@@ -101,6 +117,52 @@ namespace Characters
                                 timer = Random.Range(waitingTimeMin, waitingTimeMax);
                                 etat = ClientState.WaitingToOrder;
                             }
+                        }
+
+                        break;
+                    }
+                case ClientState.LookingAround:
+                    {
+                        anim.SetBool("moving", true);
+                        text.text = "Looking Around";
+                        subText.text = "nb Nodes left: " + lookingAroundNodesLeft;
+                        if (lookingAroundNodesLeft >= 0)
+                        {
+                            if (currentLookingAroundNode == null)
+                            {
+                                if (newDestinationTimer > 0)
+                                {
+                                    newDestinationTimer -= Time.deltaTime;
+                                }
+                                else
+                                {
+
+                                    var allSeats = FindObjectsOfType<Seat>();
+
+                                    var areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt);
+                                    if (!areAllSeatsOccupied)
+                                    {
+                                        etat = ClientState.FindingSeat;
+                                    }
+                                    else
+                                    {
+                                        newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                        currentLookingAroundNode = mouvement.GoToRandomNode();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (mouvement.IsAtLocation(currentLookingAroundNode.getPosition()))
+                                {
+                                    lookingAroundNodesLeft--;
+                                    currentLookingAroundNode = null;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            etat = ClientState.Leaving;
                         }
 
                         break;
@@ -181,13 +243,22 @@ namespace Characters
                             seat.isOccupied = false;
                             seat = null;
                             payLocation = mouvement.GoToPay(out lookDirection);
+                            newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
                         }
                         else
                         {
                             if (payLocation == null)
                             {
                                 subText.text = "Counter Not Found";
-                                payLocation = mouvement.GoToPay(out lookDirection);
+                                if (newDestinationTimer > 0)
+                                {
+                                    newDestinationTimer -= Time.deltaTime;
+                                }
+                                else
+                                {
+                                    newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                    payLocation = mouvement.GoToPay(out lookDirection);
+                                }
                             }
                             else
                             {
@@ -287,13 +358,22 @@ namespace Characters
                             subText.text = "Exit Not Found";
                             payLocation = null;
                             exit = mouvement.GoToExit();
+                            newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
                         }
                         else
                         {
                             if (exit == null)
                             {
                                 subText.text = "Exit Not Found";
-                                exit = mouvement.GoToExit();
+                                if (newDestinationTimer > 0)
+                                {
+                                    newDestinationTimer -= Time.deltaTime;
+                                }
+                                else
+                                {
+                                    newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                    exit = mouvement.GoToExit();
+                                }
                             }
                             else
                             {

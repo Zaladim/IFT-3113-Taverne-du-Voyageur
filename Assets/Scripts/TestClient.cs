@@ -37,6 +37,9 @@ public class TestClient : MonoBehaviour
     private float timeLeftToEat;
     private float timeLeftStateSwitch;
 
+    public float timeToWaitBeforeLookingForDestinationAgain = 60f;
+    private float newDestinationTimer = 0f;
+
 
     // Start is called before the first frame update
     private void Start()
@@ -62,7 +65,15 @@ public class TestClient : MonoBehaviour
                     if (seat == null)
                     {
                         subText.text = "Seat Not Found";
-                        seat = movement.GoToRandomSeat();
+                        if (newDestinationTimer > 0)
+                        {
+                            newDestinationTimer -= Time.deltaTime;
+                        }
+                        else
+                        {
+                            newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                            seat = movement.GoToRandomSeat();
+                        }
                     }
                     else
                     {
@@ -153,13 +164,22 @@ public class TestClient : MonoBehaviour
                         seat.isOccupied = false;
                         seat = null;
                         exit = movement.GoToExit();
+                        newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
                     }
                     else
                     {
                         if (exit == null)
                         {
                             subText.text = "Exit Not Found";
-                            exit = movement.GoToExit();
+                            if (newDestinationTimer > 0)
+                            {
+                                newDestinationTimer -= Time.deltaTime;
+                            }
+                            else
+                            {
+                                newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                exit = movement.GoToExit();
+                            }
                         }
                         else
                         {

@@ -173,7 +173,7 @@ namespace Pathfinding
             var areAllSeatsOccupied = false;
             if (randomSeat.isAIGoingForIt || randomSeat.isOccupied)
             {
-                areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt && !randomSeat.isOccupied);
+                areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt);
 
                 if (!areAllSeatsOccupied)
                     while (randomSeat.isAIGoingForIt || randomSeat.isOccupied)
@@ -304,6 +304,25 @@ namespace Pathfinding
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
             hasDestination = true;
+        }
+
+        public Node GoToRandomNode()
+        {
+            var allNodes = FindObjectsOfType<Node>();
+            if (allNodes.Length == 0)
+            {
+                return null;
+            }
+            var randomnode = allNodes[Random.Range(0, allNodes.Length)];
+
+            SetNewPath(randomnode.getPosition());
+            //getPath(transform.position, randomSeat.transform.position);
+            /*target = randomSeat.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, randomSeat.transform.position);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;*/
+            return randomnode;
         }
 
         public void StopMoving()
