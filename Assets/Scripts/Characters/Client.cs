@@ -162,7 +162,17 @@ namespace Characters
                         }
                         else
                         {
-                            etat = ClientState.Leaving;
+                            var allSeats = FindObjectsOfType<Seat>();
+
+                            var areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt);
+                            if (!areAllSeatsOccupied)
+                            {
+                                etat = ClientState.FindingSeat;
+                            }
+                            else
+                            {
+                                etat = ClientState.Leaving;
+                            }
                         }
 
                         break;
