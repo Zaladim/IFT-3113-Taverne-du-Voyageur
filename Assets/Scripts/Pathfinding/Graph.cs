@@ -27,7 +27,7 @@ namespace Pathfinding
 
         public Graph CopyGraph()
         {
-            Graph temp = new Graph();
+            Graph temp = gameObject.AddComponent<Graph>();
             temp.nodes = nodes;
             temp.DrawGraph = DrawGraph;
             temp.isOriginal = false;
@@ -42,6 +42,7 @@ namespace Pathfinding
             {
                 nodes.Add(node.GetComponent<Node>());
             }
+
             // nodes = FindObjectsOfType<Node>();
             drawGraph(DrawGraph);
         }
@@ -59,6 +60,7 @@ namespace Pathfinding
             {
                 nodes.Add(node.GetComponent<Node>());
             }
+
             // nodes = FindObjectsOfType<Node>();
             for (var i = 0; i < nodes.Count; i++) nodes[i].initialize();
 
@@ -132,8 +134,8 @@ namespace Pathfinding
                 var hits = Physics.RaycastAll(position, direction, currentDistance);
                 var canGoToObject =
                     (from t in hits
-                     where t.collider.GetComponent<ObjectAIBehavior>() != null
-                     select t.collider.GetComponent<ObjectAIBehavior>())
+                        where t.collider.GetComponent<ObjectAIBehavior>() != null
+                        select t.collider.GetComponent<ObjectAIBehavior>())
                     .All(behavior => behavior.canActorsPassThrough);
 
                 if (!canGoToObject) continue;
@@ -151,7 +153,7 @@ namespace Pathfinding
 
             // The set of currently discovered nodes that are not evaluated yet.
             // Initially, only the start node is known.
-            var openSet = new List<Node> { startNode };
+            var openSet = new List<Node> {startNode};
 
             var vistedNodes = new bool[nodes.Count];
 
@@ -192,11 +194,13 @@ namespace Pathfinding
                 {
                     return null;
                 }
+
                 var currentPosition = findPositionOfSmallest(fScore, vistedNodes);
                 if (currentPosition < 0 || currentPosition > nodes.Count)
                 {
                     break;
                 }
+
                 var current = nodes[currentPosition];
                 if (current == endNode) return reconstruct_path(cameFrom, current);
 
@@ -230,12 +234,12 @@ namespace Pathfinding
 
         private List<Node> reconstruct_path(IReadOnlyList<Node> cameFrom, Node current)
         {
-            var totalPath = new List<Node> { current };
+            var totalPath = new List<Node> {current};
             while (cameFrom[findPositionInGrid(current)] != null)
             {
                 if (current is null) continue;
                 current = cameFrom[findPositionInGrid(current)];
-                var temp = new List<Node> { current };
+                var temp = new List<Node> {current};
                 temp.AddRange(totalPath);
                 totalPath = temp;
             }

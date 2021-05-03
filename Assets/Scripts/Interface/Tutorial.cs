@@ -29,7 +29,7 @@ namespace Interface
 
         public void StartTuto()
         {
-            gameManager.ToggleGamePaused();
+            gameManager.GameForcePause = true;
             closeAll.SetActive(false);
 
             clientIcon.SetActive(false);
@@ -95,9 +95,9 @@ namespace Interface
             clientIcon.SetActive(true);
             reputationIcon.SetActive(true);
 
-            gameManager.ToggleGamePaused();
             closeAll.SetActive(true);
             gameObject.SetActive(false);
+            gameManager.GameForcePause = false;
         }
     }
 }
