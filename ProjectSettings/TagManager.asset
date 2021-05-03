@@ -15,6 +15,7 @@ TagManager:
   - Model
   - QuestGiver
   - GameManager
+  - GridManager
   layers:
   - Default
   - TransparentFX

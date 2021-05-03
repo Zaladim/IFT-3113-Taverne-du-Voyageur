@@ -11,6 +11,7 @@ namespace Environnement
         [SerializeField] private int seats;
         [SerializeField] private Material defaultMat;
         [SerializeField] private Material constructMat;
+        
 
         [SerializeField] private List<GameObject> childs = new List<GameObject>();
         private GameManager gameManager;
@@ -23,12 +24,14 @@ namespace Environnement
         private RaycastHit hit;
 
         private ResourcesManager resourcesManager;
+        [SerializeField] private Grid grid;
 
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
             graph = GameObject.Find("Graph").GetComponent<Graph>();
             resourcesManager = FindObjectOfType<ResourcesManager>();
+            grid = GameObject.FindGameObjectWithTag("GridManager").GetComponent<GridManager>().Grid;
         }
 
         private void Update()
@@ -46,6 +49,10 @@ namespace Environnement
                 {
                     pos = hit.point;
                     pos.y += 1;
+                    Vector3 cell = grid.getCellPosition(pos);
+                    pos.x = cell.x;
+                    pos.z = cell.z;
+
                     transform.position = pos;
 
                     var hitColliders =
