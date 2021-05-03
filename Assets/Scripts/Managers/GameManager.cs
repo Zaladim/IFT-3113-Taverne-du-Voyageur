@@ -10,6 +10,7 @@ namespace Managers
         [SerializeField] private WaiterManager waiterManager;
         [SerializeField] private PlacementManager placementManager;
         [SerializeField] private ResourcesManager resourcesManager;
+        [SerializeField] private TimeManager timeManager;
 
         [Header("Game Elements")] [SerializeField]
         private GameObject startPanel;
@@ -18,8 +19,10 @@ namespace Managers
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private Tutorial tutorial;
 
-        [Header("Debug")] [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
-        private bool gameIsPaused;
+        [Header("Time Debug")] [SerializeField]
+        private bool isGamePaused = false;
+
+        [SerializeField] private bool isGameForcedPaused = false;
 
         public bool MouseControl { get; set; }
 
@@ -32,13 +35,14 @@ namespace Managers
             waiterManager.gameObject.SetActive(false);
             placementManager.gameObject.SetActive(false);
             resourcesManager.gameObject.SetActive(true);
+            timeManager.gameObject.SetActive(true);
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                ToggleGamePaused();
+                ToggleGameForcedPause();
                 if (gamePanel.activeSelf) settingsPanel.SetActive(!settingsPanel.activeSelf);
             }
         }
@@ -73,18 +77,39 @@ namespace Managers
             Application.Quit();
         }
 
-        private void PauseGame()
+        public void ToggleGameForcedPause()
         {
-            if (gameIsPaused)
-                Time.timeScale = 0f;
+            if (isGameForcedPaused)
+            {
+                if (isGamePaused)
+                {
+                    timeManager.DefrostTime(0);
+                }
+                else
+                {
+                    timeManager.DefrostTime();
+                }
+            }
             else
-                Time.timeScale = 1;
+            {
+                timeManager.FreezeTime();
+            }
+
+            isGameForcedPaused = !isGameForcedPaused;
         }
 
         public void ToggleGamePaused()
         {
-            gameIsPaused = !gameIsPaused;
-            PauseGame();
+            if (isGamePaused)
+            {
+                timeManager.Apply();
+            }
+            else
+            {
+                timeManager.LockTime();
+            }
+
+            isGamePaused = !isGamePaused;
         }
     }
 }
