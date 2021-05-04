@@ -105,7 +105,10 @@ namespace Characters
                             {
                                 newDestinationTimer = -1;
                                 seat = mouvement.GoToRandomSeat();
-                                lookDirection = seat.lookDirection;
+                                if (seat != null)
+                                {
+                                    lookDirection = seat.lookDirection;
+                                }
                             }
                         }
                         else
