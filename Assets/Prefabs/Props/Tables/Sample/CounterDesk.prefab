@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 9154832122119175963}
   - component: {fileID: 531014121919024207}
   - component: {fileID: 2389666040754158903}
+  - component: {fileID: 4977230553309013034}
   m_Layer: 0
   m_Name: CounterDesk
   m_TagString: Untagged
@@ -347,6 +348,21 @@ MonoBehaviour:
   payLocations:
   - {fileID: 8798229015013799386}
   lookDirection: {fileID: 123495070390040391}
+--- !u!114 &4977230553309013034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9154832122119175960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36278b452ed39c4c951556ceed1384d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pivot: 0
+  objectLength: 5
+  objectWidth: 2
 --- !u!1001 &1429106799066155344
 PrefabInstance:
   m_ObjectHideFlags: 0

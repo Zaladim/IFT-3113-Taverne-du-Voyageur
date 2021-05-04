@@ -10,6 +10,7 @@ namespace Managers
         [SerializeField] private WaiterManager waiterManager;
         [SerializeField] private PlacementManager placementManager;
         [SerializeField] private ResourcesManager resourcesManager;
+        [SerializeField] private TimeManager timeManager;
 
         [Header("Game Elements")] [SerializeField]
         private GameObject startPanel;
@@ -18,8 +19,55 @@ namespace Managers
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private Tutorial tutorial;
 
-        [Header("Debug")] [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
-        private bool gameIsPaused;
+        [Header("Time Debug"), Tooltip("Does nothing if changed in editor!"), SerializeField]
+        private bool isGamePaused;
+
+        [SerializeField, Tooltip("Does nothing if changed in editor!")]
+        private bool isGameForcedPaused;
+
+        public bool GamePause
+        {
+            get => isGamePaused;
+            set
+            {
+                if (value)
+                {
+                    timeManager.LockTime();
+                    isGamePaused = true;
+                }
+                else
+                {
+                    timeManager.Apply();
+                    isGamePaused = false;
+                }
+            }
+        }
+
+        public bool GameForcePause
+        {
+            get => isGameForcedPaused;
+            set
+            {
+                if (value)
+                {
+                    timeManager.FreezeTime();
+                    isGameForcedPaused = true;
+                }
+                else
+                {
+                    if (isGamePaused)
+                    {
+                        timeManager.DefrostTime(0);
+                    }
+                    else
+                    {
+                        timeManager.DefrostTime();
+                    }
+
+                    isGameForcedPaused = false;
+                }
+            }
+        }
 
         public bool MouseControl { get; set; }
 
@@ -32,13 +80,14 @@ namespace Managers
             waiterManager.gameObject.SetActive(false);
             placementManager.gameObject.SetActive(false);
             resourcesManager.gameObject.SetActive(true);
+            timeManager.gameObject.SetActive(true);
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                ToggleGamePaused();
+                ToggleGameForcedPause();
                 if (gamePanel.activeSelf) settingsPanel.SetActive(!settingsPanel.activeSelf);
             }
         }
@@ -73,18 +122,10 @@ namespace Managers
             Application.Quit();
         }
 
-        private void PauseGame()
-        {
-            if (gameIsPaused)
-                Time.timeScale = 0f;
-            else
-                Time.timeScale = 1;
-        }
+        public void ToggleGameForcedPause() => GameForcePause = !GameForcePause;
+        public void ToggleGamePaused() => GamePause = !GamePause;
 
-        public void ToggleGamePaused()
-        {
-            gameIsPaused = !gameIsPaused;
-            PauseGame();
-        }
+        public bool IsGameRunnig() => !GamePause && !GameForcePause;
+        public bool IsGameStopped() => GamePause || GameForcePause;
     }
 }

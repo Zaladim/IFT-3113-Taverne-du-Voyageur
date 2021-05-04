@@ -7,6 +7,8 @@ namespace Pathfinding
 {
     public class Node : MonoBehaviour, IEquatable<Node>
     {
+        private Vector3 position;
+
         public bool Equals(Node other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -50,6 +52,7 @@ namespace Pathfinding
                     neighborsNodes.Add(t);
                 }
             }
+            position = transform.position;
         }
 
         private bool canReachOtherNode(Component node)
@@ -69,11 +72,17 @@ namespace Pathfinding
         // Update is called once per frame
         void Update()
         {
+            //need to do this here cause threads can't
+            position = transform.position;
         }
 
         public Vector3 getPosition()
         {
-            return transform.position;
+            if (position == new Vector3())
+            {
+                return transform.position;
+            }
+            return position;
         }
 
         public IEnumerable<Node> getNeighbors()

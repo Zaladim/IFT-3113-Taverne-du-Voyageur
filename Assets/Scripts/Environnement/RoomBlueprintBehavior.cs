@@ -81,10 +81,13 @@ namespace Environnement
                             gameObject.SetActive(true);
                             return;
                         }
-
                 foreach (var item in o.GetComponentsInChildren<Transform>())
                     if (item.CompareTag("BorderWall"))
                     {
+                        // if (transform.eulerAngles.y != 0 && transform.eulerAngles.y != -180 && transform.eulerAngles.y != 180)
+                        // {
+                        //     item.GetComponent<GridSetter>().Pivot = true;
+                        // }
                         if (item.position.x < tavernLimit) item.gameObject.tag = "Wall";
 
                         DestroyObjectAtLocation(0.5f, item.gameObject);
@@ -100,7 +103,6 @@ namespace Environnement
 
         private void DestroyObjectAtLocation(float minDist, GameObject item)
         {
-            print(item);
             var tmpLocation = item.transform.position;
             bool setToInterior = false;
 

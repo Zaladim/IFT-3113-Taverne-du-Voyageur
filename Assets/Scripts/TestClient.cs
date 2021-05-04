@@ -37,6 +37,9 @@ public class TestClient : MonoBehaviour
     private float timeLeftToEat;
     private float timeLeftStateSwitch;
 
+    public float timeToWaitBeforeLookingForDestinationAgain = 60f;
+    private float newDestinationTimer = 0f;
+
 
     // Start is called before the first frame update
     private void Start()
@@ -57,64 +60,37 @@ public class TestClient : MonoBehaviour
         switch (state)
         {
             case State.FindingSeat:
-            {
-                text.text = "Finding Seat";
-                if (seat == null)
                 {
-                    subText.text = "Seat Not Found";
-                    seat = movement.GoToRandomSeat();
-                }
-                else
-                {
-                    subText.text = "Seat Found";
-                    if (movement.IsAtLocation(seat.transform.position))
+                    text.text = "Finding Seat";
+                    if (seat == null)
                     {
-                        seat.isOccupied = true;
-                        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                        state = State.WaitingToOrder;
+                        subText.text = "Seat Not Found";
+                        if (newDestinationTimer > 0)
+                        {
+                            newDestinationTimer -= Time.deltaTime;
+                        }
+                        else
+                        {
+                            newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                            seat = movement.GoToRandomSeat();
+                        }
                     }
-                }
+                    else
+                    {
+                        subText.text = "Seat Found";
+                        if (movement.IsAtLocation(seat.transform.position))
+                        {
+                            seat.isOccupied = true;
+                            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                            state = State.WaitingToOrder;
+                        }
+                    }
 
-                break;
-            }
+                    break;
+                }
             case State.WaitingToOrder:
-            {
-                text.text = "Waiting To Order";
-                subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
-                timeLeftStateSwitch -= Time.deltaTime;
-                if (timeLeftStateSwitch <= 0)
                 {
-                    timeLeftStateSwitch =
-                        timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
-                    ;
-                    state = State.WaitingToReceiveOrder;
-                }
-
-                break;
-            }
-            case State.WaitingToReceiveOrder:
-            {
-                text.text = "Waiting To Receive Order";
-                subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
-                timeLeftStateSwitch -= Time.deltaTime;
-                if (timeLeftStateSwitch <= 0)
-                {
-                    timeLeftStateSwitch =
-                        timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
-                    ;
-                    state = State.Eating;
-                    timeLeftToEat = timeLeftStateSwitch = Random.Range(timeToEatMin, timeToEatMax);
-                }
-
-                break;
-            }
-            case State.Eating:
-            {
-                text.text = "Eating";
-                subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
-                timeLeftToEat -= Time.deltaTime;
-                if (timeLeftToEat <= 0)
-                {
+                    text.text = "Waiting To Order";
                     subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
                     timeLeftStateSwitch -= Time.deltaTime;
                     if (timeLeftStateSwitch <= 0)
@@ -122,72 +98,116 @@ public class TestClient : MonoBehaviour
                         timeLeftStateSwitch =
                             timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
                         ;
-                        state = State.WaitingToPay;
+                        state = State.WaitingToReceiveOrder;
                     }
-                }
 
-                break;
-            }
+                    break;
+                }
+            case State.WaitingToReceiveOrder:
+                {
+                    text.text = "Waiting To Receive Order";
+                    subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
+                    timeLeftStateSwitch -= Time.deltaTime;
+                    if (timeLeftStateSwitch <= 0)
+                    {
+                        timeLeftStateSwitch =
+                            timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
+                        ;
+                        state = State.Eating;
+                        timeLeftToEat = timeLeftStateSwitch = Random.Range(timeToEatMin, timeToEatMax);
+                    }
+
+                    break;
+                }
+            case State.Eating:
+                {
+                    text.text = "Eating";
+                    subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
+                    timeLeftToEat -= Time.deltaTime;
+                    if (timeLeftToEat <= 0)
+                    {
+                        subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
+                        timeLeftStateSwitch -= Time.deltaTime;
+                        if (timeLeftStateSwitch <= 0)
+                        {
+                            timeLeftStateSwitch =
+                                timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
+                            ;
+                            state = State.WaitingToPay;
+                        }
+                    }
+
+                    break;
+                }
             case State.WaitingToPay:
-            {
-                text.text = "Waiting To Pay";
-                subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
-                timeLeftStateSwitch -= Time.deltaTime;
-                if (timeLeftStateSwitch <= 0)
                 {
-                    timeLeftStateSwitch =
-                        timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
-                    ;
-                    state = State.Leaving;
-                }
+                    text.text = "Waiting To Pay";
+                    subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
+                    timeLeftStateSwitch -= Time.deltaTime;
+                    if (timeLeftStateSwitch <= 0)
+                    {
+                        timeLeftStateSwitch =
+                            timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
+                        ;
+                        state = State.Leaving;
+                    }
 
-                break;
-            }
-            case State.Leaving:
-            {
-                text.text = "Leaving";
-                if (seat != null)
-                {
-                    subText.text = "Exit Not Found";
-                    seat.isAIGoingForIt = false;
-                    seat.isOccupied = false;
-                    seat = null;
-                    exit = movement.GoToExit();
+                    break;
                 }
-                else
+            case State.Leaving:
                 {
-                    if (exit == null)
+                    text.text = "Leaving";
+                    if (seat != null)
                     {
                         subText.text = "Exit Not Found";
+                        seat.isAIGoingForIt = false;
+                        seat.isOccupied = false;
+                        seat = null;
                         exit = movement.GoToExit();
+                        newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
                     }
                     else
                     {
-                        subText.text = "Exit Found";
-                        if (movement.IsAtLocation(exit.transform.position))
+                        if (exit == null)
                         {
-                            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                            state = State.Inactive;
+                            subText.text = "Exit Not Found";
+                            if (newDestinationTimer > 0)
+                            {
+                                newDestinationTimer -= Time.deltaTime;
+                            }
+                            else
+                            {
+                                newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                exit = movement.GoToExit();
+                            }
+                        }
+                        else
+                        {
+                            subText.text = "Exit Found";
+                            if (movement.IsAtLocation(exit.transform.position))
+                            {
+                                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                                state = State.Inactive;
+                            }
                         }
                     }
-                }
 
-                break;
-            }
+                    break;
+                }
             case State.Inactive:
-            {
-                text.text = "Inactive";
-                subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
-                timeLeftStateSwitch -= Time.deltaTime;
-                if (timeLeftStateSwitch <= 0)
                 {
-                    timeLeftStateSwitch =
-                        timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
-                    state = State.FindingSeat;
-                }
+                    text.text = "Inactive";
+                    subText.text = $"{Mathf.Ceil(timeLeftStateSwitch)}";
+                    timeLeftStateSwitch -= Time.deltaTime;
+                    if (timeLeftStateSwitch <= 0)
+                    {
+                        timeLeftStateSwitch =
+                            timeLeftStateSwitch = Random.Range(timeStateSwitchMin, timeStateSwitchMax);
+                        state = State.FindingSeat;
+                    }
 
-                break;
-            }
+                    break;
+                }
             default:
                 throw new ArgumentOutOfRangeException();
         }

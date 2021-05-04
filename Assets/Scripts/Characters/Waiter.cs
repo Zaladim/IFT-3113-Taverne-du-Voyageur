@@ -23,6 +23,7 @@ namespace Characters
         [SerializeField] private float timeToStayIdleMin = 1f;
         [SerializeField] private float timeToStayIdleMax = 10f;
         [SerializeField] private ResourcesManager resourcesManager;
+        [SerializeField] private float timeToWaitBeforeLookingForDestinationAgain = 60f;
 
         [Header("Debug")] [SerializeField] private float idleTimer;
         [SerializeField] private List<Client> clients;
@@ -33,6 +34,7 @@ namespace Characters
         [SerializeField] private BasicAI mouvement;
         [SerializeField] private TextMesh subText;
         [SerializeField] private TextMesh text;
+        [SerializeField] private float newDestinationTimer;
 
         public ResourcesManager ResourcesManager
         {
@@ -115,13 +117,22 @@ namespace Characters
                         subText.text = "Counter Not Found";
                         currentClient = null;
                         foodLocation = mouvement.GoToCounter(out lookDirection);
+                        newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
                     }
                     else
                     {
                         if (foodLocation == null)
                         {
                             subText.text = "Counter Not Found";
-                            foodLocation = mouvement.GoToCounter(out lookDirection);
+                            if (newDestinationTimer > 0)
+                            {
+                                newDestinationTimer -= Time.deltaTime;
+                            }
+                            else
+                            {
+                                newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                foodLocation = mouvement.GoToCounter(out lookDirection);
+                            }
                         }
                         else
                         {

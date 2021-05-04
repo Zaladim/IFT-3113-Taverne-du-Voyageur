@@ -11,6 +11,7 @@ namespace Interface
 
         [Header("Game Elements")] [SerializeField]
         private GameObject closeAll;
+
         [SerializeField] private GameObject buildMenu;
         [SerializeField] private GameObject buyMenu;
         [SerializeField] private GameObject enrollMenu;
@@ -18,9 +19,11 @@ namespace Interface
         [SerializeField] private GameObject reputationIcon;
         [SerializeField] private GameObject coinIcon;
         [SerializeField] private GameObject beerIcon;
+        [SerializeField] private GameObject settingsToggleTutorial;
 
         [Header("Tutorial Parts")] [SerializeField]
         private GameObject part1;
+
         [SerializeField] private GameObject part2;
         [SerializeField] private GameObject part3;
         [SerializeField] private GameObject part4;
@@ -29,13 +32,14 @@ namespace Interface
 
         public void StartTuto()
         {
-            gameManager.ToggleGamePaused();
+            gameManager.GameForcePause = true;
             closeAll.SetActive(false);
 
             clientIcon.SetActive(false);
             reputationIcon.SetActive(false);
             coinIcon.SetActive(false);
             beerIcon.SetActive(false);
+            settingsToggleTutorial.SetActive(true);
 
             part1.SetActive(true);
             part2.SetActive(false);
@@ -95,9 +99,11 @@ namespace Interface
             clientIcon.SetActive(true);
             reputationIcon.SetActive(true);
 
-            gameManager.ToggleGamePaused();
             closeAll.SetActive(true);
+            settingsToggleTutorial.SetActive(false);
             gameObject.SetActive(false);
+
+            gameManager.GameForcePause = false;
         }
     }
 }

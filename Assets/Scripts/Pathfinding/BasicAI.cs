@@ -2,6 +2,7 @@
 using System.Linq;
 using Characters;
 using UnityEngine;
+using System.Threading;
 
 namespace Pathfinding
 {
@@ -18,13 +19,20 @@ namespace Pathfinding
         private float speed;
         [SerializeField] private Vector3 target;
 
+        private Thread thread;
+        //temporary variables for the thread
+        private Node currentPosition;
+        private Node destinationPosition;
+
+        private bool graphUpdateScheduled;
+
         //private Seat currentSeat;
 
         // Start is called before the first frame update
         private void Start()
         {
             var graph = GameObject.Find("Graph");
-            pathFinding = graph.GetComponent<Graph>();
+            pathFinding = graph.GetComponent<Graph>().CopyGraph();
             centerOfMass = GetComponent<Transform>().Find("CenterOfMass");
             Setup();
         }
@@ -32,6 +40,12 @@ namespace Pathfinding
         // Update is called once per frame
         private void Update()
         {
+            if (graphUpdateScheduled && !IsThreadRunning())
+            {
+                graphUpdateScheduled = false;
+                pathFinding.UpdateGraph();
+            }
+
             //move
             if (hasDestination)
             {
@@ -107,6 +121,51 @@ namespace Pathfinding
             return Vector3.Distance(centerOfMass.position, position) <= minimalDistance;
         }
 
+        public void ScheduledGraphUpdate()
+        {
+            graphUpdateScheduled = true;
+        }
+
+        public bool IsThreadRunning()
+        {
+            if (thread == null)
+            {
+                return false;
+            }
+
+            return thread.ThreadState == ThreadState.Running;
+        }
+
+        private void SetNewPath(Vector3 destination)
+        {
+            if (currentPath == null || pathFinding.getColsestNodeToPoint(destination) != currentPath[currentPath.Count - 1])// si le chemin courant ne donnem pas déjà vers la même destination
+            {
+                if (IsThreadRunning())
+                {
+                    pathFinding.Kill();
+                    while (IsThreadRunning())
+                    {
+                        //just waithing for thread to stop
+                    }
+                    pathFinding.Resurect();
+                    thread = null;
+                }
+                currentPosition = pathFinding.getColsestNodeToPoint(transform.position);
+                destinationPosition = pathFinding.getColsestNodeToPoint(destination);
+                target = destination;
+                this.thread = new Thread(() => this.getPath());
+                this.thread.Start();
+            }
+        }
+
+        private void getPath()
+        {
+            currentPath = pathFinding.A_Star(currentPosition, destinationPosition);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;
+        }
+
         public Seat GoToRandomSeat()
         {
             var allSeats = FindObjectsOfType<Seat>();
@@ -114,7 +173,7 @@ namespace Pathfinding
             var areAllSeatsOccupied = false;
             if (randomSeat.isAIGoingForIt || randomSeat.isOccupied)
             {
-                areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt && !randomSeat.isOccupied);
+                areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt);
 
                 if (!areAllSeatsOccupied)
                     while (randomSeat.isAIGoingForIt || randomSeat.isOccupied)
@@ -123,11 +182,13 @@ namespace Pathfinding
 
             if (areAllSeatsOccupied) return null;
             randomSeat.isAIGoingForIt = true;
-            target = randomSeat.transform.position;
+            SetNewPath(randomSeat.transform.position);
+            //getPath(transform.position, randomSeat.transform.position);
+            /*target = randomSeat.transform.position;
             currentPath = pathFinding.A_Star(transform.position, randomSeat.transform.position);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
             return randomSeat;
         }
 
@@ -136,11 +197,12 @@ namespace Pathfinding
             var allExits = FindObjectsOfType<Entrance>();
             if (allExits.Length <= 0) return null;
             var randomExit = allExits[Random.Range(0, allExits.Length)];
-            target = randomExit.transform.position;
+            SetNewPath(randomExit.transform.position);
+            /*target = randomExit.transform.position;
             currentPath = pathFinding.A_Star(transform.position, randomExit.transform.position);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
             return randomExit;
         }
 
@@ -156,11 +218,12 @@ namespace Pathfinding
             var randomCounter = allCounters[Random.Range(0, allCounters.Length)];
             lookdirection = randomCounter.lookDirection;
             var paylocation = randomCounter.payLocations[Random.Range(0, randomCounter.payLocations.Count)];
-            target = paylocation.transform.position;
+            SetNewPath(paylocation.transform.position);
+            /*target = paylocation.transform.position;
             currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
             return paylocation;
         }
 
@@ -176,11 +239,12 @@ namespace Pathfinding
 
             var randomClient = allAvailableClients[Random.Range(0, allAvailableClients.Count)];
             randomClient.HasAWaiter = true;
-            target = randomClient.GETPosition();
+            SetNewPath(randomClient.GETPosition());
+            /*target = randomClient.GETPosition();
             currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
             return randomClient;
         }
 
@@ -196,22 +260,24 @@ namespace Pathfinding
             var randomCounter = allCounters[Random.Range(0, allCounters.Length)];
             lookdirection = randomCounter.lookDirection;
             var foodlocation = randomCounter.foodLocations[Random.Range(0, randomCounter.foodLocations.Count)];
-            target = foodlocation.transform.position;
+            SetNewPath(foodlocation.transform.position);
+            /*target = foodlocation.transform.position;
             currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
             return foodlocation;
         }
 
 
         public void GoToSpecificClient(Client person)
         {
-            target = person.GETPosition();
+            SetNewPath(person.GETPosition());
+            /*target = person.GETPosition();
             currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
         }
 
         public GameObject GoToRandomQuestGiver()
@@ -221,10 +287,10 @@ namespace Pathfinding
             {
                 return null;
             }
-            
+
             var randomQuestGiver = allQuestGivers[Random.Range(0, allQuestGivers.Length)];
             target = randomQuestGiver.transform.position;
-            currentPath = pathFinding.A_Star(transform.position, target);
+            //currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
             hasDestination = true;
@@ -234,10 +300,29 @@ namespace Pathfinding
         public void GoToQuestGiver(GameObject vmac)
         {
             target = vmac.transform.position;
-            currentPath = pathFinding.A_Star(transform.position, target);
+            //currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
             hasDestination = true;
+        }
+
+        public Node GoToRandomNode()
+        {
+            var allNodes = FindObjectsOfType<Node>();
+            if (allNodes.Length == 0)
+            {
+                return null;
+            }
+            var randomnode = allNodes[Random.Range(0, allNodes.Length)];
+
+            SetNewPath(randomnode.getPosition());
+            //getPath(transform.position, randomSeat.transform.position);
+            /*target = randomSeat.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, randomSeat.transform.position);
+            currentNode = 0;
+            currentDestination = currentPath[currentNode].getPosition();
+            hasDestination = true;*/
+            return randomnode;
         }
 
         public void StopMoving()
