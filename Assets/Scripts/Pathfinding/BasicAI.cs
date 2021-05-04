@@ -44,6 +44,7 @@ namespace Pathfinding
             {
                 graphUpdateScheduled = false;
                 pathFinding.UpdateGraph();
+                //Debug.Log(gameObject.name + " has updated its graph");
             }
 
             //move
