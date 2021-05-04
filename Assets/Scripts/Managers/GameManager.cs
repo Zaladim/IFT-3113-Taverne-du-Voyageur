@@ -105,13 +105,6 @@ namespace Managers
             tutorial.StartTuto();
         }
 
-        public void UseBasicLayout(bool isInUse)
-        {
-            const int basicLayoutSeats = 60;
-
-            resourcesManager.Seats += isInUse ? basicLayoutSeats : -basicLayoutSeats;
-        }
-
         public void RestartGame()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
