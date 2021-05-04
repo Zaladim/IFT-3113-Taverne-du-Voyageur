@@ -40,7 +40,7 @@ namespace Pathfinding
         // Update is called once per frame
         private void Update()
         {
-            if (graphUpdateScheduled && !IsThreadRunning())
+            if (graphUpdateScheduled && thread != null && !thread.IsAlive)
             {
                 graphUpdateScheduled = false;
                 pathFinding.UpdateGraph();
@@ -145,7 +145,7 @@ namespace Pathfinding
                     pathFinding.Kill();
                     while (IsThreadRunning())
                     {
-                        //just waithing for thread to stop
+                        //just waiting for thread to stop
                     }
                     pathFinding.Resurect();
                     thread = null;
