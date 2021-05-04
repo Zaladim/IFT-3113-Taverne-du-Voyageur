@@ -27,8 +27,13 @@ namespace Pathfinding
 
         public Graph CopyGraph()
         {
-            Graph temp = gameObject.AddComponent<Graph>();
-            temp.nodes = nodes;
+            Graph temp = new Graph();
+            temp.nodes = new List<Node>();
+            GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+            foreach (var node in n)
+            {
+                temp.nodes.Add(node.GetComponent<Node>());
+            }
             temp.DrawGraph = DrawGraph;
             temp.isOriginal = false;
             return temp;
