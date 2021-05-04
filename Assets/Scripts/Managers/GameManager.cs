@@ -123,7 +123,7 @@ namespace Managers
         }
 
         public void ToggleGameForcedPause() => GameForcePause = !GameForcePause;
-        public void ToggleGamePaused() => isGamePaused = !isGamePaused;
+        public void ToggleGamePaused() => GamePause = !GamePause;
 
         public bool IsGameRunnig() => !GamePause && !GameForcePause;
         public bool IsGameStopped() => GamePause || GameForcePause;

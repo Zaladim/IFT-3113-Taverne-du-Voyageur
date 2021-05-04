@@ -28,7 +28,7 @@ namespace Managers
                 return;
             }
 
-            Instantiate(blueprint);
+            Instantiate(blueprint, new Vector3(-200, 0, -200), Quaternion.identity);
             rm.Gold -= Price;
             rm.Reputation += Reputation;
             roomUI.gameObject.SetActive(!roomUI.gameObject.activeSelf);

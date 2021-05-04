@@ -43,7 +43,7 @@ namespace Environnement
             return grid.GetValue(worldPosition);
         }
 
-        void OnDrawGizmosSelected()
+        void OnDrawGizmos()
         {
             for (int x = 0; x < grid.Width; x++)
             {

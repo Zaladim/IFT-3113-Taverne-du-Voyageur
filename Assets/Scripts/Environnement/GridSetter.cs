@@ -5,8 +5,17 @@ namespace Environnement
     public class GridSetter : MonoBehaviour
     {
         private GridManager grid;
+        [SerializeField]private bool pivot;
+
         public int objectLength;
         public int objectWidth;
+
+
+        public bool Pivot
+        {
+            get => pivot;
+            set => pivot = value;
+        }
 
         private void Awake()
         {
@@ -18,46 +27,107 @@ namespace Environnement
             grid.SetValue(transform.position, -1);
             int x, y;
             grid.getXY(transform.position, out x, out y);
-        
-            if (transform.rotation.y == 0 || transform.rotation.y == 1 || transform.rotation.y == -1)
+            print(gameObject);
+            print(gameObject.transform.position);
+
+            if (objectWidth > 0)
             {
-                grid.SetValue(x + 1, y, -1);
-                grid.SetValue(x - 1, y, -1);
-            }
-            else
-            {
-                grid.SetValue(x, y + 1, -1);
-                grid.SetValue(x, y - 1, -1);
+                for (int i = 1; i <= objectWidth; i++)
+                {
+                    if ((int) transform.rotation.eulerAngles.y == 0 || (int) transform.rotation.eulerAngles.y == 180 ||
+                        (int) transform.rotation.eulerAngles.y == -180)
+                    {
+                        if (pivot)
+                        {
+                            grid.SetValue(x, y + i, -1);
+                            grid.SetValue(x, y - i, -1);
+                        }
+                        else
+                        {
+                            grid.SetValue(x + i, y, -1);
+                            grid.SetValue(x - i, y, -1);
+                        }
+                    }
+                    else
+                    {
+                        if (pivot)
+                        {
+                            grid.SetValue(x + i, y, -1);
+                            grid.SetValue(x - i, y, -1);
+                        }
+                        else
+                        {
+                            grid.SetValue(x, y + i, -1);
+                            grid.SetValue(x, y - i, -1);
+                        }
+                    }
+                }
             }
 
             for (int i = 1; i <= objectLength; i++)
             {
-                if (transform.rotation.y == 0 || transform.rotation.y == 1 || transform.rotation.y == -1)
+                if ((int)transform.rotation.eulerAngles.y == 0 || (int)transform.rotation.eulerAngles.y == 180 || (int)transform.rotation.eulerAngles.y == -180)
                 {
-                    grid.SetValue(x, y + i, -1);
-                    grid.SetValue(x, y - i, -1);
-                }
-                else
-                {
-                    grid.SetValue(x + i, y, -1);
-                    grid.SetValue(x - i, y, -1);
-                }
-
-                for (int j = 1; j <= objectWidth; j++)
-                {
-                    if (transform.rotation.y == 0 || transform.rotation.y == 1 || transform.rotation.y == -1)
+                    if (pivot)
                     {
-                        grid.SetValue(x + j, y + i, -1);
-                        grid.SetValue(x - j, y + i, -1);
-                        grid.SetValue(x + j, y - i, -1);
-                        grid.SetValue(x - j, y - i, -1);
+                        grid.SetValue(x + i, y, -1);
+                        grid.SetValue(x - i, y, -1);
                     }
                     else
                     {
-                        grid.SetValue(x + i, y + j, -1);
-                        grid.SetValue(x - i, y + j, -1);
-                        grid.SetValue(x + i, y - j, -1);
-                        grid.SetValue(x - i, y - j, -1);
+                        grid.SetValue(x, y + i, -1);
+                        grid.SetValue(x, y - i, -1);
+                    }
+                }
+                else
+                {
+                    if (pivot)
+                    {
+                        grid.SetValue(x, y + i, -1);
+                        grid.SetValue(x, y - i , -1);
+                    }
+                    else
+                    {
+                        grid.SetValue(x + i, y, -1);
+                        grid.SetValue(x - i, y, -1);
+                    }
+                }
+                
+                for (int j = 1; j <= objectWidth; j++)
+                {
+                    if ((int)transform.rotation.eulerAngles.y == 0 || (int)transform.rotation.eulerAngles.y == 180 || (int)transform.rotation.eulerAngles.y == -180)
+                    {
+                        if (pivot)
+                        {
+                            grid.SetValue(x + i, y + j, -1);
+                            grid.SetValue(x - i, y + j, -1);
+                            grid.SetValue(x + i, y - j, -1);
+                            grid.SetValue(x - i, y - j, -1);
+                        }
+                        else
+                        {
+                            grid.SetValue(x + j, y + i, -1);
+                            grid.SetValue(x - j, y + i, -1);
+                            grid.SetValue(x + j, y - i, -1);
+                            grid.SetValue(x - j, y - i, -1);
+                        }
+                    }
+                    else
+                    {
+                        if (pivot)
+                        {
+                            grid.SetValue(x + j, y + i, -1);
+                            grid.SetValue(x - j, y + i, -1);
+                            grid.SetValue(x + j, y - i, -1);
+                            grid.SetValue(x - j, y - i, -1);
+                        }
+                        else
+                        {
+                            grid.SetValue(x + i, y + j, -1);
+                            grid.SetValue(x - i, y + j, -1);
+                            grid.SetValue(x + i, y - j, -1);
+                            grid.SetValue(x - i, y - j, -1);
+                        }
                     }
                 }
             }
