@@ -32,7 +32,12 @@ namespace Pathfinding
             GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
             foreach (var node in n)
             {
-                temp.nodes.Add(node.GetComponent<Node>());
+                Node noeud = node.GetComponent<Node>();
+                if (noeud.getNeighbors().Count() > 0)
+                {
+                    temp.nodes.Add(noeud);
+                }
+                //temp.nodes.Add(node.GetComponent<Node>());
             }
             temp.DrawGraph = DrawGraph;
             temp.isOriginal = false;
@@ -45,7 +50,11 @@ namespace Pathfinding
             GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
             foreach (var node in n)
             {
-                nodes.Add(node.GetComponent<Node>());
+                Node noeud = node.GetComponent<Node>();
+                if (noeud.getNeighbors().Count() > 0)
+                {
+                    nodes.Add(noeud);
+                }
             }
 
             // nodes = FindObjectsOfType<Node>();
@@ -63,7 +72,11 @@ namespace Pathfinding
             GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
             foreach (var node in n)
             {
-                nodes.Add(node.GetComponent<Node>());
+                Node noeud = node.GetComponent<Node>();
+                if (noeud.getNeighbors().Count() > 0)
+                {
+                    nodes.Add(noeud);
+                }
             }
 
             // nodes = FindObjectsOfType<Node>();
@@ -139,8 +152,8 @@ namespace Pathfinding
                 var hits = Physics.RaycastAll(position, direction, currentDistance);
                 var canGoToObject =
                     (from t in hits
-                        where t.collider.GetComponent<ObjectAIBehavior>() != null
-                        select t.collider.GetComponent<ObjectAIBehavior>())
+                     where t.collider.GetComponent<ObjectAIBehavior>() != null
+                     select t.collider.GetComponent<ObjectAIBehavior>())
                     .All(behavior => behavior.canActorsPassThrough);
 
                 if (!canGoToObject) continue;
@@ -158,7 +171,7 @@ namespace Pathfinding
 
             // The set of currently discovered nodes that are not evaluated yet.
             // Initially, only the start node is known.
-            var openSet = new List<Node> {startNode};
+            var openSet = new List<Node> { startNode };
 
             var vistedNodes = new bool[nodes.Count];
 
@@ -239,12 +252,12 @@ namespace Pathfinding
 
         private List<Node> reconstruct_path(IReadOnlyList<Node> cameFrom, Node current)
         {
-            var totalPath = new List<Node> {current};
+            var totalPath = new List<Node> { current };
             while (cameFrom[findPositionInGraph(current)] != null)
             {
                 if (current is null) continue;
                 current = cameFrom[findPositionInGraph(current)];
-                var temp = new List<Node> {current};
+                var temp = new List<Node> { current };
                 temp.AddRange(totalPath);
                 totalPath = temp;
             }

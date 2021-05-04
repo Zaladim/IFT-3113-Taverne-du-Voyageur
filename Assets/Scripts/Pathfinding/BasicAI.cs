@@ -307,14 +307,18 @@ namespace Pathfinding
             hasDestination = true;
         }
 
-        public Node GoToRandomNode()
+        public Node GoToRandomLookAroundNode()
         {
-            var allNodes = FindObjectsOfType<Node>();
-            if (allNodes.Length == 0)
+            var allNodes = pathFinding.getNodes();
+            if (allNodes.Count() == 0)
             {
                 return null;
             }
-            var randomnode = allNodes[Random.Range(0, allNodes.Length)];
+            var randomnode = allNodes[Random.Range(0, allNodes.Count())];
+            while (randomnode.isntALookAroundNode)
+            {
+                randomnode = allNodes[Random.Range(0, allNodes.Count())];
+            }
 
             SetNewPath(randomnode.getPosition());
             //getPath(transform.position, randomSeat.transform.position);

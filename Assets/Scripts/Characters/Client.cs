@@ -149,7 +149,7 @@ namespace Characters
                                     else
                                     {
                                         newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
-                                        currentLookingAroundNode = mouvement.GoToRandomNode();
+                                        currentLookingAroundNode = mouvement.GoToRandomLookAroundNode();
                                     }
                                 }
                             }

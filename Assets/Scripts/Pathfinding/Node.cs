@@ -9,6 +9,8 @@ namespace Pathfinding
     {
         private Vector3 position;
 
+        public Boolean isntALookAroundNode;
+
         public bool Equals(Node other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -34,8 +36,7 @@ namespace Pathfinding
 
         private List<Node> neighborsNodes;
 
-        // Start is called before the first frame update
-        private void Start()
+        private void Awake()
         {
             initialize();
         }
