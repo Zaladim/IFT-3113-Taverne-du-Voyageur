@@ -18399,6 +18399,41 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 858066163318794573, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_Range
+      value: 23.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 858066163318794573, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.20901565
+      objectReference: {fileID: 0}
+    - target: {fileID: 858066163318794573, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.30044365
+      objectReference: {fileID: 0}
+    - target: {fileID: 858066163318794573, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.5754717
+      objectReference: {fileID: 0}
+    - target: {fileID: 858066163318794573, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 6.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 858066163318794573, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 858066163318794573, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_BounceIntensity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 869064223646944929, guid: 88b8d4557a0395b4f869ba22b6a70c82,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -22953,6 +22988,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751728906706700266, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.11
       objectReference: {fileID: 0}
     - target: {fileID: 7751940299092285248, guid: 88b8d4557a0395b4f869ba22b6a70c82,
         type: 3}
