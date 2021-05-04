@@ -214,7 +214,7 @@ namespace Pathfinding
                 foreach (var neighbor in current.getNeighbors())
                 {
                     if (endNode is null) continue;
-                    var neighborPosition = findPositionInGrid(neighbor);
+                    var neighborPosition = findPositionInGraph(neighbor);
                     var isNeighborVisited = vistedNodes[neighborPosition];
                     if (isNeighborVisited) continue;
                     if (!isNodeInList(openSet, current)) openSet.Add(current);
@@ -240,10 +240,10 @@ namespace Pathfinding
         private List<Node> reconstruct_path(IReadOnlyList<Node> cameFrom, Node current)
         {
             var totalPath = new List<Node> {current};
-            while (cameFrom[findPositionInGrid(current)] != null)
+            while (cameFrom[findPositionInGraph(current)] != null)
             {
                 if (current is null) continue;
-                current = cameFrom[findPositionInGrid(current)];
+                current = cameFrom[findPositionInGraph(current)];
                 var temp = new List<Node> {current};
                 temp.AddRange(totalPath);
                 totalPath = temp;
@@ -279,13 +279,13 @@ namespace Pathfinding
             return nodes.Any(t => t == node);
         }
 
-        private int findPositionInGrid(Node node)
+        private int findPositionInGraph(Node node)
         {
             for (var i = 0; i < nodes.Count; i++)
                 if (nodes[i] == node)
                     return i;
 
-            throw new Exception($"the given node ({node.getPosition()}) isn't in the grid");
+            throw new Exception($"the given node ({node.getPosition()}) isn't in the graph");
         }
     }
 }

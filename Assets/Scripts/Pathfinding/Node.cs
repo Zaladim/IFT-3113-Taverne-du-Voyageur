@@ -47,7 +47,7 @@ namespace Pathfinding
             foreach (var t in allNodes)
             {
                 if (t == this) continue;
-                if (canReachOtherNode(t))
+                if (canReachOtherNode(t) && t.canReachOtherNode(this))
                 {
                     neighborsNodes.Add(t);
                 }
