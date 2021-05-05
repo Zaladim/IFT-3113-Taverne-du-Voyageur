@@ -92,6 +92,12 @@ namespace Pathfinding
                     allBasicAI[i].ScheduledGraphUpdate();
                 }
             }
+
+            // foreach (var VARIABLE in nodes)
+            // {
+            //     print(VARIABLE);
+            //     print(VARIABLE.getPosition());
+            // }
         }
 
         public List<Node> getNodes()
@@ -228,7 +234,9 @@ namespace Pathfinding
                 foreach (var neighbor in current.getNeighbors())
                 {
                     if (endNode is null) continue;
+                   
                     var neighborPosition = findPositionInGraph(neighbor);
+
                     var isNeighborVisited = vistedNodes[neighborPosition];
                     if (isNeighborVisited) continue;
                     if (!isNodeInList(openSet, current)) openSet.Add(current);
@@ -295,6 +303,7 @@ namespace Pathfinding
 
         private int findPositionInGraph(Node node)
         {
+            print(nodes.Count);
             for (var i = 0; i < nodes.Count; i++)
                 if (nodes[i] == node)
                     return i;
