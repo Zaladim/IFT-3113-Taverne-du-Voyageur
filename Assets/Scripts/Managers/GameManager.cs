@@ -83,15 +83,6 @@ namespace Managers
             timeManager.gameObject.SetActive(true);
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ToggleGameForcedPause();
-                if (gamePanel.activeSelf) settingsPanel.SetActive(!settingsPanel.activeSelf);
-            }
-        }
-
         public void StartGame()
         {
             startPanel.SetActive(false);
