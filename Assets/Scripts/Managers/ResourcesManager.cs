@@ -14,7 +14,7 @@ namespace Managers
         [Header("Reputation")] [SerializeField]
         private Text reputationDisplay;
 
-        [SerializeField] private int StartingReputation = 10;
+        [SerializeField] private int startingReputation = 10;
         [SerializeField] private int minReputation = 10;
 
         [Header("Seats")] [SerializeField] private int startingSeatNumber = 4;
@@ -22,8 +22,6 @@ namespace Managers
         [Header("Beers")] [SerializeField] private Text beersDisplay;
         [SerializeField] private int startingBeersAmount = 30;
         [SerializeField] private int beerPrice = 5;
-
-        [Header("Clients")] [SerializeField] private Text clientsDisplay;
 
         [Header("Debug")] [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
         private int clientsQuantity;
@@ -73,10 +71,10 @@ namespace Managers
         private void Awake()
         {
             gold = new Resource(goldDisplay, startingGoldAmount);
-            reputation = new Resource(reputationDisplay, StartingReputation, minReputation);
+            reputation = new Resource(reputationDisplay, startingReputation, minReputation);
             seats = new Resource(null, startingSeatNumber);
             beers = new Resource(beersDisplay, startingBeersAmount);
-            clients = new Resource(clientsDisplay);
+            clients = new Resource(null);
         }
 
         private void Update()
