@@ -102,7 +102,7 @@ namespace Managers
             placementManager.gameObject.SetActive(true);
             resourcesManager.gameObject.SetActive(true);
 
-            tutorial.StartTuto();
+            //tutorial.StartTuto();
         }
 
         public void RestartGame()
@@ -120,5 +120,29 @@ namespace Managers
 
         public bool IsGameRunnig() => !GamePause && !GameForcePause;
         public bool IsGameStopped() => GamePause || GameForcePause;
+
+        public void IncreaseGameSpeed(int n)
+        {
+            timeManager.ScaleTime(n);
+
+            if (IsGameRunnig())
+                timeManager.Apply();
+        }
+
+        public void GrowthGameSpeed(int k)
+        {
+            timeManager.ScaleTimeBy(k);
+
+            if (IsGameRunnig())
+                timeManager.Apply();
+        }
+
+        public void SetGameSpeed(int n)
+        {
+            timeManager.SetTimeScale(n);
+
+            if (IsGameRunnig())
+                timeManager.Apply();
+        }
     }
 }
