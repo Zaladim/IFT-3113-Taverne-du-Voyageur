@@ -23,7 +23,7 @@ namespace Characters
         [SerializeField] private float timeToStayIdleMin = 1f;
         [SerializeField] private float timeToStayIdleMax = 10f;
         [SerializeField] private ResourcesManager resourcesManager;
-        [SerializeField] private float timeToWaitBeforeLookingForDestinationAgain = 60f;
+        [SerializeField] private float timeToWaitBeforeLookingForDestinationAgain = 1f;
 
         [Header("Debug")] [SerializeField] private float idleTimer;
         [SerializeField] private List<Client> clients;

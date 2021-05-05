@@ -26,6 +26,9 @@ namespace Environnement
         private ResourcesManager resourcesManager;
         private Grid grid;
 
+        public int tableLength;
+        public int tableWidth;
+
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
@@ -107,9 +110,9 @@ namespace Environnement
             int x, y;
             grid.getXY(transform.position, out x, out y);
 
-            for (int i = x - 2; i <= x + 2; i++)
+            for (int i = x - tableWidth; i <= x + tableWidth; i++)
             {
-                for (int j = y - 2; j <= y + 2; j++)
+                for (int j = y - tableLength; j <= y + tableLength; j++)
                 {
                     if (grid.GetValue(i, j) != 0)
                     {
@@ -125,9 +128,9 @@ namespace Environnement
             int x, y;
             grid.getXY(transform.position, out x, out y);
 
-            for (int i = x - 2; i <= x + 2; i++)
+            for (int i = x - tableWidth; i <= x + tableWidth; i++)
             {
-                for (int j = y - 2; j <= y + 2; j++)
+                for (int j = y - tableLength; j <= y + tableLength; j++)
                 {
                     grid.SetValue(i, j, -1);
                 }
