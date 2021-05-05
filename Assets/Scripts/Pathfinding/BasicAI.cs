@@ -21,8 +21,8 @@ namespace Pathfinding
 
         private Thread thread;
         //temporary variables for the thread
-        private Node currentPosition;
-        private Node destinationPosition;
+        [SerializeField] private Node currentPosition;
+        [SerializeField] private Node destinationPosition;
 
         private bool graphUpdateScheduled;
 

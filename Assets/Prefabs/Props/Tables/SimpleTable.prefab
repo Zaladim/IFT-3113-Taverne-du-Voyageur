@@ -159,10 +159,30 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226257346075097934, guid: 015c862c49f28634d9a7127fd748844f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226257346075097934, guid: 015c862c49f28634d9a7127fd748844f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 1479125147579895353, guid: 015c862c49f28634d9a7127fd748844f,
         type: 3}
       propertyPath: m_Name
       value: Quartet
+      objectReference: {fileID: 0}
+    - target: {fileID: 2862134285296549010, guid: 015c862c49f28634d9a7127fd748844f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2862134285296549010, guid: 015c862c49f28634d9a7127fd748844f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3453450633183797982, guid: 015c862c49f28634d9a7127fd748844f,
         type: 3}
@@ -218,6 +238,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889001886131199287, guid: 015c862c49f28634d9a7127fd748844f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889001886131199287, guid: 015c862c49f28634d9a7127fd748844f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7576879555127630571, guid: 015c862c49f28634d9a7127fd748844f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7576879555127630571, guid: 015c862c49f28634d9a7127fd748844f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 015c862c49f28634d9a7127fd748844f, type: 3}
