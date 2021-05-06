@@ -9,6 +9,9 @@ namespace Managers
         [Header("External Tools")] [SerializeField]
         private ResourcesManager resourcesManager;
 
+        [SerializeField] private GameManager gameManager;
+
+
         [Header("Waiter Options")] public GameObject aiWaiterPrefab;
         [SerializeField] private Transform popZone;
         [SerializeField] [Min(0)] private int minAmount;
@@ -34,7 +37,13 @@ namespace Managers
 
         public void IncreaseWaiterNumber(int n = 1)
         {
-            if (resourcesManager.Gold < Price) return;
+            if (resourcesManager.Gold < Price)
+            {
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Not enough money... \n {Price - resourcesManager.Gold} coins missing!", 4f
+                );
+                return;
+            }
 
             targetAmount += n;
             resourcesManager.Reputation += Reputation;

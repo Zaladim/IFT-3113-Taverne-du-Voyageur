@@ -26,6 +26,8 @@ namespace Managers
         [SerializeField] [Tooltip("Does nothing if changed in editor!")]
         private bool isGameForcedPaused;
 
+        public NotificationSystem NotificationSystem => notificationSystem;
+
         public bool GamePause
         {
             get => isGamePaused;

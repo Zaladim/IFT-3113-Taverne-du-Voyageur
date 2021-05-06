@@ -7,6 +7,7 @@ namespace Managers
     public class ResourcesManager : MonoBehaviour
     {
         [Header("Tools")] [SerializeField] private ClientManager clientManager;
+        [SerializeField] private GameManager gameManager;
 
         [Header("Gold")] [SerializeField] private Text goldDisplay;
         [SerializeField] private int startingGoldAmount = 25;
@@ -92,6 +93,14 @@ namespace Managers
         public void BuyBeers(int n)
         {
             var tmp = n * beerPrice;
+
+            if (tmp > Gold)
+            {
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Not enough money... \n {tmp - Gold} coins missing!", 4f
+                );
+                return;
+            }
 
             if (tmp <= Gold && n != -1)
             {
