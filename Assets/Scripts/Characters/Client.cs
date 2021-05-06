@@ -75,6 +75,7 @@ namespace Characters
 
         public ResourcesManager ResourcesManager
         {
+            get => resourcesManager;
             set => resourcesManager = value;
         }
 
@@ -156,24 +157,16 @@ namespace Characters
                                     currentLookingAroundNode = mouvement.GoToRandomLookAroundNode();
                                 }
                             }
-                            else
-                            {
-                                if (mouvement.CheckIfPathNotFound())
-                                {
-                                    currentLookingAroundNode = null;
-                                }
-                                else if (mouvement.IsAtLocation(currentLookingAroundNode.getPosition()))
-                                {
-                                    lookingAroundNodesLeft--;
-                                    currentLookingAroundNode = null;
-                                }
-                            }
                         }
                         else
                         {
-                            if (mouvement.IsAtLocation(currentLookingAroundNode.getPosition()))
+                            if (mouvement.CheckIfPathNotFound())
                             {
-                                lookingAroundNodesLeft--;
+                                currentLookingAroundNode = null;
+                            }
+                            else if (mouvement.IsAtLocation(currentLookingAroundNode.getPosition()))
+                            {
+                                lookingAroundNodesLeft -= 1;
                                 currentLookingAroundNode = null;
                             }
                         }
@@ -186,7 +179,12 @@ namespace Characters
                         if (!areAllSeatsOccupied)
                             etat = ClientState.FindingSeat;
                         else
-                            etat = ClientState.Leaving;
+                        {
+                            unHappyReputation = notServedReputation;
+                            unHappyPrice = 0;
+                            isHappy = false;
+                            etat = ClientState.GoingToPay;
+                        }
                     }
 
                     break;
@@ -200,11 +198,7 @@ namespace Characters
 
                     if (timer <= 0)
                     {
-                        unHappyReputation = notServedReputation;
-                        unHappyPrice = notServedPrice;
                         isHappy = false;
-                        gameManager.NotificationSystem.CreateNotification(
-                            "Oohh... Noo...\nIt seems that you get an unhappy client!", 3f, NotificationType.Danger);
                         etat = ClientState.GoingToPay;
                     }
 
@@ -229,9 +223,6 @@ namespace Characters
                         unHappyReputation = notServedReputation;
                         unHappyPrice = notServedPrice;
                         isHappy = false;
-                        gameManager.NotificationSystem.CreateNotification(
-                            "Oohh... Noo...\nIt seems that you get an unhappy client!", 3f, NotificationType.Danger);
-
                         etat = ClientState.GoingToPay;
                     }
 
@@ -300,6 +291,18 @@ namespace Characters
                                 var r = isHappy ? happyReputation : unHappyReputation;
                                 resourcesManager.Gold += g;
                                 resourcesManager.Reputation += r;
+
+                                if (!isHappy)
+                                {
+                                    var gs = g > 0 ? $"{g} coins |" : "";
+                                    var rs = $"{r} reputation";
+                                    var tot = $"{gs} {rs}";
+
+                                    gameManager.NotificationSystem.CreateNotification(
+                                        $"Oohh... Noo...\nIt seems that you get an unhappy client!\n{tot}",
+                                        4f,
+                                        NotificationType.Danger);
+                                }
 
                                 etat = ClientState.GettingQuest;
                             }
