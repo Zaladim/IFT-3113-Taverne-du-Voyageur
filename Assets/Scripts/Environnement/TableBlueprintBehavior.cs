@@ -11,7 +11,7 @@ namespace Environnement
         [SerializeField] private int seats;
         [SerializeField] private Material defaultMat;
         [SerializeField] private Material constructMat;
-        
+
 
         [SerializeField] private List<GameObject> childs = new List<GameObject>();
         private GameManager gameManager;
@@ -87,9 +87,10 @@ namespace Environnement
                 {
                     return;
                 }
+
                 updateGrid();
-                
-                
+
+
                 // var hitColliders =
                 //     Physics.OverlapBox(transform1.position, new Vector3(1f, 0.5f, 2f), transform1.rotation);
                 // foreach (var hitCollider in hitColliders)
@@ -101,7 +102,7 @@ namespace Environnement
                 resourcesManager.Seats += seats;
                 graph.UpdateGraph();
                 Destroy(gameObject);
-                gameManager.ToggleGamePaused();
+                gameManager.GamePause = false;
             }
         }
 
@@ -120,6 +121,7 @@ namespace Environnement
                     }
                 }
             }
+
             return true;
         }
 

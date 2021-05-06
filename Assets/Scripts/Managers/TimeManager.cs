@@ -5,7 +5,12 @@ namespace Managers
 {
     public class TimeManager : MonoBehaviour
     {
-        [SerializeField] [Range(0, 10)] private int timeScaleModifier = 1;
+        [Header("Options")] [Range(0, 0)] private const int MINTimeScaleModifier = 0;
+        private const int MAXTimeScaleModifier = 10;
+
+        [Header("Debug (ReadOnly)")] [SerializeField] [Range(MINTimeScaleModifier, MAXTimeScaleModifier)]
+        private float timeScaleModifier = 1;
+
         [SerializeField] private bool isFrozen = false;
 
         private void Awake()
@@ -49,7 +54,35 @@ namespace Managers
 
         public TimeManager ScaleTime(int n)
         {
+            timeScaleModifier += n;
+
+
+            if (timeScaleModifier > MAXTimeScaleModifier)
+            {
+                timeScaleModifier = MAXTimeScaleModifier;
+            }
+            else if (timeScaleModifier < MINTimeScaleModifier)
+            {
+                timeScaleModifier = MINTimeScaleModifier;
+            }
+
+            return this;
+        }
+
+        public TimeManager SetTimeScale(int n)
+        {
             timeScaleModifier = n;
+
+
+            if (timeScaleModifier > MAXTimeScaleModifier)
+            {
+                timeScaleModifier = MAXTimeScaleModifier;
+            }
+            else if (timeScaleModifier < MINTimeScaleModifier)
+            {
+                timeScaleModifier = MINTimeScaleModifier;
+            }
+
             return this;
         }
 
@@ -58,10 +91,14 @@ namespace Managers
             if (k >= 0)
             {
                 timeScaleModifier *= k;
+                if (timeScaleModifier > MAXTimeScaleModifier)
+                    timeScaleModifier = MAXTimeScaleModifier;
             }
             else
             {
-                timeScaleModifier /= k;
+                timeScaleModifier /= Math.Abs(k);
+                if (timeScaleModifier < MINTimeScaleModifier)
+                    timeScaleModifier = MINTimeScaleModifier;
             }
 
             return this;
