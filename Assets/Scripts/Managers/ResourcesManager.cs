@@ -85,6 +85,7 @@ namespace Managers
 
             reputationWarned = false;
             goldWarned = false;
+            beerWarned = false;
         }
 
         private void Update()
@@ -158,12 +159,20 @@ namespace Managers
             {
                 Beers += n;
                 Gold -= tmp;
+                
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Huzzah!!\n{n} beers added!", 4f, NotificationType.Info
+                );
             }
             else
             {
                 var max = (int) Math.Floor((decimal) (Gold / (float) beerPrice));
                 Beers += max;
                 Gold -= max * beerPrice;
+                
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Huzzah!!\n{max} beers added!", 4f, NotificationType.Info
+                );
             }
         }
 

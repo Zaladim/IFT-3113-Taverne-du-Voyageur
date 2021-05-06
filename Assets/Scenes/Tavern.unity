@@ -17461,7 +17461,7 @@ MonoBehaviour:
   clientManager: {fileID: 905618212}
   gameManager: {fileID: 1394575960}
   goldDisplay: {fileID: 912774979}
-  startingGoldAmount: 30
+  startingGoldAmount: 7000
   reputationDisplay: {fileID: 2128990664}
   startingReputation: 10
   minReputation: 0
@@ -17476,6 +17476,7 @@ MonoBehaviour:
   seatsQuantity: 0
   reputationWarned: 0
   goldWarned: 0
+  beerWarned: 0
 --- !u!1 &1072056808
 GameObject:
   m_ObjectHideFlags: 0

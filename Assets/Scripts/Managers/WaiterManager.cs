@@ -31,7 +31,7 @@ namespace Managers
             SpawnWaiter();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             SpawnWaiter(waiters.Count);
         }
@@ -41,7 +41,7 @@ namespace Managers
             if (resourcesManager.Gold < Price)
             {
                 gameManager.NotificationSystem.CreateNotification(
-                    $"Not enough money... \n {Price - resourcesManager.Gold} coins missing!", 4f,
+                    $"Not enough money...\n{Price - resourcesManager.Gold} coins missing!", 4f,
                     NotificationType.Warning
                 );
                 return;
@@ -54,6 +54,8 @@ namespace Managers
 
         private void SpawnWaiter(int n = 0)
         {
+            var x = 0;
+
             for (var i = n; i < targetAmount; i++)
             {
                 var waiter = Instantiate(aiWaiterPrefab, popZone).GetComponent<Waiter>();
@@ -61,7 +63,15 @@ namespace Managers
                 waiter.ResourcesManager = resourcesManager;
 
                 waiters.Add(waiter);
+
+                x += 1;
             }
+
+            if (x > 0)
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Yay!\n{x} new waiter(s) hired!", 4f,
+                    NotificationType.Warning
+                );
         }
     }
 }
