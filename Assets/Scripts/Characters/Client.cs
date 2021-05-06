@@ -1,6 +1,7 @@
-﻿using Managers;
+﻿using System.Linq;
+using Interface;
+using Managers;
 using Pathfinding;
-using System.Linq;
 using UnityEngine;
 
 namespace Characters
@@ -25,6 +26,7 @@ namespace Characters
         [SerializeField] private TextMesh text;
         [SerializeField] private TextMesh subText;
         [SerializeField] private ResourcesManager resourcesManager;
+        [SerializeField] private GameManager gameManager;
         [SerializeField] private Animator anim;
 
         [Header("Options")] [SerializeField] private int orderPriceMin = 10;
@@ -53,7 +55,6 @@ namespace Characters
         [SerializeField] private int lookingAroundNodesLeft;
 
 
-
         [Header("Debug")] [SerializeField] private ClientState etat;
         [SerializeField] private Entrance exit;
         [SerializeField] private bool hasBeenInteractedWith;
@@ -66,7 +67,7 @@ namespace Characters
         [SerializeField] private float timer;
         [SerializeField] private float newDestinationTimer;
 
-        [SerializeField] private bool hasQuest = false;
+        [SerializeField] private bool hasQuest;
 
         public bool HasAWaiter { get; set; }
 
@@ -74,8 +75,12 @@ namespace Characters
 
         public ResourcesManager ResourcesManager
         {
-            get => resourcesManager;
             set => resourcesManager = value;
+        }
+
+        public GameManager GameManager
+        {
+            set => gameManager = value;
         }
 
         // Start is called before the first frame update
@@ -90,98 +95,90 @@ namespace Characters
             switch (etat)
             {
                 case ClientState.FindingSeat:
+                {
+                    anim.SetBool("moving", true);
+                    text.text = "Finding Seat";
+                    if (seat == null)
                     {
-                        anim.SetBool("moving", true);
-                        text.text = "Finding Seat";
-                        if (seat == null)
+                        subText.text = "Seat Not Found";
+                        if (newDestinationTimer == -1)
                         {
-                            subText.text = "Seat Not Found";
-                            if (newDestinationTimer == -1)
-                            {
-                                etat = ClientState.LookingAround;
-                                lookingAroundNodesLeft = nbLookingAroundNodes;
-                            }
-                            else
-                            {
-                                newDestinationTimer = -1;
-                                seat = mouvement.GoToRandomSeat();
-                                if (seat != null)
-                                {
-                                    lookDirection = seat.lookDirection;
-                                }
-                            }
+                            etat = ClientState.LookingAround;
+                            lookingAroundNodesLeft = nbLookingAroundNodes;
                         }
                         else
                         {
-                            subText.text = "Seat Found";
-                            if (mouvement.IsAtLocation(seat.transform.position))
-                            {
-                                seat.isOccupied = true;
-                                if (lookDirection == null) transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
-                                timer = Random.Range(waitingTimeMin, waitingTimeMax);
-                                etat = ClientState.WaitingToOrder;
-                            }
+                            newDestinationTimer = -1;
+                            seat = mouvement.GoToRandomSeat();
+                            if (seat != null) lookDirection = seat.lookDirection;
                         }
-
-                        break;
                     }
-                case ClientState.LookingAround:
+                    else
                     {
-                        anim.SetBool("moving", true);
-                        text.text = "Looking Around";
-                        subText.text = "nb Nodes left: " + lookingAroundNodesLeft;
-                        if (lookingAroundNodesLeft >= 0)
+                        subText.text = "Seat Found";
+                        if (mouvement.IsAtLocation(seat.transform.position))
                         {
-                            if (currentLookingAroundNode == null)
+                            seat.isOccupied = true;
+                            if (lookDirection == null) transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+                            timer = Random.Range(waitingTimeMin, waitingTimeMax);
+                            etat = ClientState.WaitingToOrder;
+                        }
+                    }
+
+                    break;
+                }
+                case ClientState.LookingAround:
+                {
+                    anim.SetBool("moving", true);
+                    text.text = "Looking Around";
+                    subText.text = "nb Nodes left: " + lookingAroundNodesLeft;
+                    if (lookingAroundNodesLeft >= 0)
+                    {
+                        if (currentLookingAroundNode == null)
+                        {
+                            if (newDestinationTimer > 0)
                             {
-                                if (newDestinationTimer > 0)
+                                newDestinationTimer -= Time.deltaTime;
+                            }
+                            else
+                            {
+                                var allSeats = FindObjectsOfType<Seat>();
+
+                                var areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt);
+                                if (!areAllSeatsOccupied)
                                 {
-                                    newDestinationTimer -= Time.deltaTime;
+                                    etat = ClientState.FindingSeat;
                                 }
                                 else
                                 {
-
-                                    var allSeats = FindObjectsOfType<Seat>();
-
-                                    var areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt);
-                                    if (!areAllSeatsOccupied)
-                                    {
-                                        etat = ClientState.FindingSeat;
-                                    }
-                                    else
-                                    {
-                                        newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
-                                        currentLookingAroundNode = mouvement.GoToRandomLookAroundNode();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (mouvement.IsAtLocation(currentLookingAroundNode.getPosition()))
-                                {
-                                    lookingAroundNodesLeft--;
-                                    currentLookingAroundNode = null;
+                                    newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                    currentLookingAroundNode = mouvement.GoToRandomLookAroundNode();
                                 }
                             }
                         }
                         else
                         {
-                            var allSeats = FindObjectsOfType<Seat>();
-
-                            var areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt);
-                            if (!areAllSeatsOccupied)
+                            if (mouvement.IsAtLocation(currentLookingAroundNode.getPosition()))
                             {
-                                etat = ClientState.FindingSeat;
-                            }
-                            else
-                            {
-                                etat = ClientState.Leaving;
+                                lookingAroundNodesLeft--;
+                                currentLookingAroundNode = null;
                             }
                         }
-
-                        break;
                     }
+                    else
+                    {
+                        var allSeats = FindObjectsOfType<Seat>();
+
+                        var areAllSeatsOccupied = allSeats.All(t => t.isAIGoingForIt);
+                        if (!areAllSeatsOccupied)
+                            etat = ClientState.FindingSeat;
+                        else
+                            etat = ClientState.Leaving;
+                    }
+
+                    break;
+                }
                 case ClientState.WaitingToOrder:
                     anim.SetBool("moving", false);
                     timer -= Time.deltaTime;
@@ -194,6 +191,8 @@ namespace Characters
                         unHappyReputation = notServedReputation;
                         unHappyPrice = notServedPrice;
                         isHappy = false;
+                        gameManager.NotificationSystem.CreateNotification(
+                            "Oohh... Noo...\nIt seems that you get an unhappy client!", 3f, NotificationType.Danger);
                         etat = ClientState.GoingToPay;
                     }
 
@@ -208,201 +207,197 @@ namespace Characters
 
                     break;
                 case ClientState.WaitingToReciveOrder:
+                {
+                    anim.SetBool("moving", false);
+                    TimeLeft -= Time.deltaTime;
+                    isHappy = TimeLeft >= unHappyTime;
+
+                    if (TimeLeft < notServedTime)
                     {
-                        anim.SetBool("moving", false);
-                        TimeLeft -= Time.deltaTime;
-                        isHappy = TimeLeft >= unHappyTime;
+                        unHappyReputation = notServedReputation;
+                        unHappyPrice = notServedPrice;
+                        isHappy = false;
+                        gameManager.NotificationSystem.CreateNotification(
+                            "Oohh... Noo...\nIt seems that you get an unhappy client!", 3f, NotificationType.Danger);
 
-                        if (TimeLeft < notServedTime)
-                        {
-                            unHappyReputation = notServedReputation;
-                            unHappyPrice = notServedPrice;
-                            isHappy = false;
-                            etat = ClientState.GoingToPay;
-                        }
-
-                        text.text = "Waiting To Recive Order";
-                        subText.text = Mathf.Ceil(TimeLeft) + "s";
-
-                        if (hasBeenInteractedWith)
-                        {
-                            etat = ClientState.Eating;
-                            timer = Random.Range(timeToEatMin, timeToEatMax);
-                            hasBeenInteractedWith = false;
-                        }
-
-                        if (lookDirection != null) mouvement.FaceLocation(lookDirection.transform.position);
-
-                        break;
+                        etat = ClientState.GoingToPay;
                     }
+
+                    text.text = "Waiting To Recive Order";
+                    subText.text = Mathf.Ceil(TimeLeft) + "s";
+
+                    if (hasBeenInteractedWith)
+                    {
+                        etat = ClientState.Eating;
+                        timer = Random.Range(timeToEatMin, timeToEatMax);
+                        hasBeenInteractedWith = false;
+                    }
+
+                    if (lookDirection != null) mouvement.FaceLocation(lookDirection.transform.position);
+
+                    break;
+                }
                 case ClientState.Eating:
-                    {
-                        anim.SetBool("moving", false);
-                        text.text = "Eating";
-                        subText.text = Mathf.Ceil(timer) + "s";
-                        timer -= Time.deltaTime;
-                        if (timer <= 0) etat = ClientState.GoingToPay;
+                {
+                    anim.SetBool("moving", false);
+                    text.text = "Eating";
+                    subText.text = Mathf.Ceil(timer) + "s";
+                    timer -= Time.deltaTime;
+                    if (timer <= 0) etat = ClientState.GoingToPay;
 
-                        if (lookDirection != null) mouvement.FaceLocation(lookDirection.transform.position);
+                    if (lookDirection != null) mouvement.FaceLocation(lookDirection.transform.position);
 
-                        break;
-                    }
+                    break;
+                }
                 case ClientState.GoingToPay:
+                {
+                    anim.SetBool("moving", true);
+                    text.text = "Going To Pay";
+                    if (seat != null)
                     {
-                        anim.SetBool("moving", true);
-                        text.text = "Going To Pay";
-                        if (seat != null)
+                        subText.text = "Counter Not Found";
+                        seat.isAIGoingForIt = false;
+                        seat.isOccupied = false;
+                        seat = null;
+                        payLocation = mouvement.GoToPay(out lookDirection);
+                        newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                    }
+                    else
+                    {
+                        if (payLocation == null)
                         {
                             subText.text = "Counter Not Found";
-                            seat.isAIGoingForIt = false;
-                            seat.isOccupied = false;
-                            seat = null;
-                            payLocation = mouvement.GoToPay(out lookDirection);
-                            newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
-                        }
-                        else
-                        {
-                            if (payLocation == null)
+                            if (newDestinationTimer > 0)
                             {
-                                subText.text = "Counter Not Found";
-                                if (newDestinationTimer > 0)
-                                {
-                                    newDestinationTimer -= Time.deltaTime;
-                                }
-                                else
-                                {
-                                    newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
-                                    payLocation = mouvement.GoToPay(out lookDirection);
-                                }
+                                newDestinationTimer -= Time.deltaTime;
                             }
                             else
                             {
-                                subText.text = "Counter Found";
-                                if (mouvement.IsAtLocation(payLocation.transform.position))
-                                {
-                                    if (lookDirection == null) transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
-                                    var g = isHappy ? price : unHappyPrice;
-                                    var r = isHappy ? happyReputation : unHappyReputation;
-                                    resourcesManager.Gold += g;
-                                    resourcesManager.Reputation += r;
-
-                                    etat = ClientState.GettingQuest;
-                                }
+                                newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                payLocation = mouvement.GoToPay(out lookDirection);
                             }
                         }
+                        else
+                        {
+                            subText.text = "Counter Found";
+                            if (mouvement.IsAtLocation(payLocation.transform.position))
+                            {
+                                if (lookDirection == null) transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
-                        break;
+                                var g = isHappy ? price : unHappyPrice;
+                                var r = isHappy ? happyReputation : unHappyReputation;
+                                resourcesManager.Gold += g;
+                                resourcesManager.Reputation += r;
+
+                                etat = ClientState.GettingQuest;
+                            }
+                        }
                     }
+
+                    break;
+                }
                 case ClientState.GettingQuest:
+                {
+                    anim.SetBool("moving", true);
+                    text.text = "Getting Quest";
+                    if (payLocation != null)
                     {
-                        anim.SetBool("moving", true);
-                        text.text = "Getting Quest";
-                        if (payLocation != null)
-                        {
-                            subText.text = "Quest Giver Not Found";
-                            payLocation = null;
-                            if (questGiver == null)
-                            {
-                                questGiver = mouvement.GoToRandomQuestGiver();
-                            }
-                            else
-                            {
-                                mouvement.GoToQuestGiver(questGiver);
-                            }
-                        }
+                        subText.text = "Quest Giver Not Found";
+                        payLocation = null;
+                        if (questGiver == null)
+                            questGiver = mouvement.GoToRandomQuestGiver();
                         else
-                        {
-                            if (questGiver == null)
-                            {
-                                etat = ClientState.Leaving;
-                            }
-                            else
-                            {
-                                subText.text = "Quest Giver Found";
-                                if (mouvement.IsCloseToLocation(questGiver.transform.position,
-                                    distanceFromQuestGiverToInteract))
-                                {
-                                    etat = ClientState.Idle;
-                                    timer = Random.Range(timeToStayIdleMin, timeToStayIdleMax);
-                                    if (hasQuest)
-                                    {
-                                        questGiver.GetComponent<QuestGiver>().ReturnQuest();
-                                        hasQuest = false;
-                                        exit = null;
-                                    }
-                                    else
-                                    {
-                                        hasQuest = true;
-                                    }
-                                }
-                            }
-                        }
-
-
-                        break;
+                            mouvement.GoToQuestGiver(questGiver);
                     }
-                case ClientState.Idle:
+                    else
                     {
-                        anim.SetBool("moving", false);
-                        mouvement.StopMoving();
-                        mouvement.FaceLocation(questGiver.transform.position);
-                        text.text = "Talking To Quest Giver";
-                        subText.text = "Time Left: " + Mathf.Ceil(timer) + "s";
-                        timer -= Time.deltaTime;
-
-                        if (timer <= 0)
+                        if (questGiver == null)
                         {
                             etat = ClientState.Leaving;
-
-                            if (!hasQuest)
-                            {
-                                questGiver = null;
-                            }
-                        }
-
-                        break;
-                    }
-                case ClientState.Leaving:
-                    {
-                        anim.SetBool("moving", true);
-                        text.text = "Leaving";
-
-                        if (payLocation != null)
-                        {
-                            subText.text = "Exit Not Found";
-                            payLocation = null;
-                            exit = mouvement.GoToExit();
-                            newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
                         }
                         else
                         {
-                            if (exit == null)
+                            subText.text = "Quest Giver Found";
+                            if (mouvement.IsCloseToLocation(questGiver.transform.position,
+                                distanceFromQuestGiverToInteract))
                             {
-                                subText.text = "Exit Not Found";
-                                if (newDestinationTimer > 0)
+                                etat = ClientState.Idle;
+                                timer = Random.Range(timeToStayIdleMin, timeToStayIdleMax);
+                                if (hasQuest)
                                 {
-                                    newDestinationTimer -= Time.deltaTime;
+                                    questGiver.GetComponent<QuestGiver>().ReturnQuest();
+                                    hasQuest = false;
+                                    exit = null;
                                 }
                                 else
                                 {
-                                    newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
-                                    exit = mouvement.GoToExit();
-                                }
-                            }
-                            else
-                            {
-                                subText.text = "Exit Found";
-                                if (mouvement.IsAtLocation(exit.transform.position))
-                                {
-                                    transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                                    etat = ClientState.Inactive;
+                                    hasQuest = true;
                                 }
                             }
                         }
-
-                        break;
                     }
+
+
+                    break;
+                }
+                case ClientState.Idle:
+                {
+                    anim.SetBool("moving", false);
+                    mouvement.StopMoving();
+                    mouvement.FaceLocation(questGiver.transform.position);
+                    text.text = "Talking To Quest Giver";
+                    subText.text = "Time Left: " + Mathf.Ceil(timer) + "s";
+                    timer -= Time.deltaTime;
+
+                    if (timer <= 0)
+                    {
+                        etat = ClientState.Leaving;
+
+                        if (!hasQuest) questGiver = null;
+                    }
+
+                    break;
+                }
+                case ClientState.Leaving:
+                {
+                    anim.SetBool("moving", true);
+                    text.text = "Leaving";
+
+                    if (payLocation != null)
+                    {
+                        subText.text = "Exit Not Found";
+                        payLocation = null;
+                        exit = mouvement.GoToExit();
+                        newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                    }
+                    else
+                    {
+                        if (exit == null)
+                        {
+                            subText.text = "Exit Not Found";
+                            if (newDestinationTimer > 0)
+                            {
+                                newDestinationTimer -= Time.deltaTime;
+                            }
+                            else
+                            {
+                                newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
+                                exit = mouvement.GoToExit();
+                            }
+                        }
+                        else
+                        {
+                            subText.text = "Exit Found";
+                            if (mouvement.IsAtLocation(exit.transform.position))
+                            {
+                                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                                etat = ClientState.Inactive;
+                            }
+                        }
+                    }
+
+                    break;
+                }
                 case ClientState.Inactive:
                     SetUp();
                     gameObject.SetActive(false);
