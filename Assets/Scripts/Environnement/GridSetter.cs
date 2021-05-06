@@ -27,8 +27,6 @@ namespace Environnement
             grid.SetValue(transform.position, -1);
             int x, y;
             grid.getXY(transform.position, out x, out y);
-            print(gameObject);
-            print(gameObject.transform.position);
 
             if (objectWidth > 0)
             {

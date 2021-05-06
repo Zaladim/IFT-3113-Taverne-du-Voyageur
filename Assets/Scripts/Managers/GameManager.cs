@@ -19,10 +19,10 @@ namespace Managers
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private Tutorial tutorial;
 
-        [Header("Time Debug"), Tooltip("Does nothing if changed in editor!"), SerializeField]
+        [Header("Time Debug")] [Tooltip("Does nothing if changed in editor!")] [SerializeField]
         private bool isGamePaused;
 
-        [SerializeField, Tooltip("Does nothing if changed in editor!")]
+        [SerializeField] [Tooltip("Does nothing if changed in editor!")]
         private bool isGameForcedPaused;
 
         public bool GamePause
@@ -56,13 +56,9 @@ namespace Managers
                 else
                 {
                     if (isGamePaused)
-                    {
                         timeManager.DefrostTime(0);
-                    }
                     else
-                    {
                         timeManager.DefrostTime();
-                    }
 
                     isGameForcedPaused = false;
                 }
@@ -83,13 +79,24 @@ namespace Managers
             timeManager.gameObject.SetActive(true);
         }
 
-        private void Update()
+        public void ToggleGameForcedPause()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ToggleGameForcedPause();
-                if (gamePanel.activeSelf) settingsPanel.SetActive(!settingsPanel.activeSelf);
-            }
+            GameForcePause = !GameForcePause;
+        }
+
+        public void ToggleGamePaused()
+        {
+            GamePause = !GamePause;
+        }
+
+        public bool IsGameRunning()
+        {
+            return !GamePause && !GameForcePause;
+        }
+
+        public bool IsGameStopped()
+        {
+            return GamePause || GameForcePause;
         }
 
         public void StartGame()
@@ -102,7 +109,7 @@ namespace Managers
             placementManager.gameObject.SetActive(true);
             resourcesManager.gameObject.SetActive(true);
 
-            tutorial.StartTuto();
+            //tutorial.StartTuto();
         }
 
         public void RestartGame()
@@ -115,10 +122,28 @@ namespace Managers
             Application.Quit();
         }
 
-        public void ToggleGameForcedPause() => GameForcePause = !GameForcePause;
-        public void ToggleGamePaused() => GamePause = !GamePause;
+        public void IncreaseGameSpeed(int n)
+        {
+            timeManager.ScaleTime(n);
 
-        public bool IsGameRunnig() => !GamePause && !GameForcePause;
-        public bool IsGameStopped() => GamePause || GameForcePause;
+            if (IsGameRunning())
+                timeManager.Apply();
+        }
+
+        public void GrowthGameSpeed(int k)
+        {
+            timeManager.ScaleTimeBy(k);
+
+            if (IsGameRunning())
+                timeManager.Apply();
+        }
+
+        public void SetGameSpeed(int n)
+        {
+            timeManager.SetTimeScale(n);
+
+            if (IsGameRunning())
+                timeManager.Apply();
+        }
     }
 }

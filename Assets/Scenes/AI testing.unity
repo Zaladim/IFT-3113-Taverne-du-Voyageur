@@ -292,7 +292,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
@@ -371,7 +371,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
@@ -525,7 +525,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
@@ -2099,7 +2099,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
@@ -2659,7 +2659,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
@@ -2813,7 +2813,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
@@ -3089,7 +3089,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
@@ -3512,7 +3512,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
@@ -3936,7 +3936,7 @@ PrefabInstance:
     - target: {fileID: 4314069734299072005, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}
       propertyPath: timeToWaitBeforeLookingForDestinationAgain
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
         type: 3}

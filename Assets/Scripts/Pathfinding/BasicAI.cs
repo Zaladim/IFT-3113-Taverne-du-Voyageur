@@ -21,8 +21,8 @@ namespace Pathfinding
 
         private Thread thread;
         //temporary variables for the thread
-        private Node currentPosition;
-        private Node destinationPosition;
+        [SerializeField] private Node currentPosition;
+        [SerializeField] private Node destinationPosition;
 
         private bool graphUpdateScheduled;
 
@@ -44,6 +44,7 @@ namespace Pathfinding
             {
                 graphUpdateScheduled = false;
                 pathFinding.UpdateGraph();
+                //Debug.Log(gameObject.name + " has updated its graph");
             }
 
             //move
@@ -306,14 +307,18 @@ namespace Pathfinding
             hasDestination = true;
         }
 
-        public Node GoToRandomNode()
+        public Node GoToRandomLookAroundNode()
         {
-            var allNodes = FindObjectsOfType<Node>();
-            if (allNodes.Length == 0)
+            var allNodes = pathFinding.getNodes();
+            if (allNodes.Count() == 0)
             {
                 return null;
             }
-            var randomnode = allNodes[Random.Range(0, allNodes.Length)];
+            var randomnode = allNodes[Random.Range(0, allNodes.Count())];
+            while (randomnode.isntALookAroundNode)
+            {
+                randomnode = allNodes[Random.Range(0, allNodes.Count())];
+            }
 
             SetNewPath(randomnode.getPosition());
             //getPath(transform.position, randomSeat.transform.position);

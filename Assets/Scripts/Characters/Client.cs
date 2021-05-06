@@ -47,9 +47,10 @@ namespace Characters
         [SerializeField] private float distanceFromQuestGiverToInteract = 2;
         [SerializeField] private float timeToStayIdleMin = 1f;
         [SerializeField] private float timeToStayIdleMax = 5f;
-        [SerializeField] private float timeToWaitBeforeLookingForDestinationAgain = 60f;
+        [SerializeField] private float timeToWaitBeforeLookingForDestinationAgain = 1f;
         [SerializeField] private Node currentLookingAroundNode;
-        [SerializeField] private int lookingAroundNodesLeft = 3;
+        [SerializeField] private int nbLookingAroundNodes = 10;
+        [SerializeField] private int lookingAroundNodesLeft;
 
 
 
@@ -98,12 +99,16 @@ namespace Characters
                             if (newDestinationTimer == -1)
                             {
                                 etat = ClientState.LookingAround;
+                                lookingAroundNodesLeft = nbLookingAroundNodes;
                             }
                             else
                             {
                                 newDestinationTimer = -1;
                                 seat = mouvement.GoToRandomSeat();
-                                lookDirection = seat.lookDirection;
+                                if (seat != null)
+                                {
+                                    lookDirection = seat.lookDirection;
+                                }
                             }
                         }
                         else
@@ -147,7 +152,7 @@ namespace Characters
                                     else
                                     {
                                         newDestinationTimer = timeToWaitBeforeLookingForDestinationAgain;
-                                        currentLookingAroundNode = mouvement.GoToRandomNode();
+                                        currentLookingAroundNode = mouvement.GoToRandomLookAroundNode();
                                     }
                                 }
                             }

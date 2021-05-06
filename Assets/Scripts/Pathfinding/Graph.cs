@@ -27,8 +27,18 @@ namespace Pathfinding
 
         public Graph CopyGraph()
         {
-            Graph temp = gameObject.AddComponent<Graph>();
-            temp.nodes = nodes;
+            Graph temp = new Graph();
+            temp.nodes = new List<Node>();
+            GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
+            foreach (var node in n)
+            {
+                Node noeud = node.GetComponent<Node>();
+                if (noeud.getNeighbors().Count() > 0)
+                {
+                    temp.nodes.Add(noeud);
+                }
+                //temp.nodes.Add(node.GetComponent<Node>());
+            }
             temp.DrawGraph = DrawGraph;
             temp.isOriginal = false;
             return temp;
@@ -40,7 +50,11 @@ namespace Pathfinding
             GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
             foreach (var node in n)
             {
-                nodes.Add(node.GetComponent<Node>());
+                Node noeud = node.GetComponent<Node>();
+                if (noeud.getNeighbors().Count() > 0)
+                {
+                    nodes.Add(noeud);
+                }
             }
 
             // nodes = FindObjectsOfType<Node>();
@@ -50,6 +64,7 @@ namespace Pathfinding
         // Update is called once per frame
         private void Update()
         {
+            //drawGraph(DrawGraph);
         }
 
         public void UpdateGraph()
@@ -58,7 +73,11 @@ namespace Pathfinding
             GameObject[] n = GameObject.FindGameObjectsWithTag("Node");
             foreach (var node in n)
             {
-                nodes.Add(node.GetComponent<Node>());
+                Node noeud = node.GetComponent<Node>();
+                if (noeud.getNeighbors().Count() > 0)
+                {
+                    nodes.Add(noeud);
+                }
             }
 
             // nodes = FindObjectsOfType<Node>();
@@ -73,6 +92,12 @@ namespace Pathfinding
                     allBasicAI[i].ScheduledGraphUpdate();
                 }
             }
+
+            // foreach (var VARIABLE in nodes)
+            // {
+            //     print(VARIABLE);
+            //     print(VARIABLE.getPosition());
+            // }
         }
 
         public List<Node> getNodes()
@@ -134,8 +159,8 @@ namespace Pathfinding
                 var hits = Physics.RaycastAll(position, direction, currentDistance);
                 var canGoToObject =
                     (from t in hits
-                        where t.collider.GetComponent<ObjectAIBehavior>() != null
-                        select t.collider.GetComponent<ObjectAIBehavior>())
+                     where t.collider.GetComponent<ObjectAIBehavior>() != null
+                     select t.collider.GetComponent<ObjectAIBehavior>())
                     .All(behavior => behavior.canActorsPassThrough);
 
                 if (!canGoToObject) continue;
@@ -153,7 +178,7 @@ namespace Pathfinding
 
             // The set of currently discovered nodes that are not evaluated yet.
             // Initially, only the start node is known.
-            var openSet = new List<Node> {startNode};
+            var openSet = new List<Node> { startNode };
 
             var vistedNodes = new bool[nodes.Count];
 
@@ -209,7 +234,9 @@ namespace Pathfinding
                 foreach (var neighbor in current.getNeighbors())
                 {
                     if (endNode is null) continue;
-                    var neighborPosition = findPositionInGrid(neighbor);
+                   
+                    var neighborPosition = findPositionInGraph(neighbor);
+
                     var isNeighborVisited = vistedNodes[neighborPosition];
                     if (isNeighborVisited) continue;
                     if (!isNodeInList(openSet, current)) openSet.Add(current);
@@ -234,12 +261,12 @@ namespace Pathfinding
 
         private List<Node> reconstruct_path(IReadOnlyList<Node> cameFrom, Node current)
         {
-            var totalPath = new List<Node> {current};
-            while (cameFrom[findPositionInGrid(current)] != null)
+            var totalPath = new List<Node> { current };
+            while (cameFrom[findPositionInGraph(current)] != null)
             {
                 if (current is null) continue;
-                current = cameFrom[findPositionInGrid(current)];
-                var temp = new List<Node> {current};
+                current = cameFrom[findPositionInGraph(current)];
+                var temp = new List<Node> { current };
                 temp.AddRange(totalPath);
                 totalPath = temp;
             }
@@ -274,13 +301,14 @@ namespace Pathfinding
             return nodes.Any(t => t == node);
         }
 
-        private int findPositionInGrid(Node node)
+        private int findPositionInGraph(Node node)
         {
+            print(nodes.Count);
             for (var i = 0; i < nodes.Count; i++)
                 if (nodes[i] == node)
                     return i;
 
-            throw new Exception($"the given node ({node.getPosition()}) isn't in the grid");
+            throw new Exception($"the given node ({node.getPosition()}) isn't in the graph");
         }
     }
 }

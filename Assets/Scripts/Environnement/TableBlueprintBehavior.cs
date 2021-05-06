@@ -11,7 +11,7 @@ namespace Environnement
         [SerializeField] private int seats;
         [SerializeField] private Material defaultMat;
         [SerializeField] private Material constructMat;
-        
+
 
         [SerializeField] private List<GameObject> childs = new List<GameObject>();
         private GameManager gameManager;
@@ -25,6 +25,9 @@ namespace Environnement
 
         private ResourcesManager resourcesManager;
         private Grid grid;
+
+        public int tableLength;
+        public int tableWidth;
 
         private void Awake()
         {
@@ -84,9 +87,10 @@ namespace Environnement
                 {
                     return;
                 }
+
                 updateGrid();
-                
-                
+
+
                 // var hitColliders =
                 //     Physics.OverlapBox(transform1.position, new Vector3(1f, 0.5f, 2f), transform1.rotation);
                 // foreach (var hitCollider in hitColliders)
@@ -98,7 +102,7 @@ namespace Environnement
                 resourcesManager.Seats += seats;
                 graph.UpdateGraph();
                 Destroy(gameObject);
-                gameManager.ToggleGamePaused();
+                gameManager.GamePause = false;
             }
         }
 
@@ -107,9 +111,9 @@ namespace Environnement
             int x, y;
             grid.getXY(transform.position, out x, out y);
 
-            for (int i = x - 2; i <= x + 2; i++)
+            for (int i = x - tableWidth; i <= x + tableWidth; i++)
             {
-                for (int j = y - 2; j <= y + 2; j++)
+                for (int j = y - tableLength; j <= y + tableLength; j++)
                 {
                     if (grid.GetValue(i, j) != 0)
                     {
@@ -117,6 +121,7 @@ namespace Environnement
                     }
                 }
             }
+
             return true;
         }
 
@@ -125,9 +130,9 @@ namespace Environnement
             int x, y;
             grid.getXY(transform.position, out x, out y);
 
-            for (int i = x - 2; i <= x + 2; i++)
+            for (int i = x - tableWidth; i <= x + tableWidth; i++)
             {
-                for (int j = y - 2; j <= y + 2; j++)
+                for (int j = y - tableLength; j <= y + tableLength; j++)
                 {
                     grid.SetValue(i, j, -1);
                 }

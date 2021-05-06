@@ -7,31 +7,27 @@ namespace Managers
 {
     public class PlacementManager : MonoBehaviour
     {
-        [SerializeField] private GameObject roomUI;
+        [Header("Managers")]
         [SerializeField] private ResourcesManager rm;
+        [SerializeField] private GameManager gameManager;
+        
+        [Header("Debug")]
         [SerializeField] private List<Node> nodes;
-        private GameManager gameManager;
 
         public int Price { get; set; }
         public int Reputation { get; set; }
-
-        private void Awake()
-        {
-            gameManager = FindObjectOfType<GameManager>();
-        }
 
         public void CreateBlueprint(GameObject blueprint)
         {
             if (rm.Gold < Price)
             {
-                gameManager.ToggleGamePaused();
+                gameManager.GamePause = false;
                 return;
             }
 
             Instantiate(blueprint, new Vector3(-200, 0, -200), Quaternion.identity);
             rm.Gold -= Price;
             rm.Reputation += Reputation;
-            roomUI.gameObject.SetActive(!roomUI.gameObject.activeSelf);
         }
 
         public void InitAllNodes()
