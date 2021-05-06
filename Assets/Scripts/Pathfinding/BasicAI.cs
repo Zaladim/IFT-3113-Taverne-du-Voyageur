@@ -40,7 +40,7 @@ namespace Pathfinding
         // Update is called once per frame
         private void Update()
         {
-            if (graphUpdateScheduled && thread != null && !thread.IsAlive)
+            if (graphUpdateScheduled && (thread == null || thread != null && !thread.IsAlive))
             {
                 graphUpdateScheduled = false;
                 pathFinding.UpdateGraph();
@@ -151,6 +151,11 @@ namespace Pathfinding
                     pathFinding.Resurect();
                     thread = null;
                 }
+                if (graphUpdateScheduled)
+                {
+                    graphUpdateScheduled = false;
+                    pathFinding.UpdateGraph();
+                }
                 currentPosition = pathFinding.getColsestNodeToPoint(transform.position);
                 destinationPosition = pathFinding.getColsestNodeToPoint(destination);
                 target = destination;
@@ -162,9 +167,12 @@ namespace Pathfinding
         private void getPath()
         {
             currentPath = pathFinding.A_Star(currentPosition, destinationPosition);
-            currentNode = 0;
-            currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            if (currentPath != null)
+            {
+                currentNode = 0;
+                currentDestination = currentPath[currentNode].getPosition();
+                hasDestination = true;
+            }
         }
 
         public Seat GoToRandomSeat()
@@ -290,21 +298,24 @@ namespace Pathfinding
             }
 
             var randomQuestGiver = allQuestGivers[Random.Range(0, allQuestGivers.Length)];
-            target = randomQuestGiver.transform.position;
-            //currentPath = pathFinding.A_Star(transform.position, target);
+
+            SetNewPath(randomQuestGiver.transform.position);
+            /*target = randomQuestGiver.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
             return randomQuestGiver;
         }
 
         public void GoToQuestGiver(GameObject vmac)
         {
-            target = vmac.transform.position;
+            SetNewPath(vmac.transform.position);
+            /*target = vmac.transform.position;
             //currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
         }
 
         public Node GoToRandomLookAroundNode()
@@ -358,6 +369,18 @@ namespace Pathfinding
         {
             hasDestination = false;
             speed = Random.Range(speedMin, speedMax);
+        }
+
+        public bool CheckIfPathNotFound()
+        {
+            if (thread != null && !thread.IsAlive)
+            {
+                return currentPath == null;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
