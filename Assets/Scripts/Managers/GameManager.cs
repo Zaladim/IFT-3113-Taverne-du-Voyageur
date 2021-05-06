@@ -37,14 +37,11 @@ namespace Managers
                 {
                     timeManager.LockTime();
                     isGamePaused = true;
-
-                    notificationSystem.CreateNotification("Entering in Pause mode !", 1.5f, NotificationType.Info);
                 }
                 else
                 {
                     timeManager.Apply();
                     isGamePaused = false;
-                    notificationSystem.CreateNotification("Entering in Play mode !", 1.5f, NotificationType.Info);
                 }
             }
         }

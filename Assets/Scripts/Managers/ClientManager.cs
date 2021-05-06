@@ -17,12 +17,15 @@ namespace Managers
         [SerializeField] private Transform popZone;
         [SerializeField] [Min(0)] private int minAmount;
         [SerializeField] [Range(1.5f, 10)] private float spawnSpeed = 1.5f;
+        [SerializeField] [Range(1.5f, 10)] private float lurkSpeed = 1.5f;
 
         [Header("Debug")] [SerializeField] private int targetAmount;
         [SerializeField] private int curAmount;
         [SerializeField] private int deltaAmount;
-        [SerializeField] private float timeToSpawn;
+        [SerializeField] private float spawnTimer;
+        [SerializeField] private float lurkTimer;
         [SerializeField] private List<Client> clients;
+        [SerializeField] private bool isFull = false;
 
         public int ClientsNumber => curAmount;
 
@@ -41,19 +44,21 @@ namespace Managers
             var tmp = clients.Count(client => client.gameObject.activeSelf);
             curAmount = tmp;
             deltaAmount = resourcesManager.Seats - targetAmount;
+            isFull = deltaAmount <= 0;
         }
 
         private void FixedUpdate()
         {
-            if (timeToSpawn > 0)
+            var elapsedTime = Time.fixedDeltaTime;
+            var reputation = resourcesManager.Reputation;
+
+            if (spawnTimer > 0)
             {
-                timeToSpawn -= Time.fixedDeltaTime;
+                spawnTimer -= elapsedTime;
             }
             else
             {
-                var reputation = resourcesManager.Reputation;
-
-                var n = deltaAmount != 0 ? Random.Range(1, deltaAmount % 4 + 1) : 0;
+                var n = deltaAmount >= 0 ? Random.Range(1, deltaAmount % 4 + 1) : 0;
                 var tmp = Random.Range(0, 100 > reputation ? 100 : reputation) < reputation ? n : 0;
 
                 if (targetAmount <= reputation)
@@ -64,15 +69,23 @@ namespace Managers
                 if (curAmount < targetAmount)
                     AddNewClient(targetAmount - curAmount);
 
-                timeToSpawn = spawnSpeed;
+                spawnTimer = spawnSpeed;
+            }
+
+            if (lurkTimer > 0)
+            {
+                lurkTimer -= elapsedTime;
+            }
+            else if (isFull)
+            {
+                if (Random.Range(0, 100 > reputation ? 100 : reputation) < reputation)
+                    AddNewClient(Random.Range(0, 2));
+                lurkTimer = lurkSpeed;
             }
         }
 
         private void AddNewClient(int n = 1)
         {
-            gameManager.NotificationSystem.CreateNotification($"Hourray!!\n{n} new client(s) are comming!", 2f,
-                NotificationType.Info);
-            
             for (var i = 0; i < n; i++)
                 foreach (var client in clients.Where(client => !client.gameObject.activeSelf))
                 {
@@ -84,7 +97,7 @@ namespace Managers
 
         private void SpawnClients(int n = 0)
         {
-            for (var i = n; i < resourcesManager.Seats; i++)
+            for (var i = n; i < targetAmount; i++)
             {
                 var client = Instantiate(aiClientPrefab, popZone).GetComponent<Client>();
 
