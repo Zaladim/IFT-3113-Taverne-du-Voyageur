@@ -17464,7 +17464,7 @@ MonoBehaviour:
   startingGoldAmount: 30
   reputationDisplay: {fileID: 2128990664}
   startingReputation: 10
-  minReputation: 1
+  minReputation: 0
   startingSeatNumber: 4
   beersDisplay: {fileID: 587385231}
   startingBeersAmount: 0
@@ -17474,6 +17474,8 @@ MonoBehaviour:
   reputationQuantity: 0
   beersQuantity: 0
   seatsQuantity: 0
+  reputationWarned: 0
+  goldWarned: 0
 --- !u!1 &1072056808
 GameObject:
   m_ObjectHideFlags: 0

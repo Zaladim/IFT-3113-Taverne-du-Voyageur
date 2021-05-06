@@ -40,11 +40,16 @@ namespace Managers
         [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
         private int seatsQuantity;
 
+        [SerializeField] private bool reputationWarned;
+        [SerializeField] private bool goldWarned;
+        [SerializeField] private bool beerWarned;
+
         private Resource beers;
         private Resource clients;
         private Resource gold;
         private Resource reputation;
         private Resource seats;
+
 
         public int Gold
         {
@@ -77,6 +82,9 @@ namespace Managers
             seats = new Resource(null, startingSeatNumber);
             beers = new Resource(beersDisplay, startingBeersAmount);
             clients = new Resource(null);
+
+            reputationWarned = false;
+            goldWarned = false;
         }
 
         private void Update()
@@ -89,6 +97,49 @@ namespace Managers
             reputationQuantity = Reputation;
             beersQuantity = Beers;
             seatsQuantity = Seats;
+        }
+
+        private void FixedUpdate()
+        {
+            if (reputation.Amount < 10 && !reputationWarned)
+            {
+                gameManager.NotificationSystem.CreateNotification("Your reputation is getting low...!", 2f,
+                    NotificationType.Warning);
+                reputationWarned = true;
+            }
+            else if (reputation.Amount >= 10)
+            {
+                reputationWarned = false;
+            }
+            else if (reputation.Amount == 0)
+            {
+                gameManager.NotificationSystem.CreateNotification(
+                    "Ouch...!\nYour establishment does not seem to be VERY popular...\nMaybe you'll do better next time!",
+                    10f, NotificationType.Danger);
+                gameManager.GameForcePause = true;
+            }
+
+            if (gold.Amount < 7 && !goldWarned)
+            {
+                gameManager.NotificationSystem.CreateNotification("Your coins reserve is getting low...!", 2f,
+                    NotificationType.Warning);
+                goldWarned = true;
+            }
+            else if (gold.Amount >= 7)
+            {
+                goldWarned = false;
+            }
+
+            if (beers.Amount < 3 && !beerWarned)
+            {
+                gameManager.NotificationSystem.CreateNotification("Your coins reserve is getting low...!", 2f,
+                    NotificationType.Warning);
+                beerWarned = true;
+            }
+            else if (beers.Amount >= 3)
+            {
+                beerWarned = false;
+            }
         }
 
         public void BuyBeers(int n)
