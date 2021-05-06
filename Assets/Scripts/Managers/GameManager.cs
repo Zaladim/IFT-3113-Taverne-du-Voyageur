@@ -1,5 +1,4 @@
-﻿using System;
-using Interface;
+﻿using Interface;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +10,7 @@ namespace Managers
         [SerializeField] private WaiterManager waiterManager;
         [SerializeField] private PlacementManager placementManager;
         [SerializeField] private ResourcesManager resourcesManager;
+        [SerializeField] private NotificationSystem notificationSystem;
         [SerializeField] private TimeManager timeManager;
 
         [Header("Game Elements")] [SerializeField]
@@ -35,11 +35,14 @@ namespace Managers
                 {
                     timeManager.LockTime();
                     isGamePaused = true;
+
+                    notificationSystem.CreateNotification("Entering in Pause mode !", 1.5f);
                 }
                 else
                 {
                     timeManager.Apply();
                     isGamePaused = false;
+                    notificationSystem.CreateNotification("Entering in Play mode !", 1.5f);
                 }
             }
         }
@@ -76,7 +79,8 @@ namespace Managers
             clientManager.gameObject.SetActive(false);
             waiterManager.gameObject.SetActive(false);
             placementManager.gameObject.SetActive(false);
-            resourcesManager.gameObject.SetActive(true);
+            notificationSystem.gameObject.SetActive(false);
+            resourcesManager.gameObject.SetActive(false);
             timeManager.gameObject.SetActive(true);
         }
 
@@ -117,6 +121,7 @@ namespace Managers
             clientManager.gameObject.SetActive(true);
             waiterManager.gameObject.SetActive(true);
             placementManager.gameObject.SetActive(true);
+            notificationSystem.gameObject.SetActive(true);
             resourcesManager.gameObject.SetActive(true);
         }
 
@@ -151,7 +156,10 @@ namespace Managers
             timeManager.SetTimeScale(n);
 
             if (IsGameRunning())
+            {
                 timeManager.Apply();
+                notificationSystem.CreateNotification($"Speed: x{n}", 1.5f);
+            }
         }
     }
 }
