@@ -84,8 +84,8 @@ namespace Managers
         {
             if (Input.GetKeyUp(KeyCode.Escape))
             {
-                settingsPanel.SetActive(true);
-                GameForcePause = true;
+                settingsPanel.SetActive(!settingsPanel.activeSelf);
+                ToggleGameForcedPause();
             }
         }
 
