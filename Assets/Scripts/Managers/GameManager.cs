@@ -19,10 +19,10 @@ namespace Managers
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private Tutorial tutorial;
 
-        [Header("Time Debug"), Tooltip("Does nothing if changed in editor!"), SerializeField]
+        [Header("Time Debug")] [Tooltip("Does nothing if changed in editor!")] [SerializeField]
         private bool isGamePaused;
 
-        [SerializeField, Tooltip("Does nothing if changed in editor!")]
+        [SerializeField] [Tooltip("Does nothing if changed in editor!")]
         private bool isGameForcedPaused;
 
         public bool GamePause
@@ -56,13 +56,9 @@ namespace Managers
                 else
                 {
                     if (isGamePaused)
-                    {
                         timeManager.DefrostTime(0);
-                    }
                     else
-                    {
                         timeManager.DefrostTime();
-                    }
 
                     isGameForcedPaused = false;
                 }
@@ -81,6 +77,26 @@ namespace Managers
             placementManager.gameObject.SetActive(false);
             resourcesManager.gameObject.SetActive(true);
             timeManager.gameObject.SetActive(true);
+        }
+
+        public void ToggleGameForcedPause()
+        {
+            GameForcePause = !GameForcePause;
+        }
+
+        public void ToggleGamePaused()
+        {
+            GamePause = !GamePause;
+        }
+
+        public bool IsGameRunning()
+        {
+            return !GamePause && !GameForcePause;
+        }
+
+        public bool IsGameStopped()
+        {
+            return GamePause || GameForcePause;
         }
 
         public void StartGame()
@@ -106,17 +122,11 @@ namespace Managers
             Application.Quit();
         }
 
-        public void ToggleGameForcedPause() => GameForcePause = !GameForcePause;
-        public void ToggleGamePaused() => GamePause = !GamePause;
-
-        public bool IsGameRunnig() => !GamePause && !GameForcePause;
-        public bool IsGameStopped() => GamePause || GameForcePause;
-
         public void IncreaseGameSpeed(int n)
         {
             timeManager.ScaleTime(n);
 
-            if (IsGameRunnig())
+            if (IsGameRunning())
                 timeManager.Apply();
         }
 
@@ -124,7 +134,7 @@ namespace Managers
         {
             timeManager.ScaleTimeBy(k);
 
-            if (IsGameRunnig())
+            if (IsGameRunning())
                 timeManager.Apply();
         }
 
@@ -132,7 +142,7 @@ namespace Managers
         {
             timeManager.SetTimeScale(n);
 
-            if (IsGameRunnig())
+            if (IsGameRunning())
                 timeManager.Apply();
         }
     }
