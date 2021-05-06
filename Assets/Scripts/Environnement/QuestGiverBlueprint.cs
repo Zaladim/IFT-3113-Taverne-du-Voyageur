@@ -77,7 +77,7 @@ namespace Environnement
                 Instantiate(prefab, transform1.position - new Vector3(0f, 0.5f, 0f), transform1.rotation);
                 graph.UpdateGraph();
                 Destroy(gameObject);
-                gameManager.ToggleGamePaused();
+                gameManager.GamePause = false;
             }
         }
 

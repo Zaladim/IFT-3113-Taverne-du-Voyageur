@@ -97,7 +97,7 @@ namespace Environnement
                 placementManager.InitAllNodes();
                 Destroy(wallAnchor);
                 Destroy(gameObject);
-                gameManager.ToggleGamePaused();
+                gameManager.GamePause = false;
             }
         }
 
