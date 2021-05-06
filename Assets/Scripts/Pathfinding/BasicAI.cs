@@ -290,21 +290,24 @@ namespace Pathfinding
             }
 
             var randomQuestGiver = allQuestGivers[Random.Range(0, allQuestGivers.Length)];
-            target = randomQuestGiver.transform.position;
-            //currentPath = pathFinding.A_Star(transform.position, target);
+
+            SetNewPath(randomQuestGiver.transform.position);
+            /*target = randomQuestGiver.transform.position;
+            currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
             return randomQuestGiver;
         }
 
         public void GoToQuestGiver(GameObject vmac)
         {
-            target = vmac.transform.position;
+            SetNewPath(vmac.transform.position);
+            /*target = vmac.transform.position;
             //currentPath = pathFinding.A_Star(transform.position, target);
             currentNode = 0;
             currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            hasDestination = true;*/
         }
 
         public Node GoToRandomLookAroundNode()
