@@ -151,6 +151,11 @@ namespace Pathfinding
                     pathFinding.Resurect();
                     thread = null;
                 }
+                if (graphUpdateScheduled)
+                {
+                    graphUpdateScheduled = false;
+                    pathFinding.UpdateGraph();
+                }
                 currentPosition = pathFinding.getColsestNodeToPoint(transform.position);
                 destinationPosition = pathFinding.getColsestNodeToPoint(destination);
                 target = destination;
@@ -162,9 +167,12 @@ namespace Pathfinding
         private void getPath()
         {
             currentPath = pathFinding.A_Star(currentPosition, destinationPosition);
-            currentNode = 0;
-            currentDestination = currentPath[currentNode].getPosition();
-            hasDestination = true;
+            if (currentPath != null)
+            {
+                currentNode = 0;
+                currentDestination = currentPath[currentNode].getPosition();
+                hasDestination = true;
+            }
         }
 
         public Seat GoToRandomSeat()
@@ -361,6 +369,18 @@ namespace Pathfinding
         {
             hasDestination = false;
             speed = Random.Range(speedMin, speedMax);
+        }
+
+        public bool CheckIfPathNotFound()
+        {
+            if (thread != null && !thread.IsAlive)
+            {
+                return currentPath == null;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

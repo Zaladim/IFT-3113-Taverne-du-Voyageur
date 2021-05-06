@@ -158,7 +158,11 @@ namespace Characters
                             }
                             else
                             {
-                                if (mouvement.IsAtLocation(currentLookingAroundNode.getPosition()))
+                                if (mouvement.CheckIfPathNotFound())
+                                {
+                                    currentLookingAroundNode = null;
+                                }
+                                else if (mouvement.IsAtLocation(currentLookingAroundNode.getPosition()))
                                 {
                                     lookingAroundNodesLeft--;
                                     currentLookingAroundNode = null;
