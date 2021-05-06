@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Interface;
 using Pathfinding;
 using UnityEngine;
 
@@ -7,12 +7,10 @@ namespace Managers
 {
     public class PlacementManager : MonoBehaviour
     {
-        [Header("Managers")]
-        [SerializeField] private ResourcesManager rm;
+        [Header("Managers")] [SerializeField] private ResourcesManager rm;
         [SerializeField] private GameManager gameManager;
-        
-        [Header("Debug")]
-        [SerializeField] private List<Node> nodes;
+
+        [Header("Debug")] [SerializeField] private List<Node> nodes;
 
         public int Price { get; set; }
         public int Reputation { get; set; }
@@ -22,6 +20,9 @@ namespace Managers
             if (rm.Gold < Price)
             {
                 gameManager.GamePause = false;
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Not enough money... \n {Price - rm.Gold} coins missing!", 4f, NotificationType.Warning
+                );
                 return;
             }
 

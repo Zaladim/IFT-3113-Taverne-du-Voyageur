@@ -30,6 +30,9 @@ namespace Environnement
 
         private void Update()
         {
+            if (gameManager.GameForcePause)
+                return;
+            
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))

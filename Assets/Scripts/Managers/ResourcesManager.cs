@@ -1,4 +1,5 @@
 ﻿using System;
+using Interface;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ namespace Managers
     public class ResourcesManager : MonoBehaviour
     {
         [Header("Tools")] [SerializeField] private ClientManager clientManager;
+        [SerializeField] private GameManager gameManager;
 
         [Header("Gold")] [SerializeField] private Text goldDisplay;
         [SerializeField] private int startingGoldAmount = 25;
@@ -38,11 +40,16 @@ namespace Managers
         [SerializeField] [Tooltip("! Does nothing if changed in editor !")]
         private int seatsQuantity;
 
+        [SerializeField] private bool reputationWarned;
+        [SerializeField] private bool goldWarned;
+        [SerializeField] private bool beerWarned;
+
         private Resource beers;
         private Resource clients;
         private Resource gold;
         private Resource reputation;
         private Resource seats;
+
 
         public int Gold
         {
@@ -75,6 +82,10 @@ namespace Managers
             seats = new Resource(null, startingSeatNumber);
             beers = new Resource(beersDisplay, startingBeersAmount);
             clients = new Resource(null);
+
+            reputationWarned = false;
+            goldWarned = false;
+            beerWarned = false;
         }
 
         private void Update()
@@ -89,20 +100,79 @@ namespace Managers
             seatsQuantity = Seats;
         }
 
+        private void FixedUpdate()
+        {
+            if (reputation.Amount < 10 && !reputationWarned)
+            {
+                gameManager.NotificationSystem.CreateNotification("Your reputation is getting low...!", 2f,
+                    NotificationType.Warning);
+                reputationWarned = true;
+            }
+            else if (reputation.Amount >= 10)
+            {
+                reputationWarned = false;
+            }
+            else if (reputation.Amount == 0)
+            {
+                gameManager.NotificationSystem.CreateNotification(
+                    "Ouch...!\nYour establishment does not seem to be VERY popular...\nMaybe you'll do better next time!",
+                    10f, NotificationType.Danger);
+                gameManager.GameForcePause = true;
+            }
+
+            if (gold.Amount < 7 && !goldWarned)
+            {
+                gameManager.NotificationSystem.CreateNotification("Your coins reserve is getting low...!", 2f,
+                    NotificationType.Warning);
+                goldWarned = true;
+            }
+            else if (gold.Amount >= 7)
+            {
+                goldWarned = false;
+            }
+
+            if (beers.Amount < 3 && !beerWarned)
+            {
+                gameManager.NotificationSystem.CreateNotification("Your coins reserve is getting low...!", 2f,
+                    NotificationType.Warning);
+                beerWarned = true;
+            }
+            else if (beers.Amount >= 3)
+            {
+                beerWarned = false;
+            }
+        }
+
         public void BuyBeers(int n)
         {
             var tmp = n * beerPrice;
+
+            if (tmp > Gold)
+            {
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Not enough money... \n {tmp - Gold} coins missing!", 4f, NotificationType.Warning
+                );
+                return;
+            }
 
             if (tmp <= Gold && n != -1)
             {
                 Beers += n;
                 Gold -= tmp;
+                
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Huzzah!!\n{n} beers added!", 4f, NotificationType.Info
+                );
             }
             else
             {
                 var max = (int) Math.Floor((decimal) (Gold / (float) beerPrice));
                 Beers += max;
                 Gold -= max * beerPrice;
+                
+                gameManager.NotificationSystem.CreateNotification(
+                    $"Huzzah!!\n{max} beers added!", 4f, NotificationType.Info
+                );
             }
         }
 

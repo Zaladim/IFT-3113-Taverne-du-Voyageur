@@ -10,6 +10,7 @@ namespace Managers
         [SerializeField] private WaiterManager waiterManager;
         [SerializeField] private PlacementManager placementManager;
         [SerializeField] private ResourcesManager resourcesManager;
+        [SerializeField] private NotificationSystem notificationSystem;
         [SerializeField] private TimeManager timeManager;
 
         [Header("Game Elements")] [SerializeField]
@@ -19,11 +20,13 @@ namespace Managers
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private Tutorial tutorial;
 
-        [Header("Time Debug"), Tooltip("Does nothing if changed in editor!"), SerializeField]
+        [Header("Time Debug")] [Tooltip("Does nothing if changed in editor!")] [SerializeField]
         private bool isGamePaused;
 
-        [SerializeField, Tooltip("Does nothing if changed in editor!")]
+        [SerializeField] [Tooltip("Does nothing if changed in editor!")]
         private bool isGameForcedPaused;
+
+        public NotificationSystem NotificationSystem => notificationSystem;
 
         public bool GamePause
         {
@@ -56,13 +59,9 @@ namespace Managers
                 else
                 {
                     if (isGamePaused)
-                    {
                         timeManager.DefrostTime(0);
-                    }
                     else
-                    {
                         timeManager.DefrostTime();
-                    }
 
                     isGameForcedPaused = false;
                 }
@@ -79,8 +78,38 @@ namespace Managers
             clientManager.gameObject.SetActive(false);
             waiterManager.gameObject.SetActive(false);
             placementManager.gameObject.SetActive(false);
-            resourcesManager.gameObject.SetActive(true);
+            notificationSystem.gameObject.SetActive(false);
+            resourcesManager.gameObject.SetActive(false);
             timeManager.gameObject.SetActive(true);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                settingsPanel.SetActive(!settingsPanel.activeSelf);
+                ToggleGameForcedPause();
+            }
+        }
+
+        public void ToggleGameForcedPause()
+        {
+            GameForcePause = !GameForcePause;
+        }
+
+        public void ToggleGamePaused()
+        {
+            GamePause = !GamePause;
+        }
+
+        public bool IsGameRunning()
+        {
+            return !GamePause && !GameForcePause;
+        }
+
+        public bool IsGameStopped()
+        {
+            return GamePause || GameForcePause;
         }
 
         public void StartGame()
@@ -91,9 +120,8 @@ namespace Managers
             clientManager.gameObject.SetActive(true);
             waiterManager.gameObject.SetActive(true);
             placementManager.gameObject.SetActive(true);
+            notificationSystem.gameObject.SetActive(true);
             resourcesManager.gameObject.SetActive(true);
-
-            //tutorial.StartTuto();
         }
 
         public void RestartGame()
@@ -106,17 +134,11 @@ namespace Managers
             Application.Quit();
         }
 
-        public void ToggleGameForcedPause() => GameForcePause = !GameForcePause;
-        public void ToggleGamePaused() => GamePause = !GamePause;
-
-        public bool IsGameRunnig() => !GamePause && !GameForcePause;
-        public bool IsGameStopped() => GamePause || GameForcePause;
-
         public void IncreaseGameSpeed(int n)
         {
             timeManager.ScaleTime(n);
 
-            if (IsGameRunnig())
+            if (IsGameRunning())
                 timeManager.Apply();
         }
 
@@ -124,16 +146,19 @@ namespace Managers
         {
             timeManager.ScaleTimeBy(k);
 
-            if (IsGameRunnig())
+            if (IsGameRunning())
                 timeManager.Apply();
         }
 
         public void SetGameSpeed(int n)
         {
             timeManager.SetTimeScale(n);
+            notificationSystem.CreateNotification($"Speed: x{n}", 1.5f, NotificationType.Info);
 
-            if (IsGameRunnig())
+            if (IsGameRunning())
+            {
                 timeManager.Apply();
+            }
         }
     }
 }
