@@ -4762,6 +4762,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 570133238}
   m_CullTransparentMesh: 0
+--- !u!1 &570722472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5774848814291885483, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+    type: 3}
+  m_PrefabInstance: {fileID: 2132536469}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &570722474
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570722472}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f867232a0fb3f2648a2dac0043c0c19d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &609410251
 GameObject:
   m_ObjectHideFlags: 0
@@ -20244,6 +20269,11 @@ PrefabInstance:
       propertyPath: m_ReceiveShadows
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3259808671151212546, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65ed8f34f2b3eb548aac1253cd411b93, type: 2}
     - target: {fileID: 3270343788761949247, guid: 88b8d4557a0395b4f869ba22b6a70c82,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20344,6 +20374,11 @@ PrefabInstance:
       propertyPath: m_ReceiveShadows
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3463381586164583902, guid: 88b8d4557a0395b4f869ba22b6a70c82,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65ed8f34f2b3eb548aac1253cd411b93, type: 2}
     - target: {fileID: 3464401377425007482, guid: 88b8d4557a0395b4f869ba22b6a70c82,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -22663,8 +22698,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: -3551598363343876984, guid: 0f1f3eef8ec300141b26c2910a0df52a,
-        type: 3}
+      objectReference: {fileID: 2100000, guid: 65ed8f34f2b3eb548aac1253cd411b93, type: 2}
     - target: {fileID: 7262730822316458349, guid: 88b8d4557a0395b4f869ba22b6a70c82,
         type: 3}
       propertyPath: m_StaticEditorFlags
