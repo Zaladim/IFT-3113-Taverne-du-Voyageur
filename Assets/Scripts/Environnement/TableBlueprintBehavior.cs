@@ -14,20 +14,20 @@ namespace Environnement
 
 
         [SerializeField] private List<GameObject> childs = new List<GameObject>();
-        private GameManager gameManager;
 
         [SerializeField] private Vector3 pos;
         [SerializeField] private Collider tmp;
-        private readonly List<Collider> colliders = new List<Collider>();
-        private readonly float rotateSpeed = 50f;
-        private Graph graph;
-        private RaycastHit hit;
-
-        private ResourcesManager resourcesManager;
-        private Grid grid;
 
         public int tableLength;
         public int tableWidth;
+        private readonly List<Collider> colliders = new List<Collider>();
+        private readonly float rotateSpeed = 50f;
+        private GameManager gameManager;
+        private Graph graph;
+        private Grid grid;
+        private RaycastHit hit;
+
+        private ResourcesManager resourcesManager;
 
         private void Awake()
         {
@@ -39,6 +39,9 @@ namespace Environnement
 
         private void Update()
         {
+            if (gameManager.GameForcePause)
+                return;
+
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var rotateInput = Input.GetAxisRaw("RotatePrefab");
             var elapsedTime = Time.unscaledDeltaTime;
@@ -52,7 +55,7 @@ namespace Environnement
                 {
                     pos = hit.point;
                     pos.y += 1;
-                    Vector3 cell = grid.getCellPosition(pos);
+                    var cell = grid.getCellPosition(pos);
                     pos.x = cell.x;
                     pos.z = cell.z;
 
@@ -83,10 +86,7 @@ namespace Environnement
             {
                 var transform1 = transform;
 
-                if (!checkPosition())
-                {
-                    return;
-                }
+                if (!checkPosition()) return;
 
                 updateGrid();
 
@@ -103,39 +103,6 @@ namespace Environnement
                 graph.UpdateGraph();
                 Destroy(gameObject);
                 gameManager.GamePause = false;
-            }
-        }
-
-        private bool checkPosition()
-        {
-            int x, y;
-            grid.getXY(transform.position, out x, out y);
-
-            for (int i = x - tableWidth; i <= x + tableWidth; i++)
-            {
-                for (int j = y - tableLength; j <= y + tableLength; j++)
-                {
-                    if (grid.GetValue(i, j) != 0)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private void updateGrid()
-        {
-            int x, y;
-            grid.getXY(transform.position, out x, out y);
-
-            for (int i = x - tableWidth; i <= x + tableWidth; i++)
-            {
-                for (int j = y - tableLength; j <= y + tableLength; j++)
-                {
-                    grid.SetValue(i, j, -1);
-                }
             }
         }
 
@@ -156,6 +123,29 @@ namespace Environnement
         private void OnTriggerExit(Collider other)
         {
             if (colliders.Contains(other)) colliders.Remove(other);
+        }
+
+        private bool checkPosition()
+        {
+            int x, y;
+            grid.getXY(transform.position, out x, out y);
+
+            for (var i = x - tableWidth; i <= x + tableWidth; i++)
+            for (var j = y - tableLength; j <= y + tableLength; j++)
+                if (grid.GetValue(i, j) != 0)
+                    return false;
+
+            return true;
+        }
+
+        private void updateGrid()
+        {
+            int x, y;
+            grid.getXY(transform.position, out x, out y);
+
+            for (var i = x - tableWidth; i <= x + tableWidth; i++)
+            for (var j = y - tableLength; j <= y + tableLength; j++)
+                grid.SetValue(i, j, -1);
         }
 
         private void setColor(bool state)

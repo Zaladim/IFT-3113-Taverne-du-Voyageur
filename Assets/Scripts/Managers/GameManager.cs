@@ -1,4 +1,5 @@
-﻿using Interface;
+﻿using System;
+using Interface;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -79,6 +80,15 @@ namespace Managers
             timeManager.gameObject.SetActive(true);
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                settingsPanel.SetActive(true);
+                GameForcePause = true;
+            }
+        }
+
         public void ToggleGameForcedPause()
         {
             GameForcePause = !GameForcePause;
@@ -108,8 +118,6 @@ namespace Managers
             waiterManager.gameObject.SetActive(true);
             placementManager.gameObject.SetActive(true);
             resourcesManager.gameObject.SetActive(true);
-
-            //tutorial.StartTuto();
         }
 
         public void RestartGame()
