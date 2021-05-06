@@ -1,4 +1,5 @@
 ﻿using System;
+using Interface;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -97,7 +98,7 @@ namespace Managers
             if (tmp > Gold)
             {
                 gameManager.NotificationSystem.CreateNotification(
-                    $"Not enough money... \n {tmp - Gold} coins missing!", 4f
+                    $"Not enough money... \n {tmp - Gold} coins missing!", 4f, NotificationType.Warning
                 );
                 return;
             }

@@ -38,13 +38,13 @@ namespace Managers
                     timeManager.LockTime();
                     isGamePaused = true;
 
-                    notificationSystem.CreateNotification("Entering in Pause mode !", 1.5f);
+                    notificationSystem.CreateNotification("Entering in Pause mode !", 1.5f, NotificationType.Info);
                 }
                 else
                 {
                     timeManager.Apply();
                     isGamePaused = false;
-                    notificationSystem.CreateNotification("Entering in Play mode !", 1.5f);
+                    notificationSystem.CreateNotification("Entering in Play mode !", 1.5f, NotificationType.Info);
                 }
             }
         }
@@ -156,11 +156,11 @@ namespace Managers
         public void SetGameSpeed(int n)
         {
             timeManager.SetTimeScale(n);
+            notificationSystem.CreateNotification($"Speed: x{n}", 1.5f, NotificationType.Info);
 
             if (IsGameRunning())
             {
                 timeManager.Apply();
-                notificationSystem.CreateNotification($"Speed: x{n}", 1.5f);
             }
         }
     }

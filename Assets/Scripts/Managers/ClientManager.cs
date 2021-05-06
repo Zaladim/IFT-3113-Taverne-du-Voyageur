@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Characters;
+using Interface;
 using UnityEngine;
 
 namespace Managers
@@ -9,6 +10,8 @@ namespace Managers
     {
         [Header("External Tools")] [SerializeField]
         private ResourcesManager resourcesManager;
+
+        [SerializeField] private GameManager gameManager;
 
         [Header("Client Options")] public GameObject aiClientPrefab;
         [SerializeField] private Transform popZone;
@@ -67,6 +70,9 @@ namespace Managers
 
         private void AddNewClient(int n = 1)
         {
+            gameManager.NotificationSystem.CreateNotification($"Hourray!!\n{n} new client(s) are comming!", 2f,
+                NotificationType.Info);
+            
             for (var i = 0; i < n; i++)
                 foreach (var client in clients.Where(client => !client.gameObject.activeSelf))
                 {
@@ -84,6 +90,7 @@ namespace Managers
 
                 client.gameObject.SetActive(false);
                 client.ResourcesManager = resourcesManager;
+                client.GameManager = gameManager;
                 clients.Add(client);
             }
         }

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Interface;
 using Pathfinding;
 using UnityEngine;
 
@@ -21,7 +21,7 @@ namespace Managers
             {
                 gameManager.GamePause = false;
                 gameManager.NotificationSystem.CreateNotification(
-                    $"Not enough money... \n {Price - rm.Gold} coins missing!", 4f
+                    $"Not enough money... \n {Price - rm.Gold} coins missing!", 4f, NotificationType.Warning
                 );
                 return;
             }

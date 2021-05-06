@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Characters;
+using Interface;
 using UnityEngine;
 
 namespace Managers
@@ -40,7 +41,8 @@ namespace Managers
             if (resourcesManager.Gold < Price)
             {
                 gameManager.NotificationSystem.CreateNotification(
-                    $"Not enough money... \n {Price - resourcesManager.Gold} coins missing!", 4f
+                    $"Not enough money... \n {Price - resourcesManager.Gold} coins missing!", 4f,
+                    NotificationType.Warning
                 );
                 return;
             }

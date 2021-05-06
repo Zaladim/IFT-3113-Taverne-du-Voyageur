@@ -17461,7 +17461,7 @@ MonoBehaviour:
   clientManager: {fileID: 905618212}
   gameManager: {fileID: 1394575960}
   goldDisplay: {fileID: 912774979}
-  startingGoldAmount: 70
+  startingGoldAmount: 30
   reputationDisplay: {fileID: 2128990664}
   startingReputation: 10
   minReputation: 1
@@ -42443,6 +42443,11 @@ PrefabInstance:
       propertyPath: minAmount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3214632303005934585, guid: e20719bca51ae394b90bb1bf32d6a12d,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1394575960}
     - target: {fileID: 3214632303005934585, guid: e20719bca51ae394b90bb1bf32d6a12d,
         type: 3}
       propertyPath: resourcesManager

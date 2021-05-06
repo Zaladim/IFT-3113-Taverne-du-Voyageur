@@ -435,6 +435,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textZone: {fileID: 452751198078385492}
   timeZone: {fileID: 7390291721389574759}
+  infoMark: {fileID: 452751198253818424}
+  warningMark: {fileID: 5047774411384359468}
+  dangerMark: {fileID: 452751197110092799}
   duration: 3
 --- !u!1 &5047774412560995515
 GameObject:
