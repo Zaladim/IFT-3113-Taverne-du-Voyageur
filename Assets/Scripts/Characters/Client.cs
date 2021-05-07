@@ -53,6 +53,7 @@ namespace Characters
         [SerializeField] private Node currentLookingAroundNode;
         [SerializeField] private int nbLookingAroundNodes = 10;
         [SerializeField] private int lookingAroundNodesLeft;
+        [SerializeField] private int lurkersReputation = -2;
 
 
         [Header("Debug")] [SerializeField] private ClientState etat;
@@ -187,7 +188,7 @@ namespace Characters
                                 etat = ClientState.FindingSeat;
                             else
                             {
-                                unHappyReputation = -2;
+                                unHappyReputation = lurkersReputation;
                                 unHappyPrice = 0;
                                 isHappy = false;
                                 etat = ClientState.GoingToPay;
