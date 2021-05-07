@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3179622693215520973}
   - component: {fileID: 8598134894954085848}
   - component: {fileID: 9106614395881142570}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_LocalScale: {x: 1.1, y: 1, z: 1.0875}
   m_Children: []
   m_Father: {fileID: 78598680814024729}
-  m_RootOrder: 25
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3179622693215520973
 MeshFilter:
@@ -144,8 +144,8 @@ Transform:
   - {fileID: 4750137998695443922}
   - {fileID: 4826201154897939777}
   - {fileID: 1010260282399141786}
-  - {fileID: 6193242451134512940}
   - {fileID: 8338144166044567555}
+  - {fileID: 6193242451134512940}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -21,6 +21,7 @@ TagManager:
   - 90
   - 360
   - 0
+  - NotificationCenter
   layers:
   - Default
   - TransparentFX

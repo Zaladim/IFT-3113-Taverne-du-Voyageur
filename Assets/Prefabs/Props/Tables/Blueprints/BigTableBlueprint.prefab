@@ -61,7 +61,7 @@ MonoBehaviour:
   pos: {x: 0, y: 0, z: 0}
   tmp: {fileID: 0}
   tableLength: 4
-  tableWidth: 2
+  tableWidth: 3
 --- !u!1001 &5436159420060483205
 PrefabInstance:
   m_ObjectHideFlags: 0

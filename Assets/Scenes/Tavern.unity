@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 18522744}
   - component: {fileID: 18522743}
   - component: {fileID: 18522742}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3485,7 +3485,7 @@ GameObject:
   - component: {fileID: 241219518}
   m_Layer: 0
   m_Name: NotificationCenter
-  m_TagString: Untagged
+  m_TagString: NotificationCenter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13989,12 +13989,12 @@ PrefabInstance:
     - target: {fileID: 9118978131127680929, guid: e4c3bac240260274689dbe838af62a46,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -46.599884
+      value: -46.599854
       objectReference: {fileID: 0}
     - target: {fileID: 9118978131127680929, guid: e4c3bac240260274689dbe838af62a46,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -37.909607
+      value: -37.909546
       objectReference: {fileID: 0}
     - target: {fileID: 9118978131127680929, guid: e4c3bac240260274689dbe838af62a46,
         type: 3}

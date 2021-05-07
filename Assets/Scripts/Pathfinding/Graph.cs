@@ -303,7 +303,6 @@ namespace Pathfinding
 
         private int findPositionInGraph(Node node)
         {
-            print(nodes.Count);
             for (var i = 0; i < nodes.Count; i++)
                 if (nodes[i] == node)
                     return i;

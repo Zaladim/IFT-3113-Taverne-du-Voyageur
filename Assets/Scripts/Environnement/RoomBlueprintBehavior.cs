@@ -20,12 +20,16 @@ namespace Environnement
         [SerializeField]private GameObject nextAnchor;
         
         [SerializeField] private List<GameObject> childs = new List<GameObject>();
+        
+        private NotificationSystem notificationSystem;
 
         private bool placeable = false;
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
             placementManager = GameObject.FindGameObjectWithTag("PlacementManager").GetComponent<PlacementManager>();
+            notificationSystem = GameObject.FindGameObjectWithTag("NotificationCenter")
+                .GetComponent<NotificationSystem>();
         }
 
         private void Update()
@@ -98,6 +102,7 @@ namespace Environnement
 
                 gameObject.SetActive(true);
                 placementManager.InitAllNodes();
+                notificationSystem.CreateNotification("New room build");
                 Destroy(wallAnchor);
                 Destroy(gameObject);
                 gameManager.GamePause = false;
