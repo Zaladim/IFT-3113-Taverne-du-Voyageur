@@ -29,12 +29,16 @@ namespace Environnement
 
         private ResourcesManager resourcesManager;
 
+        private NotificationSystem notificationSystem;
+
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
             graph = GameObject.Find("Graph").GetComponent<Graph>();
             resourcesManager = FindObjectOfType<ResourcesManager>();
             grid = GameObject.FindGameObjectWithTag("GridManager").GetComponent<GridManager>().Grid;
+            notificationSystem = GameObject.FindGameObjectWithTag("NotificationCenter")
+                .GetComponent<NotificationSystem>();
         }
 
         private void Update()
@@ -43,16 +47,20 @@ namespace Environnement
                 return;
 
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            var rotateInput = Input.GetAxisRaw("RotatePrefab");
-            var elapsedTime = Time.unscaledDeltaTime;
+            var rotateInput = Input.GetButtonUp("RotatePrefab");
 
-            transform.Rotate(0.0f, rotateInput * rotateSpeed * elapsedTime, 0.0f);
+            if (rotateInput)
+            {
+                transform.Rotate(0.0f, 90f, 0.0f);
+                int tmp = tableLength;
+                tableLength = tableWidth;
+                tableWidth = tmp;
+            }
 
             if (Physics.Raycast(ray, out hit))
             {
                 tmp = hit.collider;
-                if (hit.collider.gameObject.CompareTag("Ground"))
-                {
+                if (hit.collider.gameObject.CompareTag("Ground")) {
                     pos = hit.point;
                     pos.y += 1;
                     var cell = grid.getCellPosition(pos);
@@ -60,7 +68,7 @@ namespace Environnement
                     pos.z = cell.z;
 
                     transform.position = pos;
-
+                    
                     // var hitColliders =
                     //     Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 2f), transform.rotation);
                     // foreach (var hitCollider in hitColliders)
@@ -74,6 +82,7 @@ namespace Environnement
                     if (!checkPosition())
                     {
                         setColor(true);
+                        notificationSystem.CreateNotification("Too close to another object", 0.5f);
                         return;
                     }
 
@@ -101,6 +110,7 @@ namespace Environnement
                 Instantiate(prefab, transform1.position - new Vector3(0f, 0.5f, 0f), transform1.rotation);
                 resourcesManager.Seats += seats;
                 graph.UpdateGraph();
+                notificationSystem.CreateNotification("Table placed");
                 Destroy(gameObject);
                 gameManager.GamePause = false;
             }
@@ -129,6 +139,7 @@ namespace Environnement
         {
             int x, y;
             grid.getXY(transform.position, out x, out y);
+            
 
             for (var i = x - tableWidth; i <= x + tableWidth; i++)
             for (var j = y - tableLength; j <= y + tableLength; j++)

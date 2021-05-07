@@ -16,6 +16,12 @@ TagManager:
   - QuestGiver
   - GameManager
   - GridManager
+  - 180
+  - 270
+  - 90
+  - 360
+  - 0
+  - NotificationCenter
   layers:
   - Default
   - TransparentFX
@@ -25,7 +31,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - ShadePlanes
   - 
   - 
   - 
