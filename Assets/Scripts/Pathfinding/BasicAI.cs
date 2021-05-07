@@ -375,7 +375,7 @@ namespace Pathfinding
         {
             if (thread != null && !thread.IsAlive)
             {
-                return currentPath == null;
+                return !hasDestination;
             }
             else
             {
