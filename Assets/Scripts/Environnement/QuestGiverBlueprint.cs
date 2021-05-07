@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Managers;
 using Pathfinding;
 using UnityEngine;
-
 
 namespace Environnement
 {
@@ -14,18 +12,18 @@ namespace Environnement
         [SerializeField] private Material constructMat;
 
         [SerializeField] private List<GameObject> childs = new List<GameObject>();
-        private GameManager gameManager;
 
         [SerializeField] private Vector3 pos;
         [SerializeField] private Collider tmp;
         private readonly List<Collider> colliders = new List<Collider>();
         private readonly float rotateSpeed = 50f;
+        private GameManager gameManager;
         private Graph graph;
+        private Grid grid;
         private RaycastHit hit;
+        private NotificationSystem notificationSystem;
 
         private ResourcesManager resourcesManager;
-        private NotificationSystem notificationSystem;
-        private Grid grid;
 
         private void Awake()
         {
@@ -39,9 +37,9 @@ namespace Environnement
 
         private void Update()
         {
-            if (gameManager.GameForcePause)
+            if (gameManager.GameForcePause && !gameManager.isTutorialEnabled)
                 return;
-            
+
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var rotateInput = Input.GetAxisRaw("RotatePrefab");
             var elapsedTime = Time.unscaledDeltaTime;
@@ -125,23 +123,19 @@ namespace Environnement
         {
             if (!state)
                 foreach (var child in childs)
-                {
                     //Couleur non plaçable
                     child.GetComponent<Renderer>().material = defaultMat;
-                }
             else
                 foreach (var child in childs)
-                {
                     //Couleur plaçable
                     child.GetComponent<Renderer>().material = constructMat;
-                }
         }
-        
+
         private bool checkPosition()
         {
             int x, y;
             grid.getXY(transform.position, out x, out y);
-            
+
 
             for (var i = x - 1; i <= x + 1; i++)
             for (var j = y - 1; j <= y + 1; j++)
@@ -150,7 +144,7 @@ namespace Environnement
 
             return true;
         }
-        
+
         private void updateGrid()
         {
             int x, y;
