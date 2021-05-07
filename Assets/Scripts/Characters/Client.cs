@@ -125,6 +125,13 @@ namespace Characters
                                 timer = Random.Range(waitingTimeMin, waitingTimeMax);
                                 etat = ClientState.WaitingToOrder;
                             }
+                            else if (mouvement.CheckIfPathNotFound())
+                            {
+                                newDestinationTimer = 0;
+                                seat.isOccupied = false;
+                                seat.isAIGoingForIt = false;
+                                seat = null;
+                            }
                         }
 
                         break;
@@ -306,6 +313,10 @@ namespace Characters
 
                                     etat = ClientState.GettingQuest;
                                 }
+                                else if (mouvement.CheckIfPathNotFound())
+                                {
+                                    payLocation = null;
+                                }
                             }
                         }
 
@@ -348,6 +359,10 @@ namespace Characters
                                     {
                                         hasQuest = true;
                                     }
+                                }
+                                else if (mouvement.CheckIfPathNotFound())
+                                {
+                                    questGiver = null;
                                 }
                             }
                         }
@@ -407,6 +422,10 @@ namespace Characters
                                 {
                                     transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                                     etat = ClientState.Inactive;
+                                }
+                                else if (mouvement.CheckIfPathNotFound())
+                                {
+                                    exit = null;
                                 }
                             }
                         }
