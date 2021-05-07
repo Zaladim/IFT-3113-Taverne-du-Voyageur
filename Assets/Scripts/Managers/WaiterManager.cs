@@ -67,11 +67,14 @@ namespace Managers
                 x += 1;
             }
 
-            if (x > 0)
-                gameManager.NotificationSystem.CreateNotification(
-                    $"Yay!\n{x} new waiter(s) hired!", 4f,
-                    NotificationType.Warning
-                );
+            if (x <= 0) return;
+            
+            if (gameManager.isTutorialEnabled)
+                return;
+            gameManager.NotificationSystem.CreateNotification(
+                $"Yay!\n{x} new waiter(s) hired!", 4f,
+                NotificationType.Warning
+            );
         }
     }
 }
