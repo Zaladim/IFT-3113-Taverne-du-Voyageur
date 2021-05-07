@@ -102,7 +102,7 @@ namespace Managers
 
         private void FixedUpdate()
         {
-            if (gameManager.isTutorialEnabled)
+            if (gameManager.IsTutorialEnabled)
                 return;
             
             if (reputation.Amount < 10 && !reputationWarned)
@@ -163,7 +163,7 @@ namespace Managers
                 Beers += n;
                 Gold -= tmp;
                 
-                if (gameManager.isTutorialEnabled)
+                if (gameManager.IsTutorialEnabled)
                     return;
                 gameManager.NotificationSystem.CreateNotification(
                     $"Huzzah!!\n{n} beers added!", 4f, NotificationType.Info
@@ -175,7 +175,7 @@ namespace Managers
                 Beers += max;
                 Gold -= max * beerPrice;
                 
-                if (gameManager.isTutorialEnabled)
+                if (gameManager.IsTutorialEnabled)
                     return;
                 gameManager.NotificationSystem.CreateNotification(
                     $"Huzzah!!\n{max} beers added!", 4f, NotificationType.Info

@@ -43,7 +43,7 @@ namespace Environnement
 
         private void Update()
         {
-            if (gameManager.GameForcePause && !gameManager.isTutorialEnabled)
+            if (gameManager.GameForcePause && !gameManager.IsTutorialEnabled)
                 return;
 
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
