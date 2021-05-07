@@ -114,6 +114,7 @@ namespace Managers
 
         public void StartGame()
         {
+            GameForcePause = true;
             startPanel.SetActive(false);
             gamePanel.SetActive(true);
 
