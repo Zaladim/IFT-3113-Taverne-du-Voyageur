@@ -69,7 +69,7 @@ namespace Managers
 
             if (x <= 0) return;
             
-            if (gameManager.isTutorialEnabled)
+            if (gameManager.IsTutorialEnabled)
                 return;
             gameManager.NotificationSystem.CreateNotification(
                 $"Yay!\n{x} new waiter(s) hired!", 4f,

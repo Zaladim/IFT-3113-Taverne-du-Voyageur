@@ -1,26 +1,33 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Managers;
+﻿using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class QuestGiver : MonoBehaviour
+namespace Characters
 {
-    [SerializeField] private ResourcesManager ressources;
-
-
-    private void Awake()
+    public class QuestGiver : MonoBehaviour
     {
-        ressources = GameObject.FindGameObjectWithTag("RessourcesManager").GetComponent<ResourcesManager>();
-    }
+        [SerializeField] private ResourcesManager ressources;
+        [SerializeField, Range(0, 100)] private int luckyQuest = 50;
+        [SerializeField] private int goldAwardMin = 10;
+        [SerializeField] private int goldAwardMax = 25;
+        [SerializeField] private int reputationAwardMin = 5;
+        [SerializeField] private int reputationAwardMax = 10;
 
-    public void ReturnQuest()
-    {
-        if (Random.Range(0, 100) >= 50)
+        private void Awake()
         {
-            ressources.Gold -= Random.Range(0, 100);
-            ressources.Reputation += Random.Range(1, 10);
+            ressources = GameObject.FindGameObjectWithTag("RessourcesManager").GetComponent<ResourcesManager>();
+        }
+
+        public void ReturnQuest()
+        {
+            if (ressources.Gold <= 0 )
+                return;
+        
+            if (Random.Range(0, 100) >= luckyQuest)
+            {
+                ressources.Gold -= Random.Range(goldAwardMin, goldAwardMax);
+                ressources.Reputation += Random.Range(reputationAwardMin, reputationAwardMax);
+            }
         }
     }
 }

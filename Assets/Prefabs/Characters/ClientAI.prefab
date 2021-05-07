@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedMin: 3
-  speedMax: 7
+  speedMax: 5
   target: {x: 0, y: 0, z: 0}
   currentPosition: {fileID: 0}
   destinationPosition: {fileID: 0}
@@ -136,29 +136,30 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   anim: {fileID: 4921669334024589491}
   orderPriceMin: 10
-  orderPriceMax: 40
+  orderPriceMax: 25
   timeToEatMin: 5
-  timeToEatMax: 20
-  timeToOrderMin: 10
-  timeToOrderMax: 100
-  waitingTimeMin: 45
-  waitingTimeMax: 100
+  timeToEatMax: 15
+  timeToRecieveOrderMin: 10
+  timeToRecieveOrderMax: 20
+  waitingTimeMin: 17
+  waitingTimeMax: 26
   unHappyTimeMax: -10
   unHappyPrice: 0
   notServedPrice: 0
-  notServedTimeMax: -25
-  notServedTime: 0
+  notServedTimeMax: -13
+  notServedTime: -3
   unHappyTime: 0
   happyReputation: 1
   unHappyReputation: -1
   notServedReputation: -3
   distanceFromQuestGiverToInteract: 2
   timeToStayIdleMin: 0.5
-  timeToStayIdleMax: 1
-  timeToWaitBeforeLookingForDestinationAgain: 1
+  timeToStayIdleMax: 0.5
+  timeToWaitBeforeLookingForDestinationAgain: 0.5
   currentLookingAroundNode: {fileID: 0}
-  nbLookingAroundNodes: 5
-  lookingAroundNodesLeft: 3
+  nbLookingAroundNodes: 1
+  lookingAroundNodesLeft: 1
+  lurkersReputation: -5
   etat: 0
   exit: {fileID: 0}
   hasBeenInteractedWith: 0
@@ -281,7 +282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3311878597423044784
 Transform:
   m_ObjectHideFlags: 0
