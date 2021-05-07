@@ -33,8 +33,8 @@ namespace Characters
         [SerializeField] private int orderPriceMax = 40;
         [SerializeField] private float timeToEatMin = 5f;
         [SerializeField] private float timeToEatMax = 10f;
-        [SerializeField] private float timeToOrderMin = 10f;
-        [SerializeField] private float timeToOrderMax = 15f;
+        [SerializeField] private float timeToRecieveOrderMin = 10f;
+        [SerializeField] private float timeToRecieveOrderMax = 15f;
         [SerializeField] private float waitingTimeMin = 15f;
         [SerializeField] private float waitingTimeMax = 20f;
         [Space] [SerializeField] private int unHappyTimeMax = -10;
@@ -180,7 +180,7 @@ namespace Characters
                                 etat = ClientState.FindingSeat;
                             else
                             {
-                                unHappyReputation = notServedReputation;
+                                unHappyReputation = -2;
                                 unHappyPrice = 0;
                                 isHappy = false;
                                 etat = ClientState.GoingToPay;
@@ -205,7 +205,7 @@ namespace Characters
                     if (hasBeenInteractedWith)
                     {
                         etat = ClientState.WaitingToReciveOrder;
-                        TimeLeft = Random.Range(timeToOrderMin, timeToOrderMax);
+                        TimeLeft = Random.Range(timeToRecieveOrderMin, timeToRecieveOrderMax);
                         hasBeenInteractedWith = false;
                     }
 
@@ -429,7 +429,7 @@ namespace Characters
             isHappy = true;
             notServedTime = Random.Range(notServedTimeMax, 0);
             unHappyTime = Random.Range(unHappyTimeMax, 0);
-            TimeLeft = Random.Range(timeToOrderMin, timeToOrderMax);
+            TimeLeft = Random.Range(timeToRecieveOrderMin, timeToRecieveOrderMax);
             price = Random.Range(orderPriceMin, orderPriceMax);
             etat = ClientState.FindingSeat;
         }

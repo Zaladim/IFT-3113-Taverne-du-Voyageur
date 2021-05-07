@@ -140,6 +140,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ressources: {fileID: 0}
+  luckyQuest: 10
+  goldAwardMin: 5
+  goldAwardMax: 15
+  reputationAwardMin: 1
+  reputationAwardMax: 5
 --- !u!1001 &5134834661385461934
 PrefabInstance:
   m_ObjectHideFlags: 0

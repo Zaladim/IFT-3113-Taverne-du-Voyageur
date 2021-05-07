@@ -8,7 +8,11 @@ using Random = UnityEngine.Random;
 public class QuestGiver : MonoBehaviour
 {
     [SerializeField] private ResourcesManager ressources;
-
+    [SerializeField, Range(0, 100)] private int luckyQuest = 50;
+    [SerializeField] private int goldAwardMin = 10;
+    [SerializeField] private int goldAwardMax = 25;
+    [SerializeField] private int reputationAwardMin = 5;
+    [SerializeField] private int reputationAwardMax = 10;
 
     private void Awake()
     {
@@ -17,10 +21,13 @@ public class QuestGiver : MonoBehaviour
 
     public void ReturnQuest()
     {
-        if (Random.Range(0, 100) >= 50)
+        if (ressources.Gold <= 0 )
+            return;
+        
+        if (Random.Range(0, 100) >= luckyQuest)
         {
-            ressources.Gold -= Random.Range(0, 100);
-            ressources.Reputation += Random.Range(1, 10);
+            ressources.Gold -= Random.Range(goldAwardMin, goldAwardMax);
+            ressources.Reputation += Random.Range(reputationAwardMin, reputationAwardMax);
         }
     }
 }
