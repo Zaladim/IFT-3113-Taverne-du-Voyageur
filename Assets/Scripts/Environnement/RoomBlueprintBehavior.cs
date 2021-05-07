@@ -1,29 +1,30 @@
-﻿using Managers;
+﻿using System.Collections.Generic;
+using Managers;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace Environnement
 {
     public class RoomBlueprintBehavior : MonoBehaviour
     {
         [SerializeField] private GameObject prefab;
-        
+
         [SerializeField] private Material defaultMat;
         [SerializeField] private Material constructMat;
+        [SerializeField] private GameObject wallAnchor;
+        [SerializeField] private GameObject nextAnchor;
+
+        [SerializeField] private List<GameObject> childs = new List<GameObject>();
+        private readonly float tavernLimit = -10;
 
         private float delay;
-        private RaycastHit hit;
-        private PlacementManager placementManager;
         private GameManager gameManager;
-        private readonly float tavernLimit = -10;
-        [SerializeField]private GameObject wallAnchor;
-        [SerializeField]private GameObject nextAnchor;
-        
-        [SerializeField] private List<GameObject> childs = new List<GameObject>();
-        
+        private RaycastHit hit;
+
         private NotificationSystem notificationSystem;
 
-        private bool placeable = false;
+        private bool placeable;
+        private PlacementManager placementManager;
+
         private void Awake()
         {
             gameManager = FindObjectOfType<GameManager>();
@@ -34,9 +35,9 @@ namespace Environnement
 
         private void Update()
         {
-            if (gameManager.GameForcePause)
+            if (gameManager.GameForcePause && !gameManager.isTutorialEnabled)
                 return;
-            
+
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))
@@ -60,20 +61,14 @@ namespace Environnement
                         transform.rotation = hit.collider.transform.rotation;
                     }
                 }
-            Collider[] hitColliders = Physics.OverlapBox(CalculateCentroid(), new Vector3(1.5f, 2f, 1.5f), transform.rotation);
-            if (hitColliders.Length != 0)
-            {
-                placeable = false;
-            }
+
+            var hitColliders = Physics.OverlapBox(CalculateCentroid(), new Vector3(1.5f, 2f, 1.5f), transform.rotation);
+            if (hitColliders.Length != 0) placeable = false;
 
             if (placeable)
-            {
                 setColor(true);
-            }
             else
-            {
                 setColor(false);
-            }
 
             if (Input.GetMouseButtonDown(0) && placeable)
             {
@@ -88,6 +83,7 @@ namespace Environnement
                             gameObject.SetActive(true);
                             return;
                         }
+
                 foreach (var item in o.GetComponentsInChildren<Transform>())
                     if (item.CompareTag("BorderWall"))
                     {
@@ -109,10 +105,19 @@ namespace Environnement
             }
         }
 
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
+            //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
+            Gizmos.matrix = Matrix4x4.TRS(CalculateCentroid(), transform.rotation, transform.lossyScale);
+            Gizmos.DrawWireCube(Vector3.zero, new Vector3(2f, 2f, 2f) * 2);
+        }
+
         private void DestroyObjectAtLocation(float minDist, GameObject item)
         {
             var tmpLocation = item.transform.position;
-            bool setToInterior = false;
+            var setToInterior = false;
 
             //Transform[] tiles = GameObject.FindObjectsOfType<Transform> ();
             var tiles =
@@ -129,15 +134,11 @@ namespace Environnement
                         setToInterior = true;
                     }
             }
-            
+
             if (setToInterior)
-            {
                 foreach (Transform child in item.transform)
                 {
-                    if (child.name == "Mur")
-                    {
-                        child.gameObject.SetActive(false);
-                    }
+                    if (child.name == "Mur") child.gameObject.SetActive(false);
 
                     if (child.name == "MurInterieur")
                     {
@@ -145,7 +146,6 @@ namespace Environnement
                         child.gameObject.GetComponent<MeshRenderer>().enabled = true;
                     }
                 }
-            }
         }
 
         private bool CheckForOtherRoom(float minDist, GameObject item)
@@ -158,60 +158,37 @@ namespace Environnement
                 if (Vector3.Distance(tiles[i].position, tmpLocation) <= minDist)
                     if (tiles[i].gameObject.CompareTag("Room"))
                         return true;
-            Collider[] hitColliders =
+            var hitColliders =
                 Physics.OverlapBox(transform.position, new Vector3(2f, 2f, 2f), transform.rotation);
 
             return false;
         }
-        
-        void setColor(bool state)
+
+        private void setColor(bool state)
         {
-            if(!state){
+            if (!state)
                 foreach (var child in childs)
-                {
                     //Couleur non plaçable
                     child.GetComponent<Renderer>().material = defaultMat;
-
-                }
-            }
             else
-            {
                 foreach (var child in childs)
-                {
                     //Couleur plaçable
                     child.GetComponent<Renderer>().material = constructMat;
-                }
-            }
-            
         }
 
         private Vector3 CalculateCentroid()
         {
-            Vector3 centroid = Vector3.zero;
+            var centroid = Vector3.zero;
             if (transform.root.gameObject == transform.gameObject)
-            {
-                
                 if (transform.childCount > 0)
                 {
-                    Transform[] allChilds = transform.gameObject.GetComponentsInChildren<Transform>();
-                    foreach (var child in allChilds)
-                    {
-                        centroid += child.transform.position;
-                    }
+                    var allChilds = transform.gameObject.GetComponentsInChildren<Transform>();
+                    foreach (var child in allChilds) centroid += child.transform.position;
 
                     centroid /= allChilds.Length;
                 }
-                
-            }
+
             return centroid;
-        }
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
-            //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
-            Gizmos.matrix = Matrix4x4.TRS(CalculateCentroid(), transform.rotation, transform.lossyScale);
-            Gizmos.DrawWireCube(Vector3.zero, new Vector3(2f, 2f, 2f)*2);
         }
     }
 }

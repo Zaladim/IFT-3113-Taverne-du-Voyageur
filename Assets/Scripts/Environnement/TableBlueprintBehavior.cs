@@ -27,9 +27,9 @@ namespace Environnement
         private Grid grid;
         private RaycastHit hit;
 
-        private ResourcesManager resourcesManager;
-
         private NotificationSystem notificationSystem;
+
+        private ResourcesManager resourcesManager;
 
         private void Awake()
         {
@@ -43,7 +43,7 @@ namespace Environnement
 
         private void Update()
         {
-            if (gameManager.GameForcePause)
+            if (gameManager.GameForcePause && !gameManager.isTutorialEnabled)
                 return;
 
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -52,7 +52,7 @@ namespace Environnement
             if (rotateInput)
             {
                 transform.Rotate(0.0f, 90f, 0.0f);
-                int tmp = tableLength;
+                var tmp = tableLength;
                 tableLength = tableWidth;
                 tableWidth = tmp;
             }
@@ -60,7 +60,8 @@ namespace Environnement
             if (Physics.Raycast(ray, out hit))
             {
                 tmp = hit.collider;
-                if (hit.collider.gameObject.CompareTag("Ground")) {
+                if (hit.collider.gameObject.CompareTag("Ground"))
+                {
                     pos = hit.point;
                     pos.y += 1;
                     var cell = grid.getCellPosition(pos);
@@ -68,7 +69,7 @@ namespace Environnement
                     pos.z = cell.z;
 
                     transform.position = pos;
-                    
+
                     // var hitColliders =
                     //     Physics.OverlapBox(transform.position, new Vector3(1f, 0.5f, 2f), transform.rotation);
                     // foreach (var hitCollider in hitColliders)
@@ -139,7 +140,7 @@ namespace Environnement
         {
             int x, y;
             grid.getXY(transform.position, out x, out y);
-            
+
 
             for (var i = x - tableWidth; i <= x + tableWidth; i++)
             for (var j = y - tableLength; j <= y + tableLength; j++)

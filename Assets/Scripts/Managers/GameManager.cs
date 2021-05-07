@@ -28,6 +28,8 @@ namespace Managers
 
         public NotificationSystem NotificationSystem => notificationSystem;
 
+        public bool isTutorialEnabled { get; set; }
+
         public bool GamePause
         {
             get => isGamePaused;
@@ -114,6 +116,8 @@ namespace Managers
 
         public void StartGame()
         {
+            GameForcePause = true;
+            isTutorialEnabled = true;
             startPanel.SetActive(false);
             gamePanel.SetActive(true);
 
@@ -155,10 +159,7 @@ namespace Managers
             timeManager.SetTimeScale(n);
             notificationSystem.CreateNotification($"Speed: x{n}", 1.5f, NotificationType.Info);
 
-            if (IsGameRunning())
-            {
-                timeManager.Apply();
-            }
+            if (IsGameRunning()) timeManager.Apply();
         }
     }
 }
