@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43965602, g: 0.48805612, b: 0.56827945, a: 1}
+  m_IndirectSpecularColor: {r: 0.43965626, g: 0.48805654, b: 0.56828034, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -299,6 +299,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestClientAI (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
 --- !u!1001 &193249630
@@ -377,6 +382,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TestClientAI (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
@@ -531,6 +541,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TestClientAI (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
@@ -2106,6 +2121,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestClientAI (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
 --- !u!1 &1168824077
@@ -2666,6 +2686,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestClientAI (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
 --- !u!1001 &1393622874
@@ -2819,6 +2844,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TestClientAI (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
@@ -3096,6 +3126,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestClientAI (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
 --- !u!1001 &1675991872
@@ -3306,7 +3341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1759671939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3519,6 +3554,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestClientAI (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
 --- !u!1001 &1880135513
@@ -3626,21 +3666,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clientManager: {fileID: 0}
+  gameManager: {fileID: 0}
   goldDisplay: {fileID: 0}
   startingGoldAmount: 25
   reputationDisplay: {fileID: 0}
-  StartingReputation: 10
+  startingReputation: 10
   minReputation: 10
   startingSeatNumber: 4
   beersDisplay: {fileID: 0}
   startingBeersAmount: 30
   beerPrice: 5
-  clientsDisplay: {fileID: 0}
   clientsQuantity: 0
   goldQuantity: 0
   reputationQuantity: 0
   beersQuantity: 0
   seatsQuantity: 0
+  reputationWarned: 0
+  goldWarned: 0
+  beerWarned: 0
 --- !u!4 &1884372079
 Transform:
   m_ObjectHideFlags: 0
@@ -3943,6 +3986,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestClientAI
       objectReference: {fileID: 0}
+    - target: {fileID: 4314069734299072015, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1bbdb2cf07e86d4ea566c8fc58db9f3, type: 3}
 --- !u!1 &2046980726
@@ -3976,7 +4024,7 @@ PrefabInstance:
     - target: {fileID: 752900504331954548, guid: 54ac99e2e1ea4f341a4c3de96cbb054f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6625492849251856824, guid: 54ac99e2e1ea4f341a4c3de96cbb054f,
         type: 3}
@@ -4115,7 +4163,7 @@ PrefabInstance:
     - target: {fileID: 3151688448833487375, guid: 4b3ab6a084765634f9d67f6987667a09,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7688944346709398141, guid: 4b3ab6a084765634f9d67f6987667a09,
         type: 3}
@@ -4135,6 +4183,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: QuestGiver
+      objectReference: {fileID: 0}
+    - target: {fileID: 7288095171548056431, guid: b47ca7994680d1a41b7ea6e4f821441e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8962087841180998385, guid: b47ca7994680d1a41b7ea6e4f821441e,
         type: 3}

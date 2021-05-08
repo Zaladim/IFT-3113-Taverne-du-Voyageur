@@ -16,9 +16,9 @@ namespace Managers
         [Header("Game Elements")] [SerializeField]
         private GameObject startPanel;
 
+        [SerializeField] private GameObject popUpMenus;
         [SerializeField] private GameObject gamePanel;
         [SerializeField] private GameObject settingsPanel;
-        [SerializeField] private Tutorial tutorial;
 
         [Header("Time Debug")] [Tooltip("Does nothing if changed in editor!")] [SerializeField]
         private bool isGamePaused;
@@ -28,7 +28,7 @@ namespace Managers
 
         public NotificationSystem NotificationSystem => notificationSystem;
 
-        public bool isTutorialEnabled { get; set; }
+        public bool IsTutorialEnabled { get; set; }
 
         public bool GamePause
         {
@@ -90,10 +90,20 @@ namespace Managers
             if (Input.GetKeyUp(KeyCode.Escape))
             {
                 settingsPanel.SetActive(!settingsPanel.activeSelf);
+                popUpMenus.SetActive(!popUpMenus.activeSelf);
                 ToggleGameForcedPause();
             }
+            
+            if (Input.GetKeyUp(KeyCode.F))
+                ToggleFullScreen();
         }
 
+        private void ToggleFullScreen()
+        {
+            // Toggle fullscreen
+            Screen.fullScreen = !Screen.fullScreen;
+        }
+        
         public void ToggleGameForcedPause()
         {
             GameForcePause = !GameForcePause;
@@ -117,7 +127,7 @@ namespace Managers
         public void StartGame()
         {
             GameForcePause = true;
-            isTutorialEnabled = true;
+            IsTutorialEnabled = true;
             startPanel.SetActive(false);
             gamePanel.SetActive(true);
 
