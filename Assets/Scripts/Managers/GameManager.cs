@@ -93,8 +93,17 @@ namespace Managers
                 popUpMenus.SetActive(!popUpMenus.activeSelf);
                 ToggleGameForcedPause();
             }
+            
+            if (Input.GetKeyUp(KeyCode.F))
+                ToggleFullScreen();
         }
 
+        private void ToggleFullScreen()
+        {
+            // Toggle fullscreen
+            Screen.fullScreen = !Screen.fullScreen;
+        }
+        
         public void ToggleGameForcedPause()
         {
             GameForcePause = !GameForcePause;
